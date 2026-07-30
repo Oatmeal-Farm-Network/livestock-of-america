@@ -21,15 +21,14 @@ export const SAIGE_API_URL = readUrl(import.meta.env.VITE_SAIGE_API_URL);
 
 export const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL || "").trim();
 
-/** Join livestock base URL with a path (path may start with `/`). */
+/**
+ * Join livestock base URL with a path (path may start with `/`).
+ * Empty VITE_LIVESTOCK_API_URL → same-origin paths (Vite proxy in local dev).
+ */
 export function apiUrl(path = ""): string {
-  if (!LIVESTOCK_API_URL) {
-    throw new Error(
-      "Missing VITE_LIVESTOCK_API_URL. Set it at build time (or in .env for local dev).",
-    );
-  }
-  if (!path) return LIVESTOCK_API_URL;
-  return `${LIVESTOCK_API_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  if (!path) return LIVESTOCK_API_URL || "";
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return LIVESTOCK_API_URL ? `${LIVESTOCK_API_URL}${normalized}` : normalized;
 }
 
 /** Paths match oatmealfarmnetworkbackend livestock service routers. */
