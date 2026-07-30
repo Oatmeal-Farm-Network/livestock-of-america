@@ -1,8 +1,8 @@
 /**
- * Central API endpoints for Livestock of America.
+ * Livestock of America API — single backend: the livestock Cloud Run service.
  *
- * Breed / knowledge-base → livestock Cloud Run.
- * Auth, marketplace, animals, herd health → OFN backend until livestock owns those routes.
+ * Breed KB, marketplace, ranches, animals, herd health, and auth all live on
+ * VITE_LIVESTOCK_API_URL (oatmeal-livestock-staging / prod livestock).
  */
 
 function trimSlash(url: string): string {
@@ -13,58 +13,64 @@ function readUrl(value: string | undefined): string {
   return value ? trimSlash(value.trim()) : "";
 }
 
-/** Standalone livestock API (breed encyclopedia, KB, livestock-owned routes). */
+/** Livestock of America API (Cloud Run livestock service). */
 export const LIVESTOCK_API_URL = readUrl(import.meta.env.VITE_LIVESTOCK_API_URL);
 
-/**
- * OFN backend (auth, marketplace, animals, herd health, shared platform APIs).
- * Baked at Docker build time from STAGING_BACKEND_URL / PROD_BACKEND_URL.
- */
-export const OFN_API_URL = readUrl(import.meta.env.VITE_API_URL);
-
-/** Optional Saige advisory API. */
+/** Optional Saige advisory API (separate service). */
 export const SAIGE_API_URL = readUrl(import.meta.env.VITE_SAIGE_API_URL);
 
 export const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL || "").trim();
 
-export type ApiTarget = "livestock" | "ofn" | "saige";
-
-const TARGET_BASE: Record<ApiTarget, () => string> = {
-  livestock: () => LIVESTOCK_API_URL,
-  ofn: () => OFN_API_URL,
-  saige: () => SAIGE_API_URL,
-};
-
-/** Join a service base URL with a path (path may start with `/`). */
-export function apiUrl(target: ApiTarget, path = ""): string {
-  const base = TARGET_BASE[target]();
-  if (!base) {
+/** Join livestock base URL with a path (path may start with `/`). */
+export function apiUrl(path = ""): string {
+  if (!LIVESTOCK_API_URL) {
     throw new Error(
-      `Missing API base for "${target}". Set the matching VITE_* URL at build time.`,
+      "Missing VITE_LIVESTOCK_API_URL. Set it at build time (or in .env for local dev).",
     );
   }
-  if (!path) return base;
-  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+  if (!path) return LIVESTOCK_API_URL;
+  return `${LIVESTOCK_API_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** Breed + knowledge-base helpers → livestock service. */
-export const livestockEndpoints = {
-  health: () => apiUrl("livestock", "/health"),
-  breeds: () => apiUrl("livestock", "/api/livestock/breeds"),
-  species: () => apiUrl("livestock", "/api/livestock/species"),
-  knowledge: (slug: string) =>
-    apiUrl("livestock", `/api/livestock/knowledge/${slug}`),
-} as const;
+/** Paths match oatmealfarmnetworkbackend livestock service routers. */
+export const endpoints = {
+  health: () => apiUrl("/health"),
 
-/**
- * Platform routes still served by OFN backend.
- * Do not point these at oatmeal-livestock-* until that service owns them.
- */
-export const ofnEndpoints = {
-  health: () => apiUrl("ofn", "/health"),
-  login: () => apiUrl("ofn", "/api/auth/login"),
-  me: () => apiUrl("ofn", "/api/auth/me"),
-  marketplace: () => apiUrl("ofn", "/api/marketplace"),
-  animals: () => apiUrl("ofn", "/api/animals"),
-  herdHealth: () => apiUrl("ofn", "/api/herd-health"),
+  // Breed / species knowledge base — app/routers/livestock.py
+  counts: () => apiUrl("/api/livestock/counts"),
+  species: (slug: string) => apiUrl(`/api/livestock/species/${slug}`),
+  speciesLetters: (slug: string) =>
+    apiUrl(`/api/livestock/species/${slug}/letters`),
+  breed: (breedId: number | string) =>
+    apiUrl(`/api/livestock/breed/${breedId}`),
+  about: (slug: string) => apiUrl(`/api/livestock/about/${slug}`),
+  speciesColors: (speciesId: number | string) =>
+    apiUrl(`/api/livestock/species-colors/${speciesId}`),
+
+  // Marketplace — app/routers/marketplace.py (livestock for-sale / studs)
+  marketplaceFilters: (slug: string) =>
+    apiUrl(`/api/marketplace/filters/${slug}`),
+  marketplaceSpecies: (slug: string) =>
+    apiUrl(`/api/marketplace/species/${slug}`),
+  forSale: (slug: string) => apiUrl(`/api/marketplace/for-sale/${slug}`),
+  studs: (slug: string) => apiUrl(`/api/marketplace/studs/${slug}`),
+  marketplaceAnimal: (id: number | string) =>
+    apiUrl(`/api/marketplace/animal/${id}`),
+  homepageListings: () => apiUrl("/api/marketplace/homepage-listings"),
+
+  // Ranches — app/routers/ranches.py
+  ranchesList: (slug: string) => apiUrl(`/api/ranches/list/${slug}`),
+  ranchProfile: (businessId: number | string) =>
+    apiUrl(`/api/ranches/profile/${businessId}`),
+
+  // Animals — app/routers/animals.py
+  animals: () => apiUrl("/api/animals"),
+
+  // Herd health — app/routers/herd_health.py
+  herdHealthDashboard: (businessId: number | string) =>
+    apiUrl(`/api/herd-health/dashboard?business_id=${businessId}`),
+
+  // Auth — app/routers/auth.py
+  login: () => apiUrl("/auth/login"),
+  me: () => apiUrl("/auth/me"),
 } as const;

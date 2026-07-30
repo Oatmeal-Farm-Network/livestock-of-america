@@ -1,6 +1,7 @@
 name: Deploy LOA Frontend Production
 
 # main → livestock-frontend-prod
+# API target: livestock prod Cloud Run only (not OFN main backend).
 # Do not deploy until prod vars exist; fail clearly if missing.
 on:
   push:
@@ -42,10 +43,9 @@ jobs:
           require PROD_GCP_SERVICE_ACCOUNT "${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}"
           require PROD_FRONTEND_RUNTIME_SA "${{ vars.PROD_FRONTEND_RUNTIME_SA }}"
           require PROD_LIVESTOCK_API_URL "${{ vars.PROD_LIVESTOCK_API_URL }}"
-          require PROD_BACKEND_URL "${{ vars.PROD_BACKEND_URL }}"
           if [ "$missing" -ne 0 ]; then
             echo "Production deploy blocked until all PROD_* secrets/vars are set."
-            echo "See docs/LOA_FRONTEND_DEPLOY.md — do not promote LOA frontend to prod without them."
+            echo "See docs/LOA_FRONTEND_DEPLOY.md — livestock API URL required (no OFN backend)."
             exit 1
           fi
 
@@ -68,13 +68,11 @@ jobs:
       - name: Build Docker image (bake production VITE_*)
         env:
           VITE_LIVESTOCK_API_URL: ${{ vars.PROD_LIVESTOCK_API_URL }}
-          VITE_API_URL: ${{ vars.PROD_BACKEND_URL }}
           VITE_SAIGE_API_URL: ${{ vars.PROD_SAIGE_URL }}
           VITE_CONTACT_EMAIL: ${{ vars.PROD_CONTACT_EMAIL }}
         run: |
           docker build \
             --build-arg "VITE_LIVESTOCK_API_URL=${VITE_LIVESTOCK_API_URL}" \
-            --build-arg "VITE_API_URL=${VITE_API_URL}" \
             --build-arg "VITE_SAIGE_API_URL=${VITE_SAIGE_API_URL}" \
             --build-arg "VITE_CONTACT_EMAIL=${VITE_CONTACT_EMAIL}" \
             -t "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \

@@ -1,6 +1,7 @@
 name: Deploy LOA Frontend Staging
 
 # GCP/frontend-staging → livestock-frontend-staging (oatmeal-farm-staging)
+# API target: oatmeal-livestock-staging only (not OFN main backend).
 on:
   push:
     branches: [GCP/frontend-staging]
@@ -28,18 +29,9 @@ jobs:
       - name: Require staging bake vars
         shell: bash
         run: |
-          missing=0
-          require() {
-            local name="$1" value="$2"
-            if [ -z "$value" ]; then
-              echo "::error::Missing required GitHub Actions variable: $name"
-              missing=1
-            fi
-          }
-          require STAGING_LIVESTOCK_API_URL "${{ vars.STAGING_LIVESTOCK_API_URL }}"
-          require STAGING_BACKEND_URL "${{ vars.STAGING_BACKEND_URL }}"
-          if [ "$missing" -ne 0 ]; then
-            echo "Set the variables above on the livestock-of-america repo, then re-run."
+          if [ -z "${{ vars.STAGING_LIVESTOCK_API_URL }}" ]; then
+            echo "::error::Missing required GitHub Actions variable: STAGING_LIVESTOCK_API_URL"
+            echo "Set it to the oatmeal-livestock-staging Cloud Run URL."
             exit 1
           fi
 
@@ -62,13 +54,11 @@ jobs:
       - name: Build Docker image (bake staging VITE_*)
         env:
           VITE_LIVESTOCK_API_URL: ${{ vars.STAGING_LIVESTOCK_API_URL }}
-          VITE_API_URL: ${{ vars.STAGING_BACKEND_URL }}
           VITE_SAIGE_API_URL: ${{ vars.STAGING_SAIGE_URL }}
           VITE_CONTACT_EMAIL: ${{ vars.STAGING_CONTACT_EMAIL }}
         run: |
           docker build \
             --build-arg "VITE_LIVESTOCK_API_URL=${VITE_LIVESTOCK_API_URL}" \
-            --build-arg "VITE_API_URL=${VITE_API_URL}" \
             --build-arg "VITE_SAIGE_API_URL=${VITE_SAIGE_API_URL}" \
             --build-arg "VITE_CONTACT_EMAIL=${VITE_CONTACT_EMAIL}" \
             -t "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
