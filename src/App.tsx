@@ -5,19 +5,13 @@ import {
   SAIGE_API_URL,
 } from "./config/api";
 
-/**
- * Minimal shell so Docker/CD can deploy.
- * Replace this UI with the full LOA product design.
- */
 export default function App() {
   return (
-    <main className="shell">
+    <main className="page">
       <p className="brand">Livestock of America</p>
       <h1>Buy, sell, and manage livestock</h1>
       <p className="lede">
-        Staging shell for Cloud Run. Breed and knowledge traffic uses the
-        livestock API; auth, marketplace, animals, and herd health use the OFN
-        backend until the livestock service expands.
+        Dedicated livestock marketplace, breed knowledge, and herd tools.
       </p>
       <dl className="env">
         <div>

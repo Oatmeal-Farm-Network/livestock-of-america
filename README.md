@@ -2,15 +2,6 @@
 
 Livestock of America is the dedicated web app for buying and selling livestock, stud services, ranch discovery, breed knowledge, and herd management.
 
-## Ownership
-
-| Area | Owner |
-|------|--------|
-| Product UI / design | Frontend team |
-| Deploy (Docker, nginx, Actions) | Platform |
-
-This repo includes a **minimal Vite shell** so Cloud Run CD can build and deploy. Replace `src/App.tsx` with the full product UI; keep `src/config/api.ts` (or equivalent) for API bases.
-
 ## Deploy
 
 | Branch | Environment |
@@ -28,9 +19,7 @@ npm install
 npm run dev
 ```
 
-`npm run build` must produce `dist/` (Dockerfile + nginx).
-
-API bases in `src/config/api.ts`:
+API bases are in `src/config/api.ts`:
 
 - Breed / knowledge → `VITE_LIVESTOCK_API_URL`
 - Auth / marketplace / animals / herd → `VITE_API_URL` (OFN backend for now)
