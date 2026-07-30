@@ -1,5 +1,4 @@
-# Multi-stage: Vite (or compatible) build with baked VITE_* → nginx on Cloud Run :8080
-# Expects repo-root package.json and `npm run build` output in /app/dist (website owned separately).
+# Multi-stage: Vite build with baked VITE_* → nginx on Cloud Run port 8080
 FROM node:20-alpine AS build
 
 WORKDIR /app

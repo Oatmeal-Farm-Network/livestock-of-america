@@ -30,9 +30,7 @@ Production **fails clearly** if any required `PROD_*` secret/var is missing — 
 | `VITE_SAIGE_API_URL` | `STAGING_SAIGE_URL` | `PROD_SAIGE_URL` | Optional Saige |
 | `VITE_CONTACT_EMAIL` | `STAGING_CONTACT_EMAIL` | `PROD_CONTACT_EMAIL` | Optional contact |
 
-App wiring is owned by the frontend website (e.g. `src/config/api.ts` once the Vite app lands). Do **not** point marketplace / animals / herd-health at the livestock Cloud Run service until that service owns those routes.
-
-> **Note:** This repo may contain CD files only until the website is merged. `Dockerfile` expects `package.json` + `npm run build` → `dist/`.
+App wiring lives in `src/config/api.ts`. Do **not** point marketplace / animals / herd-health at the livestock Cloud Run service until that service owns those routes.
 
 ---
 
@@ -110,17 +108,16 @@ Production mirror: `PROD_LOA_FRONTEND_URL` → `oatmeal-livestock-prod` via `dep
 
 ## Suggested rollout order
 
-1. Merge CD files (workflows + Dockerfile + nginx + docs) to `GCP/frontend-staging`.
+1. Merge frontend staging workflow + Dockerfile + `src/config/api.ts` to `GCP/frontend-staging`.
 2. Set staging secrets/vars on this repo (table above).
-3. Merge the Vite website (coworker) so `npm run build` produces `dist/`.
-4. Run **Deploy LOA Frontend Staging**; confirm service URL and `/health`.
-5. Set `STAGING_LOA_FRONTEND_URL` on the backend repo; redeploy livestock staging (or `workflow_dispatch`).
-6. Verify browser calls to livestock API succeed (CORS).
-7. Only then configure prod vars and enable `main` → prod + livestock prod.
+3. Run **Deploy LOA Frontend Staging**; confirm service URL and `/health`.
+4. Set `STAGING_LOA_FRONTEND_URL` on the backend repo; redeploy livestock staging (or `workflow_dispatch`).
+5. Verify browser calls to livestock API succeed (CORS).
+6. Only then configure prod vars and enable `main` → prod + livestock prod.
 
 ---
 
-## Local development (after website lands)
+## Local development
 
 ```bash
 cp .env.example .env

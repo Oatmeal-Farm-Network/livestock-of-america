@@ -6,10 +6,10 @@ Livestock of America is the dedicated web app for buying and selling livestock, 
 
 | Area | Owner |
 |------|--------|
-| Website UI / Vite app (`package.json`, `src/`, …) | Frontend coworker |
-| CI/CD (Docker, nginx, GitHub Actions, deploy docs) | Platform / this setup |
+| Product UI / design | Frontend team |
+| Deploy (Docker, nginx, Actions) | Platform |
 
-This repo currently contains **deploy infrastructure only**. Staging/prod builds expect a Vite (or compatible) app that produces `dist/` via `npm run build`.
+This repo includes a **minimal Vite shell** so Cloud Run CD can build and deploy. Replace `src/App.tsx` with the full product UI; keep `src/config/api.ts` (or equivalent) for API bases.
 
 ## Deploy
 
@@ -18,19 +18,19 @@ This repo currently contains **deploy infrastructure only**. Staging/prod builds
 | `GCP/frontend-staging` | Staging Cloud Run `livestock-frontend-staging` |
 | `main` | Production Cloud Run `livestock-frontend-prod` |
 
-See [docs/LOA_FRONTEND_DEPLOY.md](docs/LOA_FRONTEND_DEPLOY.md) for secrets, bake vars, and CORS.
+See [docs/LOA_FRONTEND_DEPLOY.md](docs/LOA_FRONTEND_DEPLOY.md).
 
-## Frontend contract (for the website PR)
+## Local
 
-Add a normal Vite app at the repo root so the existing `Dockerfile` works:
+```bash
+cp .env.example .env
+npm install
+npm run dev
+```
 
-1. `package.json` with `"build"` → output in `dist/`
-2. Bake these at build time (Docker already passes them as `ARG`/`ENV`):
-   - `VITE_LIVESTOCK_API_URL` — breed / knowledge → livestock API
-   - `VITE_API_URL` — auth / marketplace / animals / herd → OFN backend
-   - `VITE_SAIGE_API_URL` — optional
-   - `VITE_CONTACT_EMAIL` — optional
-3. Prefer a single API config module (e.g. `src/config/api.ts`) so those bases stay centralized
-4. Do **not** point marketplace / animals / herd-health at `oatmeal-livestock-*` until that service owns those routes
+`npm run build` must produce `dist/` (Dockerfile + nginx).
 
-Local: copy `.env.example` → `.env`, then `npm install` && `npm run dev`.
+API bases in `src/config/api.ts`:
+
+- Breed / knowledge → `VITE_LIVESTOCK_API_URL`
+- Auth / marketplace / animals / herd → `VITE_API_URL` (OFN backend for now)
