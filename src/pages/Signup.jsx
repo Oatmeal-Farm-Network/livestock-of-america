@@ -4,7 +4,7 @@ import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
-import { apiUrl } from '../config/api';
+import { endpoints } from '../config/api';
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -25,7 +25,7 @@ export default function Signup() {
     setError('');
     setLoading(true);
     try {
-      const response = await fetch(apiUrl('/auth/signup'), {
+      const response = await fetch(endpoints.signup(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

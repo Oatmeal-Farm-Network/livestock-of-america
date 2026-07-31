@@ -12,7 +12,7 @@ export default function Login() {
   const location = useLocation();
   const from = location.state?.from
     ? location.state.from.pathname + (location.state.from.search || '')
-    : '/';
+    : '/account';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

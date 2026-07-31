@@ -12,12 +12,18 @@ Phase‑1 Livestock of America website experience:
 
 - Marketplace home (hero tabs, filters, featured listings, Join Now)
 - Livestock for Sale / Stud Services / Ranches listing pages
-- Livestock knowledgebase (species → breeds)
-- Events (coming soon), About, Contact
-- Login / Signup / Forgot password
-- News, Blog, Directory stubs (coming soon)
+- **Livestock Knowledgebase** (`/livestock`) — species → breeds → detail
+- **Plant Knowledgebase** (`/plant-knowledgebase`) — categories → plants → varietals
+- **Ingredient Knowledgebase** (`/ingredient-knowledgebase`) — categories → ingredients → varieties
+- **News Feed** (`/news`) — `VITE_NEWS_API_URL`
+- Events (coming soon), About, Contact, Login / Signup
+- Blog / Directory stubs (coming soon)
 
-All API calls go through `VITE_LIVESTOCK_API_URL` / `src/config/api.ts`.
+| Data | Env |
+|------|-----|
+| Marketplace, livestock breeds, auth | `VITE_LIVESTOCK_API_URL` |
+| Plants & ingredients | `VITE_OFN_API_URL` (OFN main backend) |
+| News | `VITE_NEWS_API_URL` |
 
 ## Deploy
 

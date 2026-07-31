@@ -16,6 +16,14 @@ function readUrl(value: string | undefined): string {
 /** Livestock of America API (Cloud Run livestock service). */
 export const LIVESTOCK_API_URL = readUrl(import.meta.env.VITE_LIVESTOCK_API_URL);
 
+/**
+ * OFN main backend — plant & ingredient knowledgebases (not on livestock service).
+ * Falls back to livestock URL only if unset (may 404 for plant/ingredient routes).
+ */
+export const OFN_API_URL = readUrl(
+  import.meta.env.VITE_OFN_API_URL || import.meta.env.VITE_LIVESTOCK_API_URL,
+);
+
 /** Optional Saige advisory API (separate service). */
 export const SAIGE_API_URL = readUrl(import.meta.env.VITE_SAIGE_API_URL);
 
@@ -29,6 +37,17 @@ export function apiUrl(path = ""): string {
   if (!path) return LIVESTOCK_API_URL || "";
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return LIVESTOCK_API_URL ? `${LIVESTOCK_API_URL}${normalized}` : normalized;
+}
+
+/**
+ * OFN main API paths (auth, account/business, plant/ingredient).
+ * Empty base → same-origin (Vite proxies /auth and account APIs to OFN).
+ */
+export function ofnApiUrl(path = ""): string {
+  const base = readUrl(import.meta.env.VITE_OFN_API_URL) || "";
+  if (!path) return base;
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return base ? `${base}${normalized}` : normalized;
 }
 
 /** Paths match oatmealfarmnetworkbackend livestock service routers. */
@@ -69,7 +88,9 @@ export const endpoints = {
   herdHealthDashboard: (businessId: number | string) =>
     apiUrl(`/api/herd-health/dashboard?business_id=${businessId}`),
 
-  // Auth — app/routers/auth.py
-  login: () => apiUrl("/auth/login"),
-  me: () => apiUrl("/auth/me"),
+  // Auth — OFN main (same host as Dashboard /auth/my-businesses)
+  login: () => ofnApiUrl("/auth/login"),
+  signup: () => ofnApiUrl("/auth/signup"),
+  forgotPassword: () => ofnApiUrl("/auth/forgot-password"),
+  me: () => ofnApiUrl("/auth/me"),
 } as const;
