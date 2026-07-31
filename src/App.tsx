@@ -1,65 +1,67 @@
-import { useEffect, useState } from "react";
-import {
-  CONTACT_EMAIL,
-  LIVESTOCK_API_URL,
-  SAIGE_API_URL,
-  endpoints,
-} from "./config/api";
+import { Navigate, Route, Routes } from "react-router-dom";
+import LivestockMarketplace from "./pages/LivestockMarketplace";
+import LivestockForSale from "./pages/LivestockForSale";
+import RanchList from "./pages/RanchList";
+import Phase1EventsComingSoon from "./pages/Phase1EventsComingSoon";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import ComingSoon from "./pages/ComingSoon";
+import LivestockKnowledgebase from "./pages/LivestockKnowledgebase";
+import LivestockSpeciesPage from "./pages/LivestockSpeciesPage";
 
 export default function App() {
-  const [health, setHealth] = useState<string>("…");
-
-  useEffect(() => {
-    if (!LIVESTOCK_API_URL) {
-      setHealth("VITE_LIVESTOCK_API_URL not set");
-      return;
-    }
-    fetch(endpoints.health())
-      .then(async (r) => {
-        const body = await r.json().catch(() => ({}));
-        setHealth(
-          r.ok
-            ? `ok (${body.service ?? "livestock"})`
-            : `HTTP ${r.status}`,
-        );
-      })
-      .catch((err: unknown) => {
-        setHealth(err instanceof Error ? err.message : "request failed");
-      });
-  }, []);
-
   return (
-    <main className="page">
-      <p className="brand">Livestock of America</p>
-      <h1>Buy, sell, and manage livestock</h1>
-      <p className="lede">
-        Dedicated livestock marketplace, breed knowledge, and herd tools —
-        powered by the livestock API service.
-      </p>
-      <dl className="env">
-        <div>
-          <dt>Livestock API</dt>
-          <dd>{LIVESTOCK_API_URL || "(not set)"}</dd>
-        </div>
-        <div>
-          <dt>API health</dt>
-          <dd>{health}</dd>
-        </div>
-        {SAIGE_API_URL ? (
-          <div>
-            <dt>Saige API</dt>
-            <dd>{SAIGE_API_URL}</dd>
-          </div>
-        ) : null}
-        {CONTACT_EMAIL ? (
-          <div>
-            <dt>Contact</dt>
-            <dd>
-              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
-            </dd>
-          </div>
-        ) : null}
-      </dl>
-    </main>
+    <Routes>
+      <Route path="/" element={<LivestockMarketplace />} />
+      <Route path="/animals" element={<LivestockMarketplace />} />
+      <Route path="/marketplaces/livestock" element={<LivestockMarketplace />} />
+      <Route path="/marketplaces/livestock/studs/:slug" element={<LivestockForSale />} />
+      <Route path="/marketplaces/livestock/ranches/:slug" element={<RanchList />} />
+      <Route path="/marketplaces/livestock/:slug" element={<LivestockForSale />} />
+
+      <Route path="/livestock" element={<LivestockKnowledgebase />} />
+      <Route path="/livestock/:slug" element={<LivestockSpeciesPage />} />
+      <Route path="/knowledgebase" element={<Navigate to="/livestock" replace />} />
+
+      <Route path="/events" element={<Phase1EventsComingSoon />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact-us" element={<Contact />} />
+      <Route
+        path="/news"
+        element={
+          <ComingSoon
+            title="News Feed"
+            description="Livestock industry news is coming soon to Livestock of America."
+          />
+        }
+      />
+      <Route
+        path="/blog"
+        element={
+          <ComingSoon
+            title="Blog"
+            description="The Livestock of America blog is coming soon."
+          />
+        }
+      />
+      <Route
+        path="/directory"
+        element={
+          <ComingSoon
+            title="Directory"
+            description="The industry directory is coming soon. Browse ranches from the marketplace today."
+          />
+        }
+      />
+
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }

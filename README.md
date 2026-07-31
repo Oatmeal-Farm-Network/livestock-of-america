@@ -1,10 +1,23 @@
 # livestock-of-america
 
-Livestock of America (LOA) — dedicated web app for livestock marketplace, breed
-knowledge, ranches, and herd tools.
+Livestock of America (LOA) — dedicated web app for the livestock marketplace,
+breed knowledgebase, ranches, and related public pages.
 
 **Backend:** `oatmealfarmnetworkbackend` **livestock** Cloud Run service only  
 (`livestock/api.py`). Not the OFN main backend or OFN frontend.
+
+## What this app includes
+
+Phase‑1 Livestock of America website experience:
+
+- Marketplace home (hero tabs, filters, featured listings, Join Now)
+- Livestock for Sale / Stud Services / Ranches listing pages
+- Livestock knowledgebase (species → breeds)
+- Events (coming soon), About, Contact
+- Login / Signup / Forgot password
+- News, Blog, Directory stubs (coming soon)
+
+All API calls go through `VITE_LIVESTOCK_API_URL` / `src/config/api.ts`.
 
 ## Deploy
 
@@ -23,5 +36,10 @@ npm install
 npm run dev
 ```
 
-Set `VITE_LIVESTOCK_API_URL` to your livestock API (local `http://localhost:8000`
-or staging Cloud Run URL). Endpoints live in `src/config/api.ts`.
+Leave `VITE_LIVESTOCK_API_URL` empty to use the Vite proxy to
+`http://localhost:8000`, or set it to your livestock staging Cloud Run URL.
+
+```bash
+npm run build
+npm run preview
+```
