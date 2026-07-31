@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#064e3b"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <!-- Circuit board pattern -->
+  <g stroke="#34d399" stroke-width="1" opacity="0.15" fill="none">
+    <line x1="100" y1="50" x2="100" y2="150"/>
+    <line x1="100" y1="150" x2="200" y2="150"/>
+    <line x1="200" y1="150" x2="200" y2="250"/>
+    <circle cx="100" cy="50" r="5"/>
+    <circle cx="200" cy="250" r="5"/>
+    <line x1="300" y1="80" x2="400" y2="80"/>
+    <line x1="400" y1="80" x2="400" y2="180"/>
+    <circle cx="300" cy="80" r="5"/>
+    <circle cx="400" cy="180" r="5"/>
+    <line x1="500" y1="100" x2="600" y2="100"/>
+    <line x1="600" y1="100" x2="600" y2="50"/>
+    <line x1="600" y1="50" x2="700" y2="50"/>
+    <circle cx="500" cy="100" r="5"/>
+    <circle cx="700" cy="50" r="5"/>
+  </g>
+  <!-- Drone silhouette -->
+  <g fill="#34d399" opacity="0.3" transform="translate(350,120)">
+    <!-- Body -->
+    <rect x="-15" y="-10" width="30" height="20" rx="5"/>
+    <!-- Arms -->
+    <line x1="-15" y1="0" x2="-50" y2="-25" stroke="#34d399" stroke-width="3"/>
+    <line x1="15" y1="0" x2="50" y2="-25" stroke="#34d399" stroke-width="3"/>
+    <line x1="-15" y1="0" x2="-50" y2="25" stroke="#34d399" stroke-width="3"/>
+    <line x1="15" y1="0" x2="50" y2="25" stroke="#34d399" stroke-width="3"/>
+    <!-- Propellers -->
+    <circle cx="-50" cy="-25" r="15" fill="none" stroke="#34d399" stroke-width="1.5"/>
+    <circle cx="50" cy="-25" r="15" fill="none" stroke="#34d399" stroke-width="1.5"/>
+    <circle cx="-50" cy="25" r="15" fill="none" stroke="#34d399" stroke-width="1.5"/>
+    <circle cx="50" cy="25" r="15" fill="none" stroke="#34d399" stroke-width="1.5"/>
+  </g>
+  <!-- Crop rows -->
+  <g stroke="#34d399" stroke-width="1.5" opacity="0.2">
+    <line x1="50" y1="280" x2="750" y2="280"/>
+    <line x1="80" y1="310" x2="720" y2="310"/>
+    <line x1="110" y1="340" x2="690" y2="340"/>
+    <line x1="140" y1="370" x2="660" y2="370"/>
+  </g>
+  <!-- Seedlings -->
+  <g fill="#34d399" opacity="0.25">
+    <path d="M200,275 Q205,260 210,275 Q205,265 200,275Z"/>
+    <path d="M350,275 Q355,258 360,275 Q355,263 350,275Z"/>
+    <path d="M500,275 Q505,260 510,275 Q505,265 500,275Z"/>
+    <path d="M650,275 Q655,258 660,275 Q655,263 650,275Z"/>
+  </g>
+  <text x="400" y="385" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="14" letter-spacing="3">AGTECH &amp; INNOVATION</text>
+</svg>
