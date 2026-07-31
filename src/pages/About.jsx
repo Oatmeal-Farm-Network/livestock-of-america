@@ -204,21 +204,6 @@ export default function About() {
                 </Link>
               </li>
               <li>
-                <Link to="/plant-knowledgebase" className="font-semibold hover:underline" style={{ color: OLIVE }}>
-                  Explore the Plant Knowledgebase
-                </Link>
-              </li>
-              <li>
-                <Link to="/ingredient-knowledgebase" className="font-semibold hover:underline" style={{ color: OLIVE }}>
-                  Explore the Ingredient Knowledgebase
-                </Link>
-              </li>
-              <li>
-                <Link to="/news" className="font-semibold hover:underline" style={{ color: OLIVE }}>
-                  Read the News Feed
-                </Link>
-              </li>
-              <li>
                 <Link to="/contact-us" className="font-semibold hover:underline" style={{ color: OLIVE }}>
                   Contact Us
                 </Link>

@@ -16,14 +16,6 @@ function readUrl(value: string | undefined): string {
 /** Livestock of America API (Cloud Run livestock service). */
 export const LIVESTOCK_API_URL = readUrl(import.meta.env.VITE_LIVESTOCK_API_URL);
 
-/**
- * OFN main backend — plant & ingredient knowledgebases (not on livestock service).
- * Falls back to livestock URL only if unset (may 404 for plant/ingredient routes).
- */
-export const OFN_API_URL = readUrl(
-  import.meta.env.VITE_OFN_API_URL || import.meta.env.VITE_LIVESTOCK_API_URL,
-);
-
 /** Optional Saige advisory API (separate service). */
 export const SAIGE_API_URL = readUrl(import.meta.env.VITE_SAIGE_API_URL);
 
@@ -37,17 +29,6 @@ export function apiUrl(path = ""): string {
   if (!path) return LIVESTOCK_API_URL || "";
   const normalized = path.startsWith("/") ? path : `/${path}`;
   return LIVESTOCK_API_URL ? `${LIVESTOCK_API_URL}${normalized}` : normalized;
-}
-
-/**
- * OFN main API paths (auth, account/business, plant/ingredient).
- * Empty base → same-origin (Vite proxies /auth and account APIs to OFN).
- */
-export function ofnApiUrl(path = ""): string {
-  const base = readUrl(import.meta.env.VITE_OFN_API_URL) || "";
-  if (!path) return base;
-  const normalized = path.startsWith("/") ? path : `/${path}`;
-  return base ? `${base}${normalized}` : normalized;
 }
 
 /** Paths match oatmealfarmnetworkbackend livestock service routers. */
@@ -65,7 +46,7 @@ export const endpoints = {
   speciesColors: (speciesId: number | string) =>
     apiUrl(`/api/livestock/species-colors/${speciesId}`),
 
-  // Marketplace — app/routers/marketplace.py (livestock for-sale / studs)
+  // Marketplace — app/routers/marketplace.py
   marketplaceFilters: (slug: string) =>
     apiUrl(`/api/marketplace/filters/${slug}`),
   marketplaceSpecies: (slug: string) =>
@@ -74,23 +55,50 @@ export const endpoints = {
   studs: (slug: string) => apiUrl(`/api/marketplace/studs/${slug}`),
   marketplaceAnimal: (id: number | string) =>
     apiUrl(`/api/marketplace/animal/${id}`),
+  marketplaceAnimalProgeny: (id: number | string) =>
+    apiUrl(`/api/marketplace/animal/${id}/progeny`),
   homepageListings: () => apiUrl("/api/marketplace/homepage-listings"),
 
   // Ranches — app/routers/ranches.py
   ranchesList: (slug: string) => apiUrl(`/api/ranches/list/${slug}`),
   ranchProfile: (businessId: number | string) =>
     apiUrl(`/api/ranches/profile/${businessId}`),
+  ranchAnimals: (businessId: number | string) =>
+    apiUrl(`/api/ranches/profile/${businessId}/animals`),
 
   // Animals — app/routers/animals.py
   animals: () => apiUrl("/api/animals"),
+  animal: (id: number | string) => apiUrl(`/api/animals/${id}`),
+  animalGet: (id: number | string) => apiUrl(`/api/animals/${id}`),
+  animalPublish: (id: number | string) =>
+    apiUrl(`/api/animals/${id}/publish`),
+  animalPublishStud: (id: number | string) =>
+    apiUrl(`/api/animals/${id}/publish-stud`),
+  animalUpdateBasics: (id: number | string) =>
+    apiUrl(`/api/animals/${id}/update-basics`),
+  animalCategories: (speciesId: number | string) =>
+    apiUrl(`/api/animals/species/${speciesId}/categories`),
 
   // Herd health — app/routers/herd_health.py
   herdHealthDashboard: (businessId: number | string) =>
     apiUrl(`/api/herd-health/dashboard?business_id=${businessId}`),
+  herdHealthEvents: (businessId: number | string) =>
+    apiUrl(`/api/herd-health/events?business_id=${businessId}`),
 
-  // Auth — OFN main (same host as Dashboard /auth/my-businesses)
-  login: () => ofnApiUrl("/auth/login"),
-  signup: () => ofnApiUrl("/auth/signup"),
-  forgotPassword: () => ofnApiUrl("/auth/forgot-password"),
-  me: () => ofnApiUrl("/auth/me"),
+  // Auth — livestock service (A1)
+  login: () => apiUrl("/auth/login"),
+  signup: () => apiUrl("/auth/signup"),
+  forgotPassword: () => apiUrl("/auth/forgot-password"),
+  me: () => apiUrl("/auth/me"),
+  myBusinesses: (peopleId: number | string) =>
+    apiUrl(`/auth/my-businesses?PeopleID=${peopleId}`),
+  accountHome: (businessId: number | string) =>
+    apiUrl(`/auth/account-home?BusinessID=${businessId}`),
+  authAnimals: (businessId: number | string) =>
+    apiUrl(`/auth/animals?BusinessID=${businessId}`),
+  authAnimalsAdd: () => apiUrl("/auth/animals/add"),
+  animalAdd: () => apiUrl("/auth/animals/add"),
+  authSpecies: () => apiUrl("/auth/species"),
+  authBreeds: (speciesId: number | string) =>
+    apiUrl(`/auth/species/${speciesId}/breeds`),
 } as const;

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { endpoints } from '../config/api';
 
 const AccountContext = createContext(null);
 
@@ -46,7 +47,7 @@ export function AccountProvider({ children }) {
     const token = localStorage.getItem('access_token');
     const peopleId = localStorage.getItem('people_id');
     if (!token || !peopleId) return;
-    fetch(`${(import.meta.env.VITE_OFN_API_URL || import.meta.env.VITE_LIVESTOCK_API_URL || '')}/auth/my-businesses?PeopleID=${peopleId}`)
+    fetch(endpoints.myBusinesses(peopleId))
       .then(r => r.json())
       .then(data => {
         const list = Array.isArray(data) ? data : [];
@@ -88,7 +89,7 @@ const LoadBusiness = (ID, Force = false) => {
     if (validID === BusinessID && Business && !Force) return;
     setBusinessID(validID);
     localStorage.setItem('selected_business_id', String(validID));
-    fetch(`${(import.meta.env.VITE_OFN_API_URL || import.meta.env.VITE_LIVESTOCK_API_URL || '')}/auth/account-home?BusinessID=${validID}`)
+    fetch(endpoints.accountHome(validID))
       .then(Res => {
         if (!Res.ok) throw new Error(`HTTP ${Res.status}`);
         return Res.json();

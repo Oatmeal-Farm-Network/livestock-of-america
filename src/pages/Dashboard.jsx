@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { useAccount } from '../lib/AccountContext';
+import { endpoints } from '../config/api';
 const CREAM = '#f7f2e8';
 const OLIVE = '#3d6b34';
 const RUST = '#8b3a2b';
@@ -45,7 +46,10 @@ function buildServiceLinks(businessId, features, t) {
   if (on('precision_ag')) links.push({ label: t('dashboard.svc_precision_ag'), to: `/precision-ag/fields?BusinessID=${businessId}` });
   if (on('farm_2_table')) links.push({ label: t('dashboard.svc_farm_2_table'), to: `/seller/orders?BusinessID=${businessId}` });
   if (on('restaurant_sourcing')) links.push({ label: t('dashboard.svc_restaurant'), to: '/marketplaces/farm-to-table' });
-  if (on('livestock')) links.push({ label: t('dashboard.svc_livestock'), to: `/animals?BusinessID=${businessId}` });
+  if (on('livestock')) {
+    links.push({ label: t('dashboard.svc_livestock'), to: `/seller/animals?BusinessID=${businessId}` });
+    links.push({ label: 'Herd Health', to: `/herd-health?BusinessID=${businessId}` });
+  }
   if (on('products')) links.push({ label: t('dashboard.svc_products'), to: `/products?BusinessID=${businessId}` });
   if (on('services')) links.push({ label: t('dashboard.svc_services'), to: `/services?BusinessID=${businessId}` });
   if (on('events')) links.push({ label: t('dashboard.svc_events'), to: `/events/manage?BusinessID=${businessId}` });
@@ -67,7 +71,7 @@ function buildServiceLinks(businessId, features, t) {
 export default function Dashboard() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_OFN_API_URL || import.meta.env.VITE_LIVESTOCK_API_URL || '';
+  const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
   const { setBusinesses: setContextBusinesses } = useAccount();
   const [user, setUser] = useState(null);
   const [businesses, setBusinesses] = useState([]);
@@ -93,7 +97,7 @@ export default function Dashboard() {
     });
 
     if (peopleId) {
-      fetch(`${API_URL}/auth/my-businesses?PeopleID=${peopleId}`)
+      fetch(endpoints.myBusinesses(peopleId))
         .then((r) => r.json())
         .then((data) => {
           const list = Array.isArray(data) ? data : [];

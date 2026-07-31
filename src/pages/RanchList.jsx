@@ -377,12 +377,12 @@ export default function RanchList() {
         title={`${label} Ranches & Farms Directory`}
         description={`Browse ${label.toLowerCase()} ranches and farms across the United States. Find breeders, contact ranchers directly, and discover quality livestock operations on Oatmeal Farm Network.`}
         keywords={`${label.toLowerCase()} ranches, ${label.toLowerCase()} farms, ${label.toLowerCase()} breeders directory, livestock ranchers, ranch directory`}
-        canonical={`https://oatmealfarmnetwork.com/marketplaces/livestock/ranches/${slug}`}
+        canonical={`https://livestockofamerica.com/marketplaces/livestock/ranches/${slug}`}
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
           name: `${label} Ranches & Farms Directory`,
-          url: `https://oatmealfarmnetwork.com/marketplaces/livestock/ranches/${slug}`,
+          url: `https://livestockofamerica.com/marketplaces/livestock/ranches/${slug}`,
           description: `Directory of ${label.toLowerCase()} ranches and farms.`
         }}
       />

@@ -448,8 +448,8 @@ export default function LivestockForSale() {
     ? `Browse ${label.toLowerCase()} stud services from ranchers and breeders across the US. Compare fees, genetics, and connect with breeders on Oatmeal Farm Network.`
     : `Browse ${label.toLowerCase()} for sale from ranchers and breeders across the US. Filter by breed, state, price, and ancestry on Oatmeal Farm Network.`;
   const metaCanonical = isStuds
-    ? `https://oatmealfarmnetwork.com/marketplaces/livestock/studs/${slug}`
-    : `https://oatmealfarmnetwork.com/marketplaces/livestock/${slug}`;
+    ? `https://livestockofamerica.com/marketplaces/livestock/studs/${slug}`
+    : `https://livestockofamerica.com/marketplaces/livestock/${slug}`;
 
   const handleCategoryChange = (nextCategory) => {
     const section = SIDEBAR_SECTIONS.find((s) => s.id === nextCategory);
