@@ -8,7 +8,6 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import { useLanguage } from '../lib/LanguageContext';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
-const PLACEHOLDER_IMAGE = '/images/MissingLivestockImage.webp';
 
 export default function LivestockBreed() {
   const { t } = useTranslation();
@@ -32,7 +31,7 @@ export default function LivestockBreed() {
 
   const breedImgUrl = breed?.image
     ? (breed.image.startsWith('http') ? breed.image : `/images/${breed.image.replace(/^.*[\\/]/, '')}`)
-    : PLACEHOLDER_IMAGE;
+    : null;
 
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
@@ -131,25 +130,23 @@ export default function LivestockBreed() {
         ) : (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 overflow-hidden">
             {/* Floated breed image */}
-            <div className="float-right ml-6 mb-4" style={{ maxWidth: '300px' }}>
-              <img
-                src={breedImgUrl}
-                alt={breed.breed || 'Breed'}
-                loading="eager"
-                className="w-full rounded-xl shadow-sm"
-                onError={(e) => {
-                  if (e.target.dataset.fallback === '1') return;
-                  e.target.dataset.fallback = '1';
-                  e.target.src = PLACEHOLDER_IMAGE;
-                }}
-              />
-              {breed.image_caption && (
-                <p
-                  className="text-xs text-gray-500 mt-2 text-center"
-                  dangerouslySetInnerHTML={{ __html: breed.image_caption }}
+            {breedImgUrl && (
+              <div className="float-right ml-6 mb-4" style={{ maxWidth: '300px' }}>
+                <img
+                  src={breedImgUrl}
+                  alt={breed.breed}
+                  loading="eager"
+                  className="w-full rounded-xl shadow-sm"
+                  onError={e => { e.target.parentElement.style.display = 'none'; }}
                 />
-              )}
-            </div>
+                {breed.image_caption && (
+                  <p
+                    className="text-xs text-gray-500 mt-2 text-center"
+                    dangerouslySetInnerHTML={{ __html: breed.image_caption }}
+                  />
+                )}
+              </div>
+            )}
 
             {/* Description */}
             <div
