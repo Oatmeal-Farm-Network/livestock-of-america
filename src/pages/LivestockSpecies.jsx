@@ -42,10 +42,8 @@ const FALLBACK_IMAGES = {
   'yaks':         '/images/YakHeader.webp',
 };
 
-const PLACEHOLDER_IMAGE = '/images/MissingLivestockImage.webp';
-
 const getImageSrc = (image) => {
-  if (!image) return PLACEHOLDER_IMAGE;
+  if (!image) return null;
   if (image.startsWith('http')) return image;
   const filename = image.replace(/^.*[\\/]/, '');
   return `/images/${filename}`;
@@ -270,20 +268,20 @@ export default function LivestockSpecies() {
                     className="shrink-0 overflow-hidden bg-gray-100 flex items-center justify-center"
                     style={{ width: '155px', height: '155px' }}
                   >
-                    <img
-                      src={imgSrc}
-                      alt={b.breed || 'Breed'}
-                      width="155"
-                      height="155"
-                      loading={index < EAGER_COUNT ? 'eager' : 'lazy'}
-                      decoding={index < EAGER_COUNT ? 'sync' : 'async'}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        if (e.target.dataset.fallback === '1') return;
-                        e.target.dataset.fallback = '1';
-                        e.target.src = PLACEHOLDER_IMAGE;
-                      }}
-                    />
+                    {imgSrc ? (
+                      <img
+                        src={imgSrc}
+                        alt={b.breed}
+                        width="155"
+                        height="155"
+                        loading={index < EAGER_COUNT ? 'eager' : 'lazy'}
+                        decoding={index < EAGER_COUNT ? 'sync' : 'async'}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        onError={e => { e.target.parentElement.classList.add('hidden'); }}
+                      />
+                    ) : (
+                      <span className="text-gray-300 text-xs text-center px-3">{t('livestock_species.no_image')}</span>
+                    )}
                   </Link>
 
                   <div className="flex flex-col justify-between px-5 py-4 flex-1 min-w-0">
