@@ -74,8 +74,8 @@ export default function LivestockDB() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Livestock Database | 2,000+ Breeds Across 28 Species"
-        description="Explore over 2,000 livestock breeds across 28 species including cattle, pigs, sheep, goats, chickens, alpacas, and more. Find breed characteristics, origins, and farming information."
+        title="Livestock Database | 2,000+ Breeds Across 29 Species"
+        description="Explore over 2,000 livestock breeds across 29 species including cattle, pigs, sheep, goats, chickens, alpacas, and more. Find breed characteristics, origins, and farming information."
         keywords="livestock database, livestock breeds, cattle breeds, sheep breeds, alpaca breeds, farm animal encyclopedia"
         canonical="https://livestockofamerica.com/livestock"
         jsonLd={{
@@ -83,7 +83,7 @@ export default function LivestockDB() {
           '@type': 'CollectionPage',
           name: 'Livestock Database',
           url: 'https://livestockofamerica.com/livestock',
-          description: 'Comprehensive livestock breed database covering 28 species.'
+          description: 'Comprehensive livestock breed database covering 29 species.'
         }}
       />
       <Header />
