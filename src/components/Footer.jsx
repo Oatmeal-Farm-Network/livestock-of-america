@@ -25,7 +25,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
           <div>
             <img
-              src="/images/loa-header-logo.webp"
+              src="/images/loa-header-logo.png"
               alt="Livestock of America"
               className="h-12 w-auto mb-3 rounded"
             />

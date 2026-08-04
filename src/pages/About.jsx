@@ -57,7 +57,7 @@ export default function About() {
             </h1>
             <div className="flex justify-center mb-4">
               <img
-                src="/images/loa-header-logo.webp"
+                src="/images/loa-header-logo.png"
                 style={{ width: '280px', height: 'auto' }}
                 alt="Livestock of America Logo"
               />
