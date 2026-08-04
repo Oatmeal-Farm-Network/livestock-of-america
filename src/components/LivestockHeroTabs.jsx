@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../lib/i18n';
+import { isLoggedIn } from '../lib/auth';
 
 const CREAM = '#f7f2e8';
 const OLIVE = '#3d6b34';
@@ -73,28 +74,68 @@ function TabIcon({ type, active }) {
  * Shared marketplace hero banner + category tabs.
  * Pass activeId explicitly, or omit to auto-detect from the current route.
  */
+const HERO_COPY = {
+  for_sale: {
+    eyebrow: 'Marketplace',
+    title: 'Buy and sell livestock across America',
+  },
+  studs: {
+    eyebrow: 'Stud Services',
+    title: 'Find quality stud animals nationwide',
+  },
+  ranches: {
+    eyebrow: 'Ranches',
+    title: 'Discover ranches and breeders coast to coast',
+  },
+};
+
 export default function LivestockHeroTabs({ activeId: activeIdProp }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const activeId = activeIdProp ?? getHeroTabActiveId(pathname);
+  const copy = HERO_COPY[activeId] || HERO_COPY.for_sale;
+  const guest = !isLoggedIn();
 
   return (
     <div className="relative w-full">
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden min-h-[180px] sm:min-h-[220px] md:min-h-[280px]">
         <img
-          src="/images/LOAwebbanner1898x360.webp"
-          alt="Livestock of America"
+          src="/images/home-hero-livestock.png"
+          alt="Livestock of America marketplace"
           loading="eager"
           fetchPriority="high"
-          className="w-full block object-cover h-[180px] sm:h-[220px] md:h-[260px]"
-          onError={(e) => { e.currentTarget.style.display = 'none'; }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: 'repeating-linear-gradient(105deg, transparent, transparent 80px, rgba(229,154,36,0.55) 80px, rgba(229,154,36,0.55) 88px)',
+          className="absolute inset-0 w-full h-full object-cover object-[center_60%]"
+          onError={(e) => {
+            e.currentTarget.src = '/images/LOAwebbanner1898x360.webp';
           }}
         />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(44,36,28,0.35) 0%, rgba(44,36,28,0.55) 100%)',
+          }}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 pt-10 sm:pt-14 pb-16 sm:pb-20">
+          <p
+            className="m-0 mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-white/85"
+            style={{ fontFamily: LORA }}
+          >
+            {copy.eyebrow}
+          </p>
+          <h1
+            className="m-0 text-white max-w-xl"
+            style={{
+              fontFamily: LORA,
+              fontWeight: 700,
+              fontSize: 'clamp(1.5rem, 3.5vw, 2.15rem)',
+              lineHeight: 1.15,
+            }}
+          >
+            {copy.title}
+          </h1>
+        </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 -mt-10 sm:-mt-12 relative z-10 pb-2">
@@ -134,6 +175,18 @@ export default function LivestockHeroTabs({ activeId: activeIdProp }) {
 
             if (active) {
               return <div key={tab.id} aria-current="page">{inner}</div>;
+            }
+            if (tab.id === 'ranches' && guest) {
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  className="no-underline block hover:-translate-y-0.5 transition-transform text-left w-full p-0 border-0 bg-transparent"
+                  onClick={() => navigate('/login', { state: { from: { pathname: tab.to } } })}
+                >
+                  {inner}
+                </button>
+              );
             }
             return (
               <Link key={tab.id} to={tab.to} className="no-underline block hover:-translate-y-0.5 transition-transform">

@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
 import LivestockMarketplace from "./pages/LivestockMarketplace";
 import LivestockForSale from "./pages/LivestockForSale";
 import RanchList from "./pages/RanchList";
@@ -16,33 +17,112 @@ import LivestockDB from "./pages/LivestockDB";
 import LivestockSpecies from "./pages/LivestockSpecies";
 import LivestockBreed from "./pages/LivestockBreed";
 import LivestockAbout from "./pages/LivestockAbout";
-import Knowledgebases from "./pages/Knowledgebases";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import AccountPlaceholder from "./pages/AccountPlaceholder";
 import RequireAuth from "./components/RequireAuth";
 import AnimalsHome from "./pages/seller/AnimalsHome";
 import AnimalAdd from "./pages/seller/AnimalAdd";
 import AnimalEdit from "./pages/seller/AnimalEdit";
 import HerdHealthDashboard from "./pages/herd-health/HerdHealthDashboard";
-import HerdHealthEvents from "./pages/herd-health/HerdHealthEvents";
+import HerdHealthEvents, {
+  HerdHealthVaccinations,
+  HerdHealthTreatments,
+  HerdHealthQuarantine,
+  HerdHealthMedications,
+  HerdHealthVetVisits,
+  HerdHealthWeights,
+  HerdHealthParasites,
+  HerdHealthMortality,
+  HerdHealthLabResults,
+  HerdHealthBiosecurity,
+  HerdHealthVetContacts,
+  HerdHealthReproduction,
+} from "./pages/herd-health/HerdHealthModules";
 import SaigeWidget from "./components/SaigeWidget";
-import { SAIGE_API_URL } from "./config/api";
+import AuthShell from "./components/AuthShell";
+import { isLoggedIn } from "./lib/auth";
+import { SavedItemsProvider } from "./lib/savedItems";
+
+/** Guests see the marketing homepage; signed-in users land on the dashboard. */
+function HomeGate() {
+  if (isLoggedIn()) {
+    return <Navigate to="/account" replace />;
+  }
+  return <Home />;
+}
+
+/** Contact Us is guest-only; signed-in users use the workspace instead. */
+function ContactUsGuest() {
+  if (isLoggedIn()) {
+    return <Navigate to="/account" replace />;
+  }
+  return <ContactUs />;
+}
+
+function ContactUsConfirmGuest() {
+  if (isLoggedIn()) {
+    return <Navigate to="/account" replace />;
+  }
+  return <ContactUsConfirm />;
+}
+
+/** Left sidebar workspace chrome when signed in; public chrome when guest. */
+function AppChrome() {
+  const outlet = <Outlet />;
+  if (isLoggedIn()) {
+    return <AuthShell>{outlet}</AuthShell>;
+  }
+  return (
+    <>
+      {outlet}
+      <SaigeWidget />
+    </>
+  );
+}
 
 export default function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<LivestockMarketplace />} />
+    <SavedItemsProvider>
+    <Routes>
+      {/* Auth pages stay outside the logged-in shell */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
+      <Route element={<AppChrome />}>
+        <Route path="/" element={<HomeGate />} />
         <Route path="/animals" element={<LivestockMarketplace />} />
         <Route path="/marketplaces/livestock" element={<LivestockMarketplace />} />
         <Route path="/marketplaces/livestock/studs/:slug" element={<LivestockForSale />} />
-        <Route path="/marketplaces/livestock/ranches/:slug" element={<RanchList />} />
-        <Route path="/marketplaces/livestock/ranch/:businessId" element={<RanchProfile />} />
-        <Route path="/marketplaces/livestock/animal/:id" element={<LivestockAnimalDetail />} />
+        <Route
+          path="/marketplaces/livestock/ranches/:slug"
+          element={
+            <RequireAuth>
+              <RanchList />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/marketplaces/livestock/ranch/:businessId"
+          element={
+            <RequireAuth>
+              <RanchProfile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/marketplaces/livestock/animal/:id"
+          element={
+            <RequireAuth>
+              <LivestockAnimalDetail />
+            </RequireAuth>
+          }
+        />
         <Route path="/marketplaces/livestock/:slug" element={<LivestockForSale />} />
 
-        <Route path="/knowledgebase" element={<Knowledgebases />} />
-        <Route path="/knowledgebases" element={<Navigate to="/knowledgebase" replace />} />
+        <Route path="/knowledgebase" element={<Navigate to="/livestock" replace />} />
+        <Route path="/knowledgebases" element={<Navigate to="/livestock" replace />} />
 
         <Route path="/livestock" element={<LivestockDB />} />
         <Route path="/livestock/:species/about" element={<LivestockAbout />} />
@@ -57,8 +137,8 @@ export default function App() {
 
         <Route path="/events" element={<Phase1EventsComingSoon />} />
         <Route path="/about" element={<About />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/contact-us/confirm" element={<ContactUsConfirm />} />
+        <Route path="/contact-us" element={<ContactUsGuest />} />
+        <Route path="/contact-us/confirm" element={<ContactUsConfirmGuest />} />
         <Route
           path="/blog"
           element={
@@ -77,10 +157,6 @@ export default function App() {
             />
           }
         />
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route
           path="/account"
@@ -141,47 +217,159 @@ export default function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/herd-health/vaccinations"
+          element={
+            <RequireAuth>
+              <HerdHealthVaccinations />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/treatments"
+          element={
+            <RequireAuth>
+              <HerdHealthTreatments />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/quarantine"
+          element={
+            <RequireAuth>
+              <HerdHealthQuarantine />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/medications"
+          element={
+            <RequireAuth>
+              <HerdHealthMedications />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/vet-visits"
+          element={
+            <RequireAuth>
+              <HerdHealthVetVisits />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/weights"
+          element={
+            <RequireAuth>
+              <HerdHealthWeights />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/parasites"
+          element={
+            <RequireAuth>
+              <HerdHealthParasites />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/mortality"
+          element={
+            <RequireAuth>
+              <HerdHealthMortality />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/lab-results"
+          element={
+            <RequireAuth>
+              <HerdHealthLabResults />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/biosecurity"
+          element={
+            <RequireAuth>
+              <HerdHealthBiosecurity />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/vet-contacts"
+          element={
+            <RequireAuth>
+              <HerdHealthVetContacts />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/reproduction"
+          element={
+            <RequireAuth>
+              <HerdHealthReproduction />
+            </RequireAuth>
+          }
+        />
 
+        <Route
+          path="/account/settings"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/accounts/new"
           element={
-            <AccountPlaceholder
-              title="Add Account"
-              description="Create a new business account. This flow is coming soon on Livestock of America."
-            />
+            <RequireAuth>
+              <AccountPlaceholder
+                title="Add Account"
+                description="Create a new business account. This flow is coming soon on Livestock of America."
+              />
+            </RequireAuth>
           }
         />
         <Route
           path="/account/users"
           element={
-            <AccountPlaceholder
-              title="Team"
-              description="Manage team members for this account. Coming soon on Livestock of America."
-            />
+            <RequireAuth>
+              <AccountPlaceholder
+                title="Team"
+                description="Manage team members for this account. Coming soon on Livestock of America."
+              />
+            </RequireAuth>
           }
         />
         <Route
           path="/account/profile"
           element={
-            <AccountPlaceholder
-              title="Edit Account"
-              description="Edit account profile details. Coming soon on Livestock of America."
-            />
+            <RequireAuth>
+              <AccountPlaceholder
+                title="Edit Account"
+                description="Edit account profile details. Coming soon on Livestock of America."
+              />
+            </RequireAuth>
           }
         />
         <Route
           path="/account/associations"
           element={
-            <AccountPlaceholder
-              title="Associations"
-              description="Manage association memberships. Coming soon on Livestock of America."
-            />
+            <RequireAuth>
+              <AccountPlaceholder
+                title="Associations"
+                description="Manage association memberships. Coming soon on Livestock of America."
+              />
+            </RequireAuth>
           }
         />
 
         <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      {SAIGE_API_URL ? <SaigeWidget /> : null}
-    </>
+      </Route>
+    </Routes>
+    </SavedItemsProvider>
   );
 }

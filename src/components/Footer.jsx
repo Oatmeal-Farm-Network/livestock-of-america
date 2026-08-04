@@ -2,12 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../lib/i18n';
 import { CONTACT_EMAIL } from '../config/api';
+import { isLoggedIn } from '../lib/auth';
 
 const FOOTER_BG = '#2c241c';
 
 export default function Footer() {
   const { t } = useTranslation();
   const year = new Date().getFullYear();
+  const loggedIn = isLoggedIn();
+
+  // Logged-in workspace uses AuthShell; keep chrome light.
+  if (loggedIn) return null;
 
   const links = [
     { to: '/', label: t('phase1.nav.home', 'Home') },
@@ -26,9 +31,12 @@ export default function Footer() {
           <div>
             <img
               src="/images/loa-header-logo.webp"
-              alt="Livestock of America"
+              alt="Livestock of America by Oatmeal AI"
               className="h-12 w-auto mb-3 rounded"
             />
+            <p className="m-0 mb-2 text-sm font-semibold text-white" style={{ fontFamily: "'Lora', 'Times New Roman', serif" }}>
+              Livestock of America by Oatmeal AI
+            </p>
             <p className="max-w-sm text-white/70 leading-relaxed m-0">
               {t(
                 'phase1.about.tagline',
@@ -53,7 +61,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-4 text-white/50 text-xs">
-          © {year} Livestock of America. All rights reserved.
+          © {year} Livestock of America by Oatmeal AI. All rights reserved.
         </div>
       </div>
     </footer>

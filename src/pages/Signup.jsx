@@ -60,11 +60,11 @@ export default function Signup() {
         <div className="max-w-md mx-auto">
           <div className="bg-white rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-gray-100 overflow-hidden">
             <div className="bg-[#819360] px-8 py-8 text-center">
-              <img src="/images/loa-header-logo.webp" alt="Livestock of America" className="h-12 mx-auto mb-4 w-auto" />
+              <img src="/images/loa-header-logo.webp" alt="Livestock of America by Oatmeal AI" className="h-12 mx-auto mb-4 w-auto" />
               <h1 className="text-white text-2xl font-bold m-0" style={{ fontFamily: "'Lora', serif" }}>
                 {t('auth.create_account', 'Create Account')}
               </h1>
-              <p className="text-white/80 text-sm mt-1">{t('auth.join_network', 'Join Livestock of America')}</p>
+              <p className="text-white/80 text-sm mt-1">{t('auth.join_network', 'Join Livestock of America by Oatmeal AI')}</p>
             </div>
             <div className="px-8 py-8">
               {error && (

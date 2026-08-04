@@ -1,222 +1,338 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { openSaigeChat } from '../components/SaigeWidget';
+import { isLoggedIn } from '../lib/auth';
 
 const CREAM = '#f7f2e8';
-const OLIVE = '#3D6B34';
+const OLIVE = '#3d6b34';
 const RUST = '#8b3a2b';
 const INK = '#2c2c2c';
 const MUTED = '#6b6b6b';
 const LORA = "'Lora', 'Times New Roman', serif";
 
+const PILLARS = [
+  {
+    title: 'Marketplace',
+    body: 'List and discover animals for sale, stud services, and ranch operations across the United States.',
+    to: '/animals',
+    cta: 'Browse marketplace',
+    img: '/images/CattleHeader.webp',
+  },
+  {
+    title: 'Knowledgebase',
+    body: 'Research breeds, origins, and husbandry notes across dozens of livestock species — built for producers, not tourists.',
+    to: '/livestock',
+    cta: 'Explore breeds',
+    img: '/images/KBHeroLivestock.png',
+  },
+  {
+    title: 'Saige AI',
+    body: 'Ask practical livestock questions and get answers grounded in farm context — powered by Oatmeal AI.',
+    to: null,
+    cta: 'Ask Saige',
+    img: '/images/SaigeBanner.webp',
+    saige: true,
+  },
+];
+
 export default function About() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const guest = !isLoggedIn();
 
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: CREAM }}>
       <PageMeta
-        title="About Livestock of America"
-        description="Livestock of America connects ranchers, buyers, and livestock professionals through a dedicated marketplace, knowledgebases, news, and AI-powered tools."
-        keywords="about livestock of america, livestock marketplace, ranch directory, livestock knowledgebase, agricultural AI"
+        title="About Livestock of America by Oatmeal AI"
+        description="Livestock of America by Oatmeal AI connects ranchers, breeders, and buyers through a dedicated livestock marketplace, breed knowledgebase, and AI tools built for the barn."
+        keywords="about livestock of america, oatmeal ai, livestock marketplace, ranch directory, livestock knowledgebase, saige ai"
         canonical="https://livestockofamerica.com/about"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'AboutPage',
-          name: 'About Livestock of America',
+          name: 'About Livestock of America by Oatmeal AI',
           url: 'https://livestockofamerica.com/about',
           description:
-            'Livestock of America connects ranchers, buyers, and livestock professionals through a dedicated marketplace, knowledgebases, news, and AI-powered tools.',
+            'Livestock of America by Oatmeal AI connects ranchers, breeders, and buyers through a dedicated livestock marketplace, breed knowledgebase, and AI tools.',
         }}
       />
       <Header />
 
-      <div className="mx-auto px-4 flex-1 w-full" style={{ maxWidth: '1100px' }}>
-        <Breadcrumbs
-          items={[
-            { label: t('phase1.nav.home', 'Home'), to: '/' },
-            { label: t('phase1.about.title', 'About') },
-          ]}
-        />
-
-        <div className="py-8 pb-16">
-          <div className="text-center">
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div className="relative min-h-[260px] md:min-h-[340px] flex items-end">
+          <img
+            src="/images/AboutUs.webp"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = '/images/home-hero-livestock.png';
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(105deg, rgba(44,36,28,0.82) 0%, rgba(44,36,28,0.5) 55%, rgba(44,36,28,0.28) 100%)',
+            }}
+          />
+          <div className="relative z-10 w-full max-w-[1100px] mx-auto px-5 pb-10 pt-16">
+            <p
+              className="m-0 mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/85"
+              style={{ fontFamily: LORA }}
+            >
+              About
+            </p>
             <h1
-              className="mb-6"
+              className="m-0 mb-3 text-white max-w-2xl"
               style={{
                 fontFamily: LORA,
                 fontWeight: 700,
-                fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+                fontSize: 'clamp(1.85rem, 4.5vw, 2.75rem)',
+                lineHeight: 1.15,
+              }}
+            >
+              Livestock of America
+              <span className="block text-base md:text-lg font-normal mt-1 text-white/90">by Oatmeal AI</span>
+            </h1>
+            <p className="m-0 text-base md:text-lg text-white/90 max-w-xl leading-relaxed" style={{ fontFamily: LORA }}>
+              Connecting ranchers, breeders, and buyers coast to coast.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto px-5 flex-1 w-full" style={{ maxWidth: '1100px' }}>
+        <div className="pt-4">
+          <Breadcrumbs
+            items={[
+              { label: t('phase1.nav.home', 'Home'), to: '/' },
+              { label: t('phase1.about.title', 'About') },
+            ]}
+          />
+        </div>
+
+        {/* Intro */}
+        <section className="py-10 md:py-12">
+          <div className="flex flex-col md:flex-row md:items-start gap-8 md:gap-12">
+            <div className="flex-1 min-w-0">
+              <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: OLIVE }}>
+                Who we are
+              </p>
+              <h2
+                className="m-0 mb-4"
+                style={{
+                  fontFamily: LORA,
+                  fontWeight: 700,
+                  fontSize: 'clamp(1.4rem, 2.8vw, 1.85rem)',
+                  color: INK,
+                }}
+              >
+                Built for the people who keep America stocked and fed
+              </h2>
+              <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: INK }}>
+                <strong>Livestock of America by Oatmeal AI</strong> is a dedicated platform for the
+                livestock industry. We help ranches showcase animals online, reach serious buyers,
+                and research breeds with confidence — all in one place.
+              </p>
+              <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: MUTED }}>
+                From cattle and sheep to alpacas, goats, horses, and bison, LOA supports breeders of
+                every type. Whether you are listing a herd, looking for stud genetics, or learning
+                a new breed before you buy, this is where livestock professionals meet.
+              </p>
+              <p className="m-0 text-base leading-relaxed" style={{ color: MUTED }}>
+                Oatmeal AI powers the intelligence behind the experience — including Saige, our
+                livestock assistant — so ranchers get practical answers grounded in farm and breed
+                context, not generic chat.
+              </p>
+            </div>
+            <div className="shrink-0 md:w-[280px]">
+              <img
+                src="/images/loa-header-logo.webp"
+                alt="Livestock of America"
+                className="w-full h-auto"
+              />
+              <p className="m-0 mt-3 text-center text-sm italic" style={{ color: MUTED, fontFamily: LORA }}>
+                Livestock of America by Oatmeal AI
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      {/* Pillars */}
+      <section style={{ backgroundColor: '#efe9df' }}>
+        <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14">
+          <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: OLIVE }}>
+            What you get
+          </p>
+          <h2
+            className="m-0 mb-8 max-w-xl"
+            style={{
+              fontFamily: LORA,
+              fontWeight: 700,
+              fontSize: 'clamp(1.4rem, 2.8vw, 1.85rem)',
+              color: INK,
+            }}
+          >
+            Marketplace, knowledge, and AI in one livestock home
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
+            {PILLARS.map((pillar, i) => (
+              <div
+                key={pillar.title}
+                className={`md:px-5 ${i > 0 ? 'md:border-l md:border-[#e0d8cc]' : 'md:pl-0'}`}
+              >
+                <div className="mb-4 overflow-hidden" style={{ height: 150, backgroundColor: '#ebe6dc' }}>
+                  <img
+                    src={pillar.img}
+                    alt=""
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = '/images/HomepageLivestockDB.webp';
+                    }}
+                  />
+                </div>
+                <h3 className="m-0 mb-2 text-lg font-bold" style={{ fontFamily: LORA, color: INK }}>
+                  {pillar.title}
+                </h3>
+                <p className="m-0 mb-4 text-sm leading-relaxed" style={{ color: MUTED }}>
+                  {pillar.body}
+                </p>
+                {pillar.saige ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (guest) {
+                        navigate('/login', { state: { from: { pathname: '/about' } } });
+                        return;
+                      }
+                      openSaigeChat();
+                    }}
+                    className="text-sm font-semibold border-0 bg-transparent p-0 cursor-pointer hover:underline"
+                    style={{ color: OLIVE }}
+                  >
+                    {pillar.cta} →
+                  </button>
+                ) : (
+                  <Link
+                    to={pillar.to}
+                    className="text-sm font-semibold no-underline hover:underline"
+                    style={{ color: OLIVE }}
+                  >
+                    {pillar.cta} →
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Oatmeal AI callout */}
+      <section className="max-w-[1100px] mx-auto px-5 py-12 md:py-14 w-full">
+        <div className="flex flex-col md:flex-row gap-8 md:items-center">
+          <div className="flex-1 min-w-0">
+            <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: RUST }}>
+              Oatmeal AI
+            </p>
+            <h2
+              className="m-0 mb-4"
+              style={{
+                fontFamily: LORA,
+                fontWeight: 700,
+                fontSize: 'clamp(1.4rem, 2.8vw, 1.85rem)',
                 color: INK,
               }}
             >
-              About Livestock of America
-            </h1>
-            <div className="flex justify-center mb-4">
-              <img
-                src="/images/loa-header-logo.webp"
-                style={{ width: '280px', height: 'auto' }}
-                alt="Livestock of America Logo"
-              />
-            </div>
-            <p className="text-xl italic mb-8" style={{ color: MUTED, fontFamily: LORA }}>
-              Connecting ranchers, breeders, and buyers across the United States.
+              Intelligence built for agricultural work
+            </h2>
+            <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: MUTED }}>
+              Livestock of America is part of the Oatmeal AI family of farm and food platforms.
+              Oatmeal AI designs assistants that understand livestock operations — from breed
+              questions to marketplace decisions — so you spend less time searching and more time
+              running the ranch.
+            </p>
+            <p className="m-0 text-base leading-relaxed" style={{ color: MUTED }}>
+              Saige is your on-site livestock advisor inside LOA: ask about animals, listings, and
+              herd health topics, and get clear guidance when you need it.
             </p>
           </div>
-
-          <div className="block overflow-hidden">
+          <div className="shrink-0 flex items-center gap-4 md:w-[300px]">
             <img
-              src="/images/AboutUs.webp"
-              className="md:float-right m-4 rounded-lg shadow-md max-w-sm w-full"
-              alt="Livestock of America community"
+              src="/images/SaigeAIIcon.webp"
+              alt="Saige"
+              className="w-16 h-16 rounded-full object-cover shadow"
               onError={(e) => {
-                e.target.src = '/images/LOAwebbanner1898x360.webp';
+                e.currentTarget.src = '/images/SaigeIcon.png';
               }}
             />
-
-            <p className="mb-4 leading-relaxed" style={{ color: INK }}>
-              Livestock of America is a dedicated platform for the livestock industry. We help
-              ranches showcase animals online, connect with serious buyers, and share breed
-              knowledge through a comprehensive livestock knowledgebase — alongside plant and
-              ingredient resources for the broader farm and food community.
-            </p>
-            <p className="mb-4 leading-relaxed" style={{ color: INK }}>
-              From cattle and sheep to alpacas and bison, Livestock of America supports breeders of
-              every type — helping the people who live off the land reach new markets, research
-              breeds with confidence, and grow their operations nationwide.
-            </p>
-
-            <h2
-              className="text-2xl font-bold mt-10 mb-4 clear-both"
-              style={{ fontFamily: LORA, color: OLIVE }}
-            >
-              Built for Livestock Professionals
-            </h2>
-            <p className="mb-4 leading-relaxed" style={{ color: INK }}>
-              Whether you are listing stud animals, marketing a herd, researching breeds, or
-              exploring plant and ingredient knowledge, Livestock of America gives you the tools to
-              connect with buyers, ranchers, and industry partners across the country.
-            </p>
-
-            {/* AI section with image */}
-            <h2
-              className="text-2xl font-bold mt-10 mb-4"
-              style={{ fontFamily: LORA, color: OLIVE }}
-            >
-              AI That Works for Agriculture
-            </h2>
-            <div className="block overflow-hidden mb-6">
-              <img
-                src="/images/SaigeBanner.webp"
-                alt="Livestock of America AI advisor"
-                className="md:float-left md:mr-6 mb-4 rounded-xl shadow-md w-full md:w-[320px] object-cover"
-                style={{ maxHeight: 220 }}
-                onError={(e) => {
-                  e.target.src = '/images/SaigeAIIcon.webp';
-                }}
-              />
-              <p className="mb-3 leading-relaxed" style={{ color: INK }}>
-                Livestock of America brings practical AI into the livestock and farm workflow —
-                helping you answer questions faster, explore knowledgebases more easily, and make
-                better decisions about animals, breeds, and operations.
+            <div>
+              <p className="m-0 font-bold text-sm" style={{ color: RUST, fontFamily: LORA }}>
+                Meet Saige
               </p>
-              <p className="mb-3 leading-relaxed" style={{ color: INK }}>
-                Our AI tools are built for real agricultural work: clear answers, breed and market
-                context, and support that fits how ranchers and buyers actually operate — not
-                generic chat, but guidance grounded in farm and livestock knowledge.
+              <p className="m-0 mt-1 text-xs leading-relaxed" style={{ color: MUTED }}>
+                Livestock AI assistant by Oatmeal AI
               </p>
-              <div className="flex items-center gap-3 mt-4 mb-2">
-                <img
-                  src="/images/SaigeAIIcon.webp"
-                  alt="Saige AI"
-                  className="w-12 h-12 rounded-full object-cover shadow"
-                  onError={(e) => {
-                    e.target.src = '/images/SaigeIcon.png';
-                  }}
-                />
-                <div>
-                  <div className="font-bold text-sm" style={{ color: RUST }}>
-                    AI advisors for livestock & farm decisions
-                  </div>
-                  <div className="text-xs" style={{ color: MUTED }}>
-                    Ask questions. Get practical answers. Stay focused on your operation.
-                  </div>
-                </div>
-              </div>
             </div>
-
-            <h2
-              className="text-2xl font-bold mt-10 mb-4 clear-both"
-              style={{ fontFamily: LORA, color: OLIVE }}
-            >
-              Marketplace, Knowledgebases & News
-            </h2>
-            <p className="mb-4 leading-relaxed" style={{ color: INK }}>
-              Livestock of America brings together the essential resources for the livestock
-              community:
-            </p>
-            <ul className="list-disc ml-8 space-y-2 mb-8" style={{ color: INK }}>
-              <li>
-                <strong>Livestock Marketplace:</strong> Showcase and sell animals to a nationwide
-                audience of serious buyers — including stud services and ranch discovery.
-              </li>
-              <li>
-                <strong>Knowledgebases:</strong> Explore livestock breeds, plant varieties, and
-                ingredients in one place — the same depth of agricultural knowledge you expect from
-                a serious industry platform.
-              </li>
-              <li>
-                <strong>News Feed:</strong> Stay current with markets, weather, policy, AgTech, and
-                livestock headlines that matter to producers.
-              </li>
-              <li>
-                <strong>AI guidance:</strong> Use AI-powered tools to navigate knowledge faster and
-                support day-to-day ranch and farm decisions.
-              </li>
-            </ul>
-
-            <h2
-              className="text-2xl font-bold mt-10 mb-4"
-              style={{ fontFamily: LORA, color: OLIVE }}
-            >
-              Ready to Get Started?
-            </h2>
-            <p className="mb-4 leading-relaxed" style={{ color: INK }}>
-              Join Livestock of America to list animals, explore knowledgebases, follow industry
-              news, and connect with buyers across the country.
-            </p>
-            <p className="font-bold mb-6" style={{ color: INK }}>
-              Create a free account today and become part of America&apos;s livestock community.
-            </p>
-
-            <ul className="space-y-2 mb-4">
-              <li>
-                <Link to="/animals" className="font-semibold hover:underline" style={{ color: OLIVE }}>
-                  Browse the Livestock Marketplace
-                </Link>
-              </li>
-              <li>
-                <Link to="/livestock" className="font-semibold hover:underline" style={{ color: OLIVE }}>
-                  Explore the Livestock Knowledgebase
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact-us" className="font-semibold hover:underline" style={{ color: OLIVE }}>
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/signup" className="font-semibold hover:underline" style={{ color: OLIVE }}>
-                  Create a free account
-                </Link>
-              </li>
-            </ul>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ backgroundColor: '#efe9df' }}>
+        <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="max-w-xl">
+            <h2
+              className="m-0 mb-2"
+              style={{
+                fontFamily: LORA,
+                fontWeight: 700,
+                fontSize: 'clamp(1.35rem, 2.5vw, 1.75rem)',
+                color: INK,
+              }}
+            >
+              Ready to join America&apos;s livestock community?
+            </h2>
+            <p className="m-0 text-sm leading-relaxed" style={{ color: MUTED }}>
+              Create a free account to list animals, unlock full marketplace and ranch details, and
+              chat with Saige.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 shrink-0">
+            <Link
+              to={guest ? '/signup' : '/account'}
+              className="inline-flex rounded-lg px-5 py-2.5 text-sm font-semibold text-white no-underline"
+              style={{ backgroundColor: OLIVE }}
+            >
+              {guest ? 'Create free account' : 'Go to account'}
+            </Link>
+            <Link
+              to="/animals"
+              className="inline-flex rounded-lg px-5 py-2.5 text-sm font-semibold no-underline border bg-white"
+              style={{ color: INK, borderColor: '#d0c8ba' }}
+            >
+              Browse marketplace
+            </Link>
+            {guest ? (
+              <Link
+                to="/contact-us"
+                className="inline-flex rounded-lg px-5 py-2.5 text-sm font-semibold no-underline border bg-white"
+                style={{ color: INK, borderColor: '#d0c8ba' }}
+              >
+                Contact us
+              </Link>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );

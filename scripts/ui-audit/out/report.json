@@ -1,0 +1,838 @@
+{
+  "stats": {
+    "startedAt": "2026-08-02T07:46:30.259Z",
+    "frontend": "https://livestock-frontend-staging-1087130530284.us-central1.run.app",
+    "api": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app",
+    "pagesVisited": 2563,
+    "apiChecks": 2586,
+    "consoleErrors": 12,
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "breedsDiscovered": 1958,
+    "listingsDiscovered": 490,
+    "finishedAt": "2026-08-02T08:00:26.142Z"
+  },
+  "bugs": [
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "UI documents 29 species but page meta claims 28",
+      "speciesCount": 29,
+      "at": "2026-08-02T07:46:30.505Z"
+    },
+    {
+      "severity": "medium",
+      "area": "marketplace",
+      "title": "Empty state filter labels for alpacas",
+      "slug": "alpacas",
+      "emptyCount": 2,
+      "sample": [
+        {
+          "state": "",
+          "state_index": 0
+        },
+        {
+          "state": "",
+          "state_index": 6
+        }
+      ],
+      "at": "2026-08-02T07:46:31.096Z"
+    },
+    {
+      "severity": "medium",
+      "area": "marketplace",
+      "title": "Empty state filter labels for cattle",
+      "slug": "cattle",
+      "emptyCount": 1,
+      "sample": [
+        {
+          "state": "",
+          "state_index": 6
+        }
+      ],
+      "at": "2026-08-02T07:46:32.292Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "Non-JSON response for species chickens",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/chickens",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:46:32.528Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "HTTP 500 for species chickens",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/chickens",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:46:32.528Z"
+    },
+    {
+      "severity": "medium",
+      "area": "marketplace",
+      "title": "Empty state filter labels for donkeys",
+      "slug": "donkeys",
+      "emptyCount": 1,
+      "sample": [
+        {
+          "state": "",
+          "state_index": 6
+        }
+      ],
+      "at": "2026-08-02T07:46:34.024Z"
+    },
+    {
+      "severity": "medium",
+      "area": "knowledgebase",
+      "title": "Species emus has zero breeds in API",
+      "slug": "emus",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/livestock/emus",
+      "at": "2026-08-02T07:46:34.415Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "Non-JSON response for species horses",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/horses",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:46:35.744Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "HTTP 500 for species horses",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/horses",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:46:35.744Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "Non-JSON response for species llamas",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/llamas",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:46:35.866Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "HTTP 500 for species llamas",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/llamas",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:46:35.866Z"
+    },
+    {
+      "severity": "medium",
+      "area": "knowledgebase",
+      "title": "Species musk-ox has zero breeds in API",
+      "slug": "musk-ox",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/livestock/musk-ox",
+      "at": "2026-08-02T07:46:35.979Z"
+    },
+    {
+      "severity": "medium",
+      "area": "knowledgebase",
+      "title": "Species ostriches has zero breeds in API",
+      "slug": "ostriches",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/livestock/ostriches",
+      "at": "2026-08-02T07:46:36.174Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 9 thin/missing description",
+      "species": "dogs",
+      "breedId": 9,
+      "name": "Akita Inu",
+      "at": "2026-08-02T07:46:42.259Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 96 thin/missing description",
+      "species": "dogs",
+      "breedId": 96,
+      "name": "Beauceron",
+      "at": "2026-08-02T07:46:42.493Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 106 thin/missing description",
+      "species": "dogs",
+      "breedId": 106,
+      "name": "Boerboel",
+      "at": "2026-08-02T07:46:42.594Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 90 thin/missing description",
+      "species": "dogs",
+      "breedId": 90,
+      "name": "Black Russian Terrier",
+      "at": "2026-08-02T07:46:42.605Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 186 thin/missing description",
+      "species": "dogs",
+      "breedId": 186,
+      "name": "Bohemian Shepherd",
+      "at": "2026-08-02T07:46:42.608Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 191 thin/missing description",
+      "species": "dogs",
+      "breedId": 191,
+      "name": "Bouvier Des Flandres",
+      "at": "2026-08-02T07:46:42.643Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 198 thin/missing description",
+      "species": "dogs",
+      "breedId": 198,
+      "name": "Boxer",
+      "at": "2026-08-02T07:46:42.669Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 31 thin/missing description",
+      "species": "dogs",
+      "breedId": 31,
+      "name": "Briard",
+      "at": "2026-08-02T07:46:42.674Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 195 thin/missing description",
+      "species": "dogs",
+      "breedId": 195,
+      "name": "Dogue de Bordeaux",
+      "at": "2026-08-02T07:46:42.993Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 70 thin/missing description",
+      "species": "dogs",
+      "breedId": 70,
+      "name": "Eurasier",
+      "at": "2026-08-02T07:46:43.110Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 54 thin/missing description",
+      "species": "dogs",
+      "breedId": 54,
+      "name": "Finnish Lapphund",
+      "at": "2026-08-02T07:46:43.125Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 205 thin/missing description",
+      "species": "dogs",
+      "breedId": 205,
+      "name": "Greater Swiss Mountain",
+      "at": "2026-08-02T07:46:43.281Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 173 thin/missing description",
+      "species": "dogs",
+      "breedId": 173,
+      "name": "Norwegian Buhund",
+      "at": "2026-08-02T07:46:44.109Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 162 thin/missing description",
+      "species": "dogs",
+      "breedId": 162,
+      "name": "Polish Tatra Sheepdog ",
+      "at": "2026-08-02T07:46:44.334Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 73 thin/missing description",
+      "species": "dogs",
+      "breedId": 73,
+      "name": "Rottweiler ",
+      "at": "2026-08-02T07:46:44.487Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 355 thin/missing description",
+      "species": "dogs",
+      "breedId": 355,
+      "name": "Spanish Water",
+      "at": "2026-08-02T07:46:44.796Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 394 thin/missing description",
+      "species": "dogs",
+      "breedId": 394,
+      "name": "Standard Schnauzer",
+      "at": "2026-08-02T07:46:44.861Z"
+    },
+    {
+      "severity": "low",
+      "area": "knowledgebase",
+      "title": "Breed 405 thin/missing description",
+      "species": "dogs",
+      "breedId": 405,
+      "name": "Swedish Lapphund",
+      "at": "2026-08-02T07:46:44.894Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 6141 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 6141,
+      "name": "ACOV I-Star's Noah's Naomi",
+      "at": "2026-08-02T07:46:53.833Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 6138 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 6138,
+      "name": "ACOV Accoyo Greyback's Gabriel",
+      "at": "2026-08-02T07:46:53.833Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 6139 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 6139,
+      "name": "ACOV Peruvian Frango's Zuri",
+      "at": "2026-08-02T07:46:53.833Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 6136 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 6136,
+      "name": "Rose Grey Alpaca registered with AOA",
+      "at": "2026-08-02T07:46:53.973Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5809 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5809,
+      "name": "Snowmass Incan Hallmark",
+      "at": "2026-08-02T07:46:53.973Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5042 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5042,
+      "name": "Morning Mist Spirit",
+      "at": "2026-08-02T07:46:54.387Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5260 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5260,
+      "name": "MFI Peruvian DreamAboutYou",
+      "at": "2026-08-02T07:46:54.387Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5190 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5190,
+      "name": "Charmagne",
+      "at": "2026-08-02T07:46:55.108Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4794 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4794,
+      "name": "Saphire",
+      "at": "2026-08-02T07:46:55.878Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4782 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4782,
+      "name": "Arapaho Contender's Orion",
+      "at": "2026-08-02T07:46:56.046Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4784 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4784,
+      "name": "Malachite",
+      "at": "2026-08-02T07:46:56.046Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4785 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4785,
+      "name": "Sir Jasper",
+      "at": "2026-08-02T07:46:56.046Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4786 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4786,
+      "name": "Washoe Valley's Doc Holiday",
+      "at": "2026-08-02T07:46:56.046Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4787 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4787,
+      "name": "Bright Pearl",
+      "at": "2026-08-02T07:46:56.046Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4788 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4788,
+      "name": "De B Sunshine Kate",
+      "at": "2026-08-02T07:46:56.046Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4789 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4789,
+      "name": "Amethyst",
+      "at": "2026-08-02T07:46:56.221Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4790 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4790,
+      "name": "Arapaho Sentinel's Black Opal ",
+      "at": "2026-08-02T07:46:56.221Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4791 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4791,
+      "name": "De B Delta Dawn",
+      "at": "2026-08-02T07:46:56.221Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4792 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4792,
+      "name": "Morning Glory ",
+      "at": "2026-08-02T07:46:56.221Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4793 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4793,
+      "name": "Ruby Rain of Blue Springs",
+      "at": "2026-08-02T07:46:56.221Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4776 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 4776,
+      "name": "Julia",
+      "at": "2026-08-02T07:46:56.221Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5209 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5209,
+      "name": "FRA Poseidon's White Diamond",
+      "at": "2026-08-02T07:46:59.050Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5212 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5212,
+      "name": "The Peruvian Dynamo of FRA",
+      "at": "2026-08-02T07:46:59.050Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5216 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5216,
+      "name": "FRA Royal Rose's Maximum",
+      "at": "2026-08-02T07:46:59.050Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5811 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5811,
+      "name": "Royal Diamond Incan's Jeremiah",
+      "at": "2026-08-02T07:46:59.050Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5812 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5812,
+      "name": "Royal Diamond Incan's Joy",
+      "at": "2026-08-02T07:46:59.050Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5813 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 5813,
+      "name": "Lotta Luv Silver Blaze",
+      "at": "2026-08-02T07:46:59.050Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 348 missing photo",
+      "slug": "alpacas",
+      "kind": "for-sale",
+      "animalId": 348,
+      "name": "Safe Haven's Guinevere's Finale",
+      "at": "2026-08-02T07:46:59.248Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4711 missing photo",
+      "slug": "alpacas",
+      "kind": "studs",
+      "animalId": 4711,
+      "name": "Topaz's Noah",
+      "at": "2026-08-02T07:46:59.520Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5041 missing photo",
+      "slug": "alpacas",
+      "kind": "studs",
+      "animalId": 5041,
+      "name": "Freedom Wild Spirit",
+      "at": "2026-08-02T07:46:59.803Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4714 missing photo",
+      "slug": "dogs",
+      "kind": "for-sale",
+      "animalId": 4714,
+      "name": "Maremma Sheepdog Puppies for sale",
+      "at": "2026-08-02T07:47:02.976Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 6140 missing photo",
+      "slug": "horses",
+      "kind": "for-sale",
+      "animalId": 6140,
+      "name": "Gorgeous TWH gelding",
+      "at": "2026-08-02T07:47:05.543Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4612 missing photo",
+      "slug": "llamas",
+      "kind": "for-sale",
+      "animalId": 4612,
+      "name": "Brownderosa's Everclear",
+      "at": "2026-08-02T07:47:05.925Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4613 missing photo",
+      "slug": "llamas",
+      "kind": "for-sale",
+      "animalId": 4613,
+      "name": "Foot Hills Cecelia",
+      "at": "2026-08-02T07:47:05.925Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4605 missing photo",
+      "slug": "pigs",
+      "kind": "for-sale",
+      "animalId": 4605,
+      "name": "American Heritage Guinea Hog Piglets",
+      "at": "2026-08-02T07:47:07.188Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4721 missing photo",
+      "slug": "sheep",
+      "kind": "for-sale",
+      "animalId": 4721,
+      "name": "Blackbelly and Mouflon Cross Sheep",
+      "at": "2026-08-02T07:47:08.462Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4724 missing photo",
+      "slug": "sheep",
+      "kind": "for-sale",
+      "animalId": 4724,
+      "name": "Fine Fleeced Shetland Sheep",
+      "at": "2026-08-02T07:47:08.576Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 4725 missing photo",
+      "slug": "sheep",
+      "kind": "for-sale",
+      "animalId": 4725,
+      "name": "European Big Horn Sheep or Mopuflons",
+      "at": "2026-08-02T07:47:08.576Z"
+    },
+    {
+      "severity": "low",
+      "area": "marketplace",
+      "title": "Listing 5198 missing photo",
+      "slug": "yaks",
+      "kind": "for-sale",
+      "animalId": 5198,
+      "name": "Runs with Buffalo",
+      "at": "2026-08-02T07:47:09.518Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "Non-JSON response for animal 5042",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/5042",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:11.348Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "HTTP 500 for animal 5042",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/5042",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:11.348Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "Non-JSON response for animal 4993",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/4993",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:11.537Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "HTTP 500 for animal 4993",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/4993",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:11.537Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "Non-JSON response for animal 4997",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/4997",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:11.556Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "HTTP 500 for animal 4997",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/4997",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:11.556Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "Non-JSON response for animal 369",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/369",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:16.675Z"
+    },
+    {
+      "severity": "high",
+      "area": "api",
+      "title": "HTTP 500 for animal 369",
+      "url": "https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/369",
+      "status": 500,
+      "preview": "Internal Server Error",
+      "at": "2026-08-02T07:47:16.675Z"
+    },
+    {
+      "severity": "medium",
+      "area": "ui",
+      "title": "Console errors on https://livestock-frontend-staging-1087130530284.us-central1.run.app/livestock/chickens",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/livestock/chickens",
+      "errors": [
+        "Access to fetch at 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/chickens?letter=A&lang=en' from origin 'https://livestock-frontend-staging-1087130530284.us-central1.run.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "at": "2026-08-02T07:47:42.678Z"
+    },
+    {
+      "severity": "medium",
+      "area": "ui",
+      "title": "Console errors on https://livestock-frontend-staging-1087130530284.us-central1.run.app/livestock/llamas",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/livestock/llamas",
+      "errors": [
+        "Access to fetch at 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/livestock/species/llamas?lang=en' from origin 'https://livestock-frontend-staging-1087130530284.us-central1.run.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "at": "2026-08-02T07:48:00.759Z"
+    },
+    {
+      "severity": "medium",
+      "area": "ui",
+      "title": "Console errors on https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/5042",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/5042",
+      "errors": [
+        "Access to fetch at 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/5042?lang=en' from origin 'https://livestock-frontend-staging-1087130530284.us-central1.run.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "at": "2026-08-02T07:58:21.338Z"
+    },
+    {
+      "severity": "medium",
+      "area": "ui",
+      "title": "Console errors on https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/4997",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/4997",
+      "errors": [
+        "Access to fetch at 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/4997?lang=en' from origin 'https://livestock-frontend-staging-1087130530284.us-central1.run.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "at": "2026-08-02T07:58:21.430Z"
+    },
+    {
+      "severity": "medium",
+      "area": "ui",
+      "title": "Console errors on https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/4993",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/4993",
+      "errors": [
+        "Access to fetch at 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/4993?lang=en' from origin 'https://livestock-frontend-staging-1087130530284.us-central1.run.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "at": "2026-08-02T07:58:22.695Z"
+    },
+    {
+      "severity": "medium",
+      "area": "ui",
+      "title": "Console errors on https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/369",
+      "url": "https://livestock-frontend-staging-1087130530284.us-central1.run.app/marketplaces/livestock/animal/369",
+      "errors": [
+        "Access to fetch at 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app/api/marketplace/animal/369?lang=en' from origin 'https://livestock-frontend-staging-1087130530284.us-central1.run.app' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "at": "2026-08-02T07:59:11.204Z"
+    }
+  ]
+}

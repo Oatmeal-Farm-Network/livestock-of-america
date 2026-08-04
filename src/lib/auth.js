@@ -14,6 +14,8 @@ export function isPhase1PublicMode() {
 }
 
 export function logout() {
+  const peopleId =
+    localStorage.getItem('people_id') || localStorage.getItem('PeopleID') || '';
   [
     'access_token',
     'AccessToken',
@@ -24,6 +26,18 @@ export function logout() {
     'access_level',
     'AccessLevel',
   ].forEach((k) => localStorage.removeItem(k));
+  // Drop Saige thread keys so the next login starts a fresh conversation.
+  try {
+    const prefixes = [
+      `loa_saige_thread_${peopleId || ''}`,
+      'loa_saige_thread_anon',
+    ];
+    Object.keys(localStorage)
+      .filter((k) => prefixes.some((p) => k === p || k.startsWith(`${p}_`)))
+      .forEach((k) => localStorage.removeItem(k));
+  } catch {
+    /* ignore */
+  }
 }
 
 export function getToken() {
@@ -32,4 +46,12 @@ export function getToken() {
     localStorage.getItem('AccessToken') ||
     ''
   );
+}
+
+export function getPeopleId() {
+  if (typeof window === 'undefined') return null;
+  const raw =
+    localStorage.getItem('people_id') || localStorage.getItem('PeopleID') || '';
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) && n > 0 ? n : null;
 }

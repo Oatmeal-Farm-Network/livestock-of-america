@@ -11,13 +11,13 @@ const OLIVE = '#3d6b34';
 export default function ComingSoon({ title = 'Coming Soon', description }) {
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: CREAM }}>
-      <PageMeta title={`${title} | Livestock of America`} description={description || title} noIndex />
+      <PageMeta title={`${title} | Livestock of America by Oatmeal AI`} description={description || title} noIndex />
       <Header />
       <div className="flex-1 max-w-[900px] mx-auto px-4 w-full">
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: title }]} />
         <div className="py-16 md:py-24 text-center">
           <p className="text-sm uppercase tracking-widest mb-3" style={{ color: OLIVE }}>
-            Livestock of America
+            Livestock of America by Oatmeal AI
           </p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Lora', serif", color: '#2c2c2c' }}>
             {title}

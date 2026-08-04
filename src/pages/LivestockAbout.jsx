@@ -5,7 +5,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
+import GuestAccessPrompt, { GUEST_DESC_CHARS, plainTextPreview } from '../components/GuestAccessPrompt';
 import { useLanguage } from '../lib/LanguageContext';
+import { isLoggedIn } from '../lib/auth';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
@@ -64,6 +66,7 @@ export default function LivestockAbout() {
   const { t } = useTranslation();
   const { species } = useParams();
   const { language } = useLanguage();
+  const guest = !isLoggedIn();
   const [info, setInfo] = useState(null);
   const [colors, setColors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -105,7 +108,6 @@ export default function LivestockAbout() {
       <div className="mx-auto px-4 pt-6" style={{ maxWidth: '1300px' }}>
         <Breadcrumbs items={[
           { label: 'Home', to: '/' },
-          { label: 'Knowledgebases', to: '/knowledgebase' },
           { label: 'Livestock Database', to: '/livestock' },
           ...(isSingleBreed
             ? [{ label: pluralTerm }]
@@ -186,43 +188,62 @@ export default function LivestockAbout() {
                   />
                 </div>
               )}
-              <div
-                className="text-sm text-gray-700 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: info.about_html || '' }}
-              />
+              {guest ? (
+                <p className="text-sm text-gray-700 leading-relaxed m-0">
+                  {plainTextPreview(info.about_html, GUEST_DESC_CHARS)}
+                </p>
+              ) : (
+                <div
+                  className="text-sm text-gray-700 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: info.about_html || '' }}
+                />
+              )}
             </div>
 
-            {info.sections && info.sections.map((section, i) => (
-              <div key={i} className="mt-8 clear-both">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">{section.title}</h2>
-                <div className="overflow-hidden">
-                  {section.image && (
-                    <div className="float-left mr-6 mb-4 rounded overflow-hidden shadow" style={{ width: '200px' }}>
-                      <img
-                        src={section.image.startsWith('http') ? section.image : `/images/${section.image}`}
-                        alt={section.title}
-                        className="w-full"
-                        loading="lazy"
-                        onError={e => { e.target.style.display = 'none'; }}
+            {guest ? (
+              <GuestAccessPrompt
+                className="clear-both"
+                title={t('guest_access.kb_detail_title', 'Sign in for the full breed profile')}
+                message={t(
+                  'guest_access.kb_detail',
+                  'Create a free account or sign in to read the complete breed description, characteristics, and farming uses.',
+                )}
+              />
+            ) : (
+              <>
+                {info.sections && info.sections.map((section, i) => (
+                  <div key={i} className="mt-8 clear-both">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">{section.title}</h2>
+                    <div className="overflow-hidden">
+                      {section.image && (
+                        <div className="float-left mr-6 mb-4 rounded overflow-hidden shadow" style={{ width: '200px' }}>
+                          <img
+                            src={section.image.startsWith('http') ? section.image : `/images/${section.image}`}
+                            alt={section.title}
+                            className="w-full"
+                            loading="lazy"
+                            onError={e => { e.target.style.display = 'none'; }}
+                          />
+                        </div>
+                      )}
+                      <div
+                        className="text-sm text-gray-700 leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: section.content }}
                       />
                     </div>
-                  )}
-                  <div
-                    className="text-sm text-gray-700 leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: section.content }}
-                  />
-                </div>
-              </div>
-            ))}
+                  </div>
+                ))}
 
-            {colors.length > 0 && (
-              <div className="mt-8 pt-6 border-t border-gray-200 clear-both">
-                <h2 className="text-xl font-bold mb-3" style={{ color: '#4CAF50' }}>{t('livestock_about.colors_title', { label })}</h2>
-                <p className="text-sm text-gray-700 mb-2">{t('livestock_about.colors_intro', { label })}</p>
-                <ul className="list-disc pl-6 text-sm text-gray-700 space-y-1">
-                  {colors.map((c, i) => <li key={i}>{c}</li>)}
-                </ul>
-              </div>
+                {colors.length > 0 && (
+                  <div className="mt-8 pt-6 border-t border-gray-200 clear-both">
+                    <h2 className="text-xl font-bold mb-3" style={{ color: '#4CAF50' }}>{t('livestock_about.colors_title', { label })}</h2>
+                    <p className="text-sm text-gray-700 mb-2">{t('livestock_about.colors_intro', { label })}</p>
+                    <ul className="list-disc pl-6 text-sm text-gray-700 space-y-1">
+                      {colors.map((c, i) => <li key={i}>{c}</li>)}
+                    </ul>
+                  </div>
+                )}
+              </>
             )}
 
             <div className="mt-8 pt-4 border-t border-gray-100">
