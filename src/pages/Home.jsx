@@ -268,9 +268,9 @@ export default function Home() {
         />
         <div className="relative z-10 w-full max-w-[1100px] mx-auto px-5 pb-16 pt-24 md:pb-24 loa-home-hero-copy">
           <img
-            src="/images/loa-header-logo.webp"
+            src="/images/loa-header-logo.png"
             alt="Livestock of America by Oatmeal AI"
-            className="h-14 md:h-16 w-auto rounded-md mb-5 object-contain drop-shadow"
+            className="h-14 md:h-16 w-auto mb-5 object-contain drop-shadow"
             width="220"
             height="64"
           />

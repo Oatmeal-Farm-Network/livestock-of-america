@@ -90,7 +90,7 @@ export default function AuthShell({ children }) {
       <div className="px-4 pt-5 pb-4 border-b" style={{ borderColor: '#e5e0d6' }}>
         <Link to="/account" className="block no-underline mb-3">
           <img
-            src="/images/loa-header-logo.webp"
+            src="/images/loa-header-logo.png"
             alt="Livestock of America by Oatmeal AI"
             className="h-10 w-auto rounded object-contain"
           />
@@ -152,7 +152,7 @@ export default function AuthShell({ children }) {
           ☰
         </button>
         <Link to="/account" className="no-underline">
-          <img src="/images/loa-header-logo.webp" alt="LOA" className="h-9 rounded" />
+          <img src="/images/loa-header-logo.png" alt="LOA" className="h-9 rounded" />
         </Link>
         <button
           type="button"

@@ -71,7 +71,7 @@ export default function Login() {
           <div className="bg-white rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-gray-100 overflow-hidden">
             <div className="bg-[#819360] px-8 py-8 text-center">
               <img
-                src="/images/loa-header-logo.webp"
+                src="/images/loa-header-logo.png"
                 alt="Livestock of America by Oatmeal AI"
                 className="h-12 mx-auto mb-4 w-auto"
               />

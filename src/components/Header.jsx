@@ -50,8 +50,8 @@ export default function Header() {
       <div className="mx-auto flex items-center justify-between gap-4 max-w-[1400px]">
         <Link to="/" className="flex items-center shrink-0">
           <img
-            src="/images/loa-header-logo.webp"
-            className="h-12 md:h-14 w-auto rounded-md object-contain"
+            src="/images/loa-header-logo.png"
+            className="h-12 md:h-14 w-auto object-contain"
             alt="Livestock of America by Oatmeal AI"
             width="200"
             height="56"

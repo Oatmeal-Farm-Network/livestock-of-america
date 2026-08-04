@@ -153,7 +153,7 @@ export default function About() {
             </div>
             <div className="shrink-0 md:w-[280px]">
               <img
-                src="/images/loa-header-logo.webp"
+                src="/images/loa-header-logo.png"
                 alt="Livestock of America"
                 className="w-full h-auto"
               />
