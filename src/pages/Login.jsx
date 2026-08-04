@@ -13,6 +13,16 @@ export default function Login() {
   const from = location.state?.from
     ? location.state.from.pathname + (location.state.from.search || '')
     : '/account';
+  const listingGate = Boolean(
+    location.state?.from?.pathname?.includes('/marketplaces/livestock/animal/'),
+  );
+  const ranchGate = Boolean(
+    location.state?.from?.pathname?.includes('/marketplaces/livestock/ranch'),
+  );
+  const membersOnlyGate = listingGate || ranchGate;
+  const ranchBrowseGate = Boolean(
+    location.state?.from?.pathname?.includes('/marketplaces/livestock/ranches/'),
+  );
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -54,7 +64,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen font-sans flex flex-col">
-      <PageMeta title="Sign In | Livestock of America" description="Sign in to Livestock of America." noIndex />
+      <PageMeta title="Sign In | Livestock of America by Oatmeal AI" description="Sign in to Livestock of America by Oatmeal AI." noIndex />
       <Header />
       <section className="py-16 px-4 flex-1">
         <div className="max-w-md mx-auto">
@@ -62,15 +72,44 @@ export default function Login() {
             <div className="bg-[#819360] px-8 py-8 text-center">
               <img
                 src="/images/loa-header-logo.webp"
-                alt="Livestock of America"
+                alt="Livestock of America by Oatmeal AI"
                 className="h-12 mx-auto mb-4 w-auto"
               />
               <h1 className="text-white text-2xl font-bold m-0" style={{ fontFamily: "'Lora', serif" }}>
                 {t('auth.login_welcome', 'Welcome back')}
               </h1>
-              <p className="text-white/80 text-sm mt-1">{t('auth.login_subtitle', 'Sign in to your account')}</p>
+              <p className="text-white/80 text-sm mt-1">
+                {listingGate
+                  ? t('auth.login_listing_required', 'Sign in to view this listing')
+                  : ranchBrowseGate
+                    ? t('auth.login_ranches_required', 'Sign in to browse ranches')
+                    : ranchGate
+                      ? t('auth.login_ranch_required', 'Sign in to view this ranch')
+                      : t('auth.login_subtitle', 'Sign in to your account')}
+              </p>
             </div>
             <div className="px-8 py-8">
+              {membersOnlyGate && (
+                <div
+                  className="rounded-xl border px-4 py-3 mb-6 text-sm"
+                  style={{ backgroundColor: '#ece8df', borderColor: '#d8d2c6', color: '#2c2c2c' }}
+                >
+                  {listingGate
+                    ? t(
+                        'auth.login_listing_hint',
+                        'Animal listing details are available to signed-in members. Log in or create an account to continue.',
+                      )
+                    : ranchBrowseGate
+                      ? t(
+                          'auth.login_ranches_hint',
+                          'The ranch directory is available to signed-in members. Log in or create an account to continue.',
+                        )
+                      : t(
+                          'auth.login_ranch_hint',
+                          'Ranch profiles are available to signed-in members. Log in or create an account to continue.',
+                        )}
+                </div>
+              )}
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 mb-6 text-sm">
                   {error}

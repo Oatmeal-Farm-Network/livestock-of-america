@@ -7,6 +7,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
+import SaveButton from '../components/SaveButton';
+import { resolveListingPhoto, ListingPhotoPlaceholder } from '../components/ListingPhoto';
 import { useLanguage } from '../lib/LanguageContext';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
@@ -37,23 +39,29 @@ function hasAncestor(node) {
 // ── Photo gallery ─────────────────────────────────────────────────────────────
 function PhotoGallery({ photos }) {
   const { t } = useTranslation();
+  const realPhotos = (photos || []).filter((url) => resolveListingPhoto(url));
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState({});
+
+  useEffect(() => {
+    setActive(0);
+    setFailed({});
+  }, [photos]);
 
   const markFailed = (i) => setFailed((prev) => ({ ...prev, [i]: true }));
 
   const handleMainError = () => {
     markFailed(active);
-    const next = photos.findIndex((_, i) => i > active && !failed[i]);
+    const next = realPhotos.findIndex((_, i) => i > active && !failed[i]);
     if (next !== -1) setActive(next);
   };
 
-  const visibleCount = photos ? photos.filter((_, i) => !failed[i]).length : 0;
+  const visibleCount = realPhotos.filter((_, i) => !failed[i]).length;
 
-  if (!photos || photos.length === 0 || visibleCount === 0) {
+  if (realPhotos.length === 0 || visibleCount === 0) {
     return (
-      <div className="bg-gray-100 rounded-xl flex items-center justify-center" style={{ height: '320px' }}>
-        <p className="text-gray-400 text-sm">{t('livestock_animal.no_photos', 'No photos available')}</p>
+      <div className="rounded-xl overflow-hidden" style={{ height: '320px' }}>
+        <ListingPhotoPlaceholder label={t('livestock_animal.no_photos', 'No image')} />
       </div>
     );
   }
@@ -66,17 +74,18 @@ function PhotoGallery({ photos }) {
       >
         <img
           key={active}
-          src={photos[active]}
+          src={realPhotos[active]}
           alt="Animal photo"
           style={{ maxWidth: '100%', maxHeight: '560px', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }}
           onError={handleMainError}
         />
       </div>
-      {photos.length > 1 && (
+      {realPhotos.length > 1 && (
         <div className="flex gap-2 mt-3 flex-wrap">
-          {photos.map((url, i) => (
+          {realPhotos.map((url, i) => (
             <button
               key={i}
+              type="button"
               onClick={() => setActive(i)}
               className="overflow-hidden rounded-lg border-2 transition-all"
               style={{ width: '72px', height: '72px', flexShrink: 0, display: failed[i] ? 'none' : 'block', borderColor: i === active ? OLIVE : '#e5e0d6' }}
@@ -438,9 +447,15 @@ function LivestockAnimalDetailContent({ animal }) {
         </p>
       )}
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-6" style={{ fontFamily: LORA }}>
-        {animal.full_name}
-      </h1>
+      <div className="flex items-start justify-between gap-3 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 m-0" style={{ fontFamily: LORA }}>
+          {animal.full_name}
+        </h1>
+        <SaveButton
+          itemType={animal.publish_stud && !animal.publish_for_sale ? 'stud' : 'animal'}
+          itemId={animal.animal_id}
+        />
+      </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
         {animal.sold && (

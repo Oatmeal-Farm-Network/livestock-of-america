@@ -6,6 +6,8 @@ import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
+import SaveButton from '../components/SaveButton';
+import ListingPhoto, { resolveListingPhoto } from '../components/ListingPhoto';
 import Breadcrumbs from '../components/Breadcrumbs';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
@@ -29,26 +31,27 @@ const SOCIAL_LINKS = [
 
 function AnimalCard({ animal, isStuds }) {
   const { t } = useTranslation();
-  const [imgFailed, setImgFailed] = useState(false);
   const detailUrl = `/marketplaces/livestock/animal/${animal.animal_id}`;
   const priceLabel = isStuds ? t('ranch_profile.stud_fee', 'Stud Fee') : t('ranch_profile.price_label', 'Price');
+  const photo = resolveListingPhoto(animal.photo);
 
   return (
-    <div className="flex gap-3 mb-3 rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
-      <div style={{ width: '90px', flexShrink: 0 }}>
-        {!imgFailed && animal.photo ? (
-          <Link to={detailUrl}>
-            <img
-              src={animal.photo}
+    <div className="flex gap-3 mb-3 rounded-lg border border-gray-200 bg-white p-3 shadow-sm relative">
+      <div className="absolute top-2 right-2 z-10">
+        <SaveButton itemType={isStuds ? 'stud' : 'animal'} itemId={animal.animal_id} size={18} />
+      </div>
+      <div style={{ width: '90px', flexShrink: 0 }} className="overflow-hidden rounded" >
+        {photo ? (
+          <Link to={detailUrl} className="block" style={{ width: 90, height: 90 }}>
+            <ListingPhoto
+              src={photo}
               alt={animal.full_name}
-              loading="lazy"
-              onError={() => setImgFailed(true)}
-              style={{ width: '90px', height: '90px', objectFit: 'contain', borderRadius: '4px', border: '1px solid #eee' }}
+              imgClassName="w-full h-full object-cover"
             />
           </Link>
         ) : (
-          <div className="rounded flex items-center justify-center text-[11px] text-gray-400" style={{ width: '90px', height: '90px', backgroundColor: '#f0ede6' }}>
-            {t('ranch_profile.no_photo', 'No Photo')}
+          <div style={{ width: 90, height: 90 }}>
+            <ListingPhoto src={null} alt="" />
           </div>
         )}
       </div>
@@ -345,6 +348,9 @@ export default function RanchProfile() {
           {ranchLocation && (
             <p className="mt-1 text-sm text-gray-500">{ranchLocation}</p>
           )}
+          <div className="mt-3 flex justify-center">
+            <SaveButton itemType="ranch" itemId={businessId} />
+          </div>
         </div>
 
         {/* Tab navigation */}

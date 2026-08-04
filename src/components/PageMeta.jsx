@@ -1,9 +1,18 @@
 import { useEffect } from 'react';
 
-const SITE_NAME = 'Livestock of America';
+const SITE_NAME = 'Livestock of America by Oatmeal AI';
+const SITE_SHORT = 'Livestock of America';
 const DEFAULT_IMG = 'https://livestockofamerica.com/images/loa-header-logo.webp';
 const BASE_URL = 'https://livestockofamerica.com';
 const JSONLD_MARKER = 'data-pagemeta-jsonld';
+
+/** Ensure document titles mention Livestock of America by Oatmeal AI. */
+function brandTitle(title) {
+  if (!title) return SITE_NAME;
+  if (title.includes('Oatmeal AI')) return title;
+  if (title.includes(SITE_SHORT)) return title.split(SITE_SHORT).join(SITE_NAME);
+  return `${title} | ${SITE_NAME}`;
+}
 
 function setMeta(name, content) {
   if (content == null) return;
@@ -66,9 +75,7 @@ export default function PageMeta({
   jsonLd,
 }) {
   useEffect(() => {
-    const fullTitle = title
-      ? (title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`)
-      : SITE_NAME;
+    const fullTitle = brandTitle(title);
     document.title = fullTitle;
 
     setMeta('description', description);

@@ -1,18 +1,42 @@
-// src/components/SaigeWidget.jsx
-// Minimal floating Saige chat widget for Livestock of America.
-// Mount only when VITE_SAIGE_API_URL is configured (see App.tsx).
+// Floating Saige chat widget — OFN-compatible JWT auth + chat contract.
 import React, { useEffect, useRef, useState } from 'react';
 import { SAIGE_API_URL } from '../config/api';
 import { useAccount } from '../lib/AccountContext';
-import { getToken } from '../lib/auth';
+import { getPeopleId, getToken, isLoggedIn } from '../lib/auth';
 
 const GREEN = '#3d6b34';
 const LIGHT = '#f0f7ee';
 const BORDER = '#c7dfc2';
 const FONT = "Montserrat, system-ui, sans-serif";
+const OPEN_EVENT = 'loa:open-saige';
 
-function authHeaders() {
-  const token = getToken();
+/** Open the floating Saige panel from anywhere (homepage CTA, etc.). */
+export function openSaigeChat() {
+  window.dispatchEvent(new CustomEvent(OPEN_EVENT));
+}
+
+/**
+ * Same base-URL rules as OFN SaigeWidget:
+ * - Prefer VITE_SAIGE_API_URL
+ * - Keep `/saige` prefix (unified backend mounts Saige there)
+ * - Local fallback: http://localhost:8000/saige
+ */
+function normalizeSaigeApiBase(rawValue) {
+  const value = (rawValue || '').trim();
+  if (!value) {
+    if (import.meta.env.DEV) return 'http://localhost:8000/saige';
+    return '';
+  }
+  return value.replace(/\/+$/, '');
+}
+
+function resolveSaigeBase() {
+  return normalizeSaigeApiBase(SAIGE_API_URL || import.meta.env.VITE_SAIGE_API_URL);
+}
+
+/** Same auth headers OFN uses for Saige (Bearer access_token from LOA/OFN login). */
+function getAuthHeaders() {
+  const token = getToken() || localStorage.getItem('AccessToken') || '';
   return {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -20,13 +44,55 @@ function authHeaders() {
 }
 
 function resolveBusinessId(contextBusinessId) {
-  if (contextBusinessId) return contextBusinessId;
+  if (contextBusinessId) return String(contextBusinessId);
   try {
     const stored = localStorage.getItem('selected_business_id');
     return stored && stored !== 'null' ? stored : null;
   } catch {
     return null;
   }
+}
+
+function threadStorageKey(peopleId, businessId) {
+  const biz = businessId ? String(businessId) : 'nobiz';
+  return `loa_saige_thread_${peopleId || 'anon'}_${biz}`;
+}
+
+function getOrCreateThreadId(peopleId, businessId) {
+  const key = threadStorageKey(peopleId, businessId);
+  try {
+    const existing = localStorage.getItem(key);
+    if (existing) return existing;
+  } catch {
+    /* ignore */
+  }
+  const bizPart = businessId ? `b${businessId}_` : '';
+  const id = `loa_${bizPart}thread_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+  try {
+    localStorage.setItem(key, id);
+  } catch {
+    /* ignore */
+  }
+  return id;
+}
+
+async function readErrorMessage(res) {
+  try {
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      const payload = await res.json();
+      const detail = payload?.detail || payload?.message || payload?.error;
+      if (typeof detail === 'string') return detail;
+      if (Array.isArray(detail)) return detail.map((d) => d.msg || JSON.stringify(d)).join(', ');
+      if (detail) return JSON.stringify(detail);
+    }
+    const text = (await res.text()).trim();
+    if (text) return text;
+  } catch {
+    /* ignore */
+  }
+  if (res.status === 401) return 'Please sign in again to use Saige.';
+  return `Server error (${res.status})`;
 }
 
 function Bubble({ role, content }) {
@@ -54,11 +120,12 @@ function Bubble({ role, content }) {
   );
 }
 
-function ChatPanel({ businessId, onClose }) {
+function ChatPanel({ businessId, onClose, apiBase, peopleId }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
+  const [threadId] = useState(() => getOrCreateThreadId(peopleId, businessId));
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -70,21 +137,57 @@ function ChatPanel({ businessId, onClose }) {
     const val = (text || input).trim();
     if (!val || sending) return;
     setError('');
+
+    const token = getToken() || localStorage.getItem('AccessToken') || '';
+    if (!token) {
+      setError('Please sign in to chat with Saige.');
+      return;
+    }
+
+    if (!apiBase) {
+      setMessages((prev) => [
+        ...prev,
+        { role: 'user', content: val },
+        {
+          role: 'assistant',
+          content: 'Saige is not connected yet. Set VITE_SAIGE_API_URL (same as OFN) to enable live answers.',
+        },
+      ]);
+      setInput('');
+      return;
+    }
+
     const nextMsgs = [...messages, { role: 'user', content: val }];
     setMessages(nextMsgs);
     setInput('');
     setSending(true);
 
+    // LOA: product=loa → separate Firestore collection; business_id scopes history.
+    // people_id comes from JWT (same auth as OFN).
     const body = JSON.stringify({
       user_input: val,
-      message: val,
+      thread_id: threadId,
       business_id: businessId ? String(businessId) : null,
+      product: 'loa',
       language: 'en',
     });
 
     let streamed = false;
     try {
-      const res = await fetch(`${SAIGE_API_URL}/chat/stream`, { method: 'POST', headers: authHeaders(), body });
+      const res = await fetch(`${apiBase}/chat/stream`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body,
+      });
+      if (res.status === 401) {
+        setError(await readErrorMessage(res));
+        setMessages([
+          ...nextMsgs,
+          { role: 'assistant', content: 'Your session expired. Please sign in again to use Saige.' },
+        ]);
+        setSending(false);
+        return;
+      }
       if (res.ok && res.body) {
         streamed = true;
         setMessages([...nextMsgs, { role: 'assistant', content: '' }]);
@@ -107,17 +210,26 @@ function ChatPanel({ businessId, onClose }) {
               continue;
             }
             if (evt.type === 'token') {
-              reply += evt.content;
+              reply += evt.content || '';
               setMessages((prev) => {
                 const upd = [...prev];
                 upd[upd.length - 1] = { role: 'assistant', content: reply };
                 return upd;
               });
             } else if (evt.type === 'done') {
-              const finalReply = reply || evt.diagnosis || 'No response received.';
+              const finalReply =
+                reply || evt.diagnosis || evt.reply || evt.response || 'No response received.';
               setMessages((prev) => {
                 const upd = [...prev];
                 upd[upd.length - 1] = { role: 'assistant', content: finalReply };
+                return upd;
+              });
+              break outer;
+            } else if (evt.type === 'error') {
+              const msg = evt.message || evt.detail || 'Saige error';
+              setMessages((prev) => {
+                const upd = [...prev];
+                upd[upd.length - 1] = { role: 'assistant', content: msg };
                 return upd;
               });
               break outer;
@@ -131,14 +243,20 @@ function ChatPanel({ businessId, onClose }) {
 
     if (!streamed) {
       try {
-        const res = await fetch(`${SAIGE_API_URL}/chat`, { method: 'POST', headers: authHeaders(), body });
-        if (!res.ok) throw new Error(`Server error (${res.status})`);
+        const res = await fetch(`${apiBase}/chat`, {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body,
+        });
+        if (!res.ok) throw new Error(await readErrorMessage(res));
         const data = await res.json().catch(() => ({}));
-        const reply = data.reply || data.response || data.diagnosis || data.message || 'No response received.';
+        const reply =
+          data.reply || data.response || data.diagnosis || data.message || 'No response received.';
         setMessages([...nextMsgs, { role: 'assistant', content: reply }]);
       } catch (e) {
-        setError(e.message);
-        setMessages([...nextMsgs, { role: 'assistant', content: `Error: ${e.message}` }]);
+        const msg = e.message || 'Unable to reach Saige.';
+        setError(msg);
+        setMessages([...nextMsgs, { role: 'assistant', content: `Error: ${msg}` }]);
       }
     }
 
@@ -171,12 +289,18 @@ function ChatPanel({ businessId, onClose }) {
       }}
     >
       <div style={{ background: GREEN, color: '#fff', padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 9 }}>
-        <img src="/images/AI-agent-logo-saige.svg" alt="" style={{ width: 28, height: 28, borderRadius: '50%' }} />
+        <img
+          src="/images/AI-agent-logo-saige.svg"
+          alt=""
+          style={{ width: 28, height: 28, borderRadius: '50%' }}
+          onError={(e) => { e.currentTarget.src = '/images/SaigeAIIcon.webp'; }}
+        />
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 700, fontSize: 15, fontFamily: "Lora, serif" }}>Saige</div>
           <div style={{ fontSize: 10, opacity: 0.85, fontFamily: FONT }}>AI Livestock Assistant</div>
         </div>
         <button
+          type="button"
           onClick={onClose}
           aria-label="Close Saige"
           style={{ background: 'rgba(255,255,255,0.18)', color: '#fff', border: 'none', borderRadius: 6, padding: '4px 9px', fontSize: 14, cursor: 'pointer', fontWeight: 700 }}
@@ -188,7 +312,7 @@ function ChatPanel({ businessId, onClose }) {
       <div ref={scrollRef} style={{ flex: 1, padding: '12px 12px 8px', overflowY: 'auto', background: '#fafdf9' }}>
         {messages.length === 0 && (
           <div style={{ fontSize: 13, color: '#4b5563', padding: '8px 4px', lineHeight: 1.6, fontFamily: FONT }}>
-            Hi, I'm Saige! Ask me about your herd, listings, or livestock health.
+            Hi, I&apos;m Saige! Ask me about your herd, listings, or livestock health.
           </div>
         )}
         {messages.map((m, i) => (
@@ -211,6 +335,7 @@ function ChatPanel({ businessId, onClose }) {
             style={{ flex: 1, resize: 'none', border: '1px solid #d1d5db', borderRadius: 8, padding: '8px 10px', fontSize: 13.5, fontFamily: FONT, outline: 'none', minHeight: 36, lineHeight: 1.4 }}
           />
           <button
+            type="button"
             onClick={() => send()}
             disabled={!input.trim() || sending}
             aria-label="Send message"
@@ -238,7 +363,20 @@ function ChatPanel({ businessId, onClose }) {
 export default function SaigeWidget() {
   const account = useAccount();
   const businessId = resolveBusinessId(account?.BusinessID);
+  const peopleId = getPeopleId();
   const [open, setOpen] = useState(false);
+  const apiBase = resolveSaigeBase();
+  const loggedIn = isLoggedIn();
+
+  useEffect(() => {
+    if (!loggedIn) {
+      setOpen(false);
+      return undefined;
+    }
+    const openPanel = () => setOpen(true);
+    window.addEventListener(OPEN_EVENT, openPanel);
+    return () => window.removeEventListener(OPEN_EVENT, openPanel);
+  }, [loggedIn]);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -249,11 +387,12 @@ export default function SaigeWidget() {
     return () => window.removeEventListener('keydown', onEsc);
   }, [open]);
 
-  if (!SAIGE_API_URL) return null;
+  if (!loggedIn) return null;
 
   return (
     <>
       <button
+        type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label="Open Saige AI assistant"
         title="Ask Saige"
@@ -272,10 +411,23 @@ export default function SaigeWidget() {
           boxShadow: '0 6px 20px -4px rgba(0,0,0,0.35)',
         }}
       >
-        <img src="/images/AI-agent-logo-saige.svg" alt="Saige" style={{ width: 60, height: 60, borderRadius: '50%', display: 'block' }} />
+        <img
+          src="/images/AI-agent-logo-saige.svg"
+          alt="Saige"
+          style={{ width: 60, height: 60, borderRadius: '50%', display: 'block' }}
+          onError={(e) => { e.currentTarget.src = '/images/SaigeAIIcon.webp'; }}
+        />
       </button>
 
-      {open && <ChatPanel businessId={businessId} onClose={() => setOpen(false)} />}
+      {open && (
+        <ChatPanel
+          key={`saige-${businessId || 'nobiz'}-${peopleId || 'anon'}`}
+          businessId={businessId}
+          peopleId={peopleId}
+          apiBase={apiBase}
+          onClose={() => setOpen(false)}
+        />
+      )}
     </>
   );
 }

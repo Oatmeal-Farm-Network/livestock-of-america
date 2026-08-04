@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from '../lib/i18n';
-import { isLoggedIn, logout } from '../lib/auth';
+import { isLoggedIn } from '../lib/auth';
 
 const HEADER_BG = '#8b3a2b';
 const LORA = "'Lora', 'Times New Roman', serif";
 
 const NAV = [
-  { labelKey: 'phase1.nav.home', fallback: 'Home', to: '/' },
+  {
+    labelKey: 'phase1.nav.home',
+    fallback: 'Home',
+    to: '/',
+  },
   {
     labelKey: 'phase1.nav.knowledgebase',
     fallback: 'Livestock Knowledgebase',
@@ -20,23 +24,22 @@ const NAV = [
   { labelKey: 'phase1.nav.contact', fallback: 'Contact Us', to: '/contact-us' },
 ];
 
+/**
+ * Public marketing header. Hidden when signed in — AuthShell provides the left sidebar instead.
+ */
 export default function Header() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const loggedIn = isLoggedIn();
   const [open, setOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    setOpen(false);
-    navigate('/');
-  };
+  if (loggedIn) return null;
 
   const linkStyle = {
     color: '#ffffff',
     fontFamily: LORA,
     textDecoration: 'none',
     fontSize: '0.92rem',
+    whiteSpace: 'nowrap',
   };
 
   return (
@@ -44,46 +47,31 @@ export default function Header() {
       className="relative py-3.5 px-5 md:px-8 shadow-md sticky top-0 z-[10000]"
       style={{ backgroundColor: HEADER_BG }}
     >
-      <div className="mx-auto flex justify-between items-center gap-4 max-w-[1400px]">
+      <div className="mx-auto flex items-center justify-between gap-4 max-w-[1400px]">
         <Link to="/" className="flex items-center shrink-0">
           <img
             src="/images/loa-header-logo.webp"
             className="h-12 md:h-14 w-auto rounded-md object-contain"
-            alt="Livestock of America"
+            alt="Livestock of America by Oatmeal AI"
             width="200"
             height="56"
           />
         </Link>
 
-        <div className="hidden lg:flex items-center ml-auto gap-4 flex-wrap justify-end">
+        <div className="hidden lg:flex items-center gap-4 flex-wrap justify-end">
           {NAV.map((item) => (
             <Link key={item.to} to={item.to} style={linkStyle}>
               {t(item.labelKey, item.fallback)}
             </Link>
           ))}
-          {loggedIn ? (
-            <>
-              <Link to="/account" style={linkStyle}>
-                {t('nav.dashboard', 'Dashboard')}
-              </Link>
-              <button
-                type="button"
-                onClick={handleLogout}
-                style={{ ...linkStyle, background: 'none', border: 'none', cursor: 'pointer' }}
-              >
-                {t('nav.log_out', 'Logout')}
-              </button>
-            </>
-          ) : (
-            <Link to="/login" style={linkStyle}>
-              {t('nav.login', 'Login')}
-            </Link>
-          )}
+          <Link to="/login" style={linkStyle}>
+            {t('nav.login', 'Login')}
+          </Link>
         </div>
 
         <button
           type="button"
-          className="lg:hidden text-white text-2xl leading-none"
+          className="lg:hidden text-white text-2xl leading-none shrink-0"
           aria-label="Menu"
           onClick={() => setOpen((v) => !v)}
         >
@@ -106,24 +94,9 @@ export default function Header() {
               {t(item.labelKey, item.fallback)}
             </Link>
           ))}
-          {loggedIn ? (
-            <>
-              <Link to="/account" onClick={() => setOpen(false)} style={linkStyle}>
-                {t('nav.dashboard', 'Dashboard')}
-              </Link>
-              <button
-                type="button"
-                onClick={handleLogout}
-                style={{ ...linkStyle, textAlign: 'left', background: 'none', border: 'none' }}
-              >
-                {t('nav.log_out', 'Logout')}
-              </button>
-            </>
-          ) : (
-            <Link to="/login" onClick={() => setOpen(false)} style={linkStyle}>
-              {t('nav.login', 'Login')}
-            </Link>
-          )}
+          <Link to="/login" onClick={() => setOpen(false)} style={linkStyle}>
+            {t('nav.login', 'Login')}
+          </Link>
         </div>
       )}
     </nav>

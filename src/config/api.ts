@@ -16,8 +16,9 @@ function readUrl(value: string | undefined): string {
 /** Livestock of America API (Cloud Run livestock service). */
 export const LIVESTOCK_API_URL = readUrl(import.meta.env.VITE_LIVESTOCK_API_URL);
 
-/** Optional Saige advisory API (separate service). */
+/** Optional Saige advisory API (same auth as OFN — Bearer JWT from login). */
 export const SAIGE_API_URL = readUrl(import.meta.env.VITE_SAIGE_API_URL);
+
 
 export const CONTACT_EMAIL = (import.meta.env.VITE_CONTACT_EMAIL || "").trim();
 
@@ -58,6 +59,8 @@ export const endpoints = {
   marketplaceAnimalProgeny: (id: number | string) =>
     apiUrl(`/api/marketplace/animal/${id}/progeny`),
   homepageListings: () => apiUrl("/api/marketplace/homepage-listings"),
+  marketplaceSaved: () => apiUrl("/api/marketplace/saved"),
+  marketplaceSavedIds: () => apiUrl("/api/marketplace/saved/ids"),
 
   // Ranches — app/routers/ranches.py
   ranchesList: (slug: string) => apiUrl(`/api/ranches/list/${slug}`),
@@ -82,6 +85,17 @@ export const endpoints = {
   // Herd health — app/routers/herd_health.py
   herdHealthDashboard: (businessId: number | string) =>
     apiUrl(`/api/herd-health/dashboard?business_id=${businessId}`),
+  herdHealthAnimals: (businessId: number | string) =>
+    apiUrl(`/api/herd-health/animals?business_id=${businessId}`),
+  herdHealthAccountingSync: (businessId: number | string) =>
+    apiUrl(`/api/herd-health/accounting/sync?business_id=${businessId}`),
+  herdHealthList: (resource: string, businessId: number | string) =>
+    apiUrl(`/api/herd-health/${resource}?business_id=${businessId}`),
+  herdHealthCreate: (resource: string, businessId: number | string) =>
+    apiUrl(`/api/herd-health/${resource}?business_id=${businessId}`),
+  herdHealthItem: (resource: string, id: number | string) =>
+    apiUrl(`/api/herd-health/${resource}/${id}`),
+  // Convenience aliases used by existing dashboard
   herdHealthEvents: (businessId: number | string) =>
     apiUrl(`/api/herd-health/events?business_id=${businessId}`),
 
@@ -90,8 +104,11 @@ export const endpoints = {
   signup: () => apiUrl("/auth/signup"),
   forgotPassword: () => apiUrl("/auth/forgot-password"),
   me: () => apiUrl("/auth/me"),
+  updateLogin: () => apiUrl("/auth/update-login"),
   myBusinesses: (peopleId: number | string) =>
     apiUrl(`/auth/my-businesses?PeopleID=${peopleId}`),
+  businessProfile: (businessId: number | string) =>
+    apiUrl(`/api/businesses/profile/${businessId}`),
   accountHome: (businessId: number | string) =>
     apiUrl(`/auth/account-home?BusinessID=${businessId}`),
   authAnimals: (businessId: number | string) =>

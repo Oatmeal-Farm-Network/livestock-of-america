@@ -198,14 +198,14 @@ export default function ContactUs() {
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>
       <PageMeta
-        title="Contact Us | Livestock of America"
-        description="Get in touch with the Livestock of America team. We're here to help with questions about your farm listing, marketplace, or platform features."
-        keywords="contact livestock of america, support, farm platform help, get listed, farm directory contact"
+        title="Contact Us | Livestock of America by Oatmeal AI"
+        description="Get in touch with the Livestock of America by Oatmeal AI team. We're here to help with questions about your farm listing, marketplace, or platform features."
+        keywords="contact livestock of america, oatmeal ai, support, farm platform help, get listed, farm directory contact"
         canonical="https://livestockofamerica.com/contact-us"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'ContactPage',
-          name: 'Contact Livestock of America',
+          name: 'Contact Livestock of America by Oatmeal AI',
           url: 'https://livestockofamerica.com/contact-us',
         }}
       />
@@ -241,12 +241,12 @@ export default function ContactUs() {
               className="text-3xl md:text-4xl font-bold leading-tight mb-3"
               style={{ fontFamily: "'Lora', 'Times New Roman', serif", color: '#ffffff' }}
             >
-              {t('contact.title', 'Contact The Livestock of America')}
+              {t('contact.title', 'Contact Livestock of America by Oatmeal AI')}
             </h1>
             <p className="text-sm md:text-[0.95rem] leading-relaxed" style={{ color: 'rgba(255,255,255,0.92)' }}>
               {t(
                 'contact.subtitle',
-                'Have questions about the Livestock of America or our AI advisors? Send a note and our team will get back to you shortly.'
+                'Have questions about Livestock of America by Oatmeal AI or our AI advisors? Send a note and our team will get back to you shortly.'
               )}
             </p>
           </div>
@@ -301,7 +301,7 @@ export default function ContactUs() {
                 Prefer self-serve?
               </h3>
               <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.88)' }}>
-                Browse the marketplace or knowledgebases while you wait.
+                Browse the marketplace or knowledgebase while you wait.
               </p>
               <div className="flex flex-col gap-2">
                 <Link
@@ -312,11 +312,11 @@ export default function ContactUs() {
                   Browse Directory
                 </Link>
                 <Link
-                  to="/knowledgebases"
+                  to="/livestock"
                   className="text-center text-sm font-bold rounded-lg py-2.5 no-underline hover:bg-white/10"
                   style={{ border: '1.5px solid rgba(255,255,255,0.7)', color: '#fff' }}
                 >
-                  Knowledgebases
+                  Livestock Knowledgebase
                 </Link>
               </div>
             </div>

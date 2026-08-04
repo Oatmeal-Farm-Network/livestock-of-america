@@ -21,8 +21,8 @@ export default function Phase1EventsComingSoon() {
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: CREAM }}>
       <PageMeta
-        title={t('phase1.events.meta_title', 'Events | Livestock of America')}
-        description={t('phase1.events.meta_description', 'Livestock of America events — coming soon.')}
+        title={t('phase1.events.meta_title', 'Events | Livestock of America by Oatmeal AI')}
+        description={t('phase1.events.meta_description', 'Livestock of America by Oatmeal AI events — coming soon.')}
         canonical="https://livestockofamerica.com/events"
       />
       <Header />
@@ -34,7 +34,7 @@ export default function Phase1EventsComingSoon() {
           ]} />
           <div className="py-16 md:py-24 text-center">
             <p className="text-sm uppercase tracking-widest mb-3" style={{ color: OLIVE }}>
-              {t('phase1.events.eyebrow', 'Livestock of America')}
+              {t('phase1.events.eyebrow', 'Livestock of America by Oatmeal AI')}
             </p>
             <h1
               className="text-4xl md:text-5xl font-bold mb-4"

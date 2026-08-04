@@ -5,7 +5,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
+import GuestAccessPrompt, { GUEST_DESC_CHARS, plainTextPreview } from '../components/GuestAccessPrompt';
 import { useLanguage } from '../lib/LanguageContext';
+import { isLoggedIn } from '../lib/auth';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
@@ -13,11 +15,14 @@ export default function LivestockBreed() {
   const { t } = useTranslation();
   const { species, breedId } = useParams();
   const { language } = useLanguage();
+  const guest = !isLoggedIn();
   const [breed, setBreed] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [imageFailed, setImageFailed] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    setImageFailed(false);
     fetch(`${API_URL}/api/livestock/breed/${breedId}?lang=${language}`)
       .then(r => r.json())
       .then(data => setBreed(data))
@@ -32,6 +37,8 @@ export default function LivestockBreed() {
   const breedImgUrl = breed?.image
     ? (breed.image.startsWith('http') ? breed.image : `/images/${breed.image.replace(/^.*[\\/]/, '')}`)
     : null;
+  const showPhoto = Boolean(breedImgUrl) && !imageFailed;
+
 
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
@@ -59,7 +66,6 @@ export default function LivestockBreed() {
       <div className="mx-auto px-4 pt-6" style={{ maxWidth: '1300px' }}>
         <Breadcrumbs items={[
           { label: 'Home', to: '/' },
-          { label: 'Knowledgebases', to: '/knowledgebase' },
           { label: 'Livestock Database', to: '/livestock' },
           { label, to: `/livestock/${species}` },
           { label: breed?.breed || 'Breed' },
@@ -129,30 +135,63 @@ export default function LivestockBreed() {
           <div className="text-gray-500 py-12 text-center">{t('livestock_breed.not_found')}</div>
         ) : (
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 overflow-hidden">
-            {/* Floated breed image */}
-            {breedImgUrl && (
-              <div className="float-right ml-6 mb-4" style={{ maxWidth: '300px' }}>
-                <img
-                  src={breedImgUrl}
-                  alt={breed.breed}
-                  loading="eager"
-                  className="w-full rounded-xl shadow-sm"
-                  onError={e => { e.target.parentElement.style.display = 'none'; }}
-                />
-                {breed.image_caption && (
-                  <p
-                    className="text-xs text-gray-500 mt-2 text-center"
-                    dangerouslySetInnerHTML={{ __html: breed.image_caption }}
+            {/* Floated breed image, or empty slot when missing/broken */}
+            <div className="float-right ml-6 mb-4" style={{ width: '300px', maxWidth: '100%' }}>
+              {showPhoto ? (
+                <>
+                  <img
+                    src={breedImgUrl}
+                    alt={breed.breed}
+                    loading="eager"
+                    className="w-full rounded-xl shadow-sm"
+                    onError={() => setImageFailed(true)}
                   />
-                )}
-              </div>
-            )}
+                  {breed.image_caption && (
+                    <p
+                      className="text-xs text-gray-500 mt-2 text-center"
+                      dangerouslySetInnerHTML={{ __html: breed.image_caption }}
+                    />
+                  )}
+                </>
+              ) : (
+                <div
+                  className="w-full rounded-xl flex flex-col items-center justify-center gap-2 select-none"
+                  style={{ height: '220px', backgroundColor: '#ebe6dc' }}
+                  aria-label="Image placeholder"
+                >
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#b5ae9f" strokeWidth="1.5">
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <circle cx="8.5" cy="10" r="1.5" fill="#b5ae9f" stroke="none" />
+                    <path d="M3 16l5-5 3 3 4-4 6 6" />
+                  </svg>
+                  <span className="text-xs font-medium uppercase tracking-wide" style={{ color: '#9a9285' }}>
+                    No image
+                  </span>
+                </div>
+              )}
+            </div>
 
-            {/* Description */}
-            <div
-              className="text-sm text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: breed.description || '<p>No description available.</p>' }}
-            />
+            {/* Description — guests see a short teaser only */}
+            {guest ? (
+              <>
+                <p className="text-sm text-gray-700 leading-relaxed m-0 mb-5">
+                  {plainTextPreview(breed.description, GUEST_DESC_CHARS)
+                    || t('livestock_breed.preview_fallback', 'Breed overview is available to members.')}
+                </p>
+                <GuestAccessPrompt
+                  title={t('guest_access.kb_detail_title', 'Sign in for the full breed profile')}
+                  message={t(
+                    'guest_access.kb_detail',
+                    'Create a free account or sign in to read the complete breed description, characteristics, and farming uses.',
+                  )}
+                />
+              </>
+            ) : (
+              <div
+                className="text-sm text-gray-700 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: breed.description || '<p>No description available.</p>' }}
+              />
+            )}
           </div>
         )}
       </div>
