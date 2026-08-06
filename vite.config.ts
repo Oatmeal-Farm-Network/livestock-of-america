@@ -13,8 +13,6 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       host: true,
       proxy: {
-        // All LOA APIs (KB, marketplace, ranches, animals, herd-health, auth)
-        // go to the livestock Cloud Run service.
         "/auth": { target: livestockTarget, changeOrigin: true },
         "/api": { target: livestockTarget, changeOrigin: true },
         "/health": { target: livestockTarget, changeOrigin: true },

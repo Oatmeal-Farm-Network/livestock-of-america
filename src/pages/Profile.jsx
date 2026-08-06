@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { endpoints } from '../config/api';
@@ -209,6 +211,7 @@ export default function Profile() {
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: CREAM }}>
       <PageMeta title="Profile | Livestock of America by Oatmeal AI" noIndex />
+      <Header />
 
       <div className="flex-1 w-full max-w-[900px] mx-auto px-4 md:px-6 py-6 md:py-8">
         <Breadcrumbs
@@ -474,6 +477,7 @@ export default function Profile() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

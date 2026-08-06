@@ -10,3 +10,7 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+# OFN feature pages are linked/copied locally; do not vendor the full app tree
+oatmealfarmnetwork
+
+.vite
