@@ -5,7 +5,6 @@ import LivestockForSale from "./pages/LivestockForSale";
 import RanchList from "./pages/RanchList";
 import RanchProfile from "./pages/RanchProfile";
 import LivestockAnimalDetail from "./pages/LivestockAnimalDetail";
-import Phase1EventsComingSoon from "./pages/Phase1EventsComingSoon";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -13,13 +12,14 @@ import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import ContactUsConfirm from "./pages/ContactUsConfirm";
 import ComingSoon from "./pages/ComingSoon";
+import FeatureComingSoon from "./pages/FeatureComingSoon";
 import LivestockDB from "./pages/LivestockDB";
 import LivestockSpecies from "./pages/LivestockSpecies";
 import LivestockBreed from "./pages/LivestockBreed";
 import LivestockAbout from "./pages/LivestockAbout";
 import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import AccountPlaceholder from "./pages/AccountPlaceholder";
+import NewsFeedPage from "./pages/NewsFeedPage";
+import NewsArticlePage from "./pages/NewsArticlePage";
 import RequireAuth from "./components/RequireAuth";
 import AnimalsHome from "./pages/seller/AnimalsHome";
 import AnimalAdd from "./pages/seller/AnimalAdd";
@@ -43,6 +43,9 @@ import SaigeWidget from "./components/SaigeWidget";
 import AuthShell from "./components/AuthShell";
 import { isLoggedIn } from "./lib/auth";
 import { SavedItemsProvider } from "./lib/savedItems";
+import Profile from "./pages/Profile";
+import AccountPlaceholder from "./pages/AccountPlaceholder";
+import Phase1EventsComingSoon from "./pages/Phase1EventsComingSoon";
 
 /** Guests see the marketing homepage; signed-in users land on the dashboard. */
 function HomeGate() {
@@ -67,7 +70,7 @@ function ContactUsConfirmGuest() {
   return <ContactUsConfirm />;
 }
 
-/** Left sidebar workspace chrome when signed in; public chrome when guest. */
+/** Guests: page Header. Signed-in: LOA top header + OFN-style left sidebar. */
 function AppChrome() {
   const outlet = <Outlet />;
   if (isLoggedIn()) {
@@ -131,9 +134,12 @@ export default function App() {
 
         <Route path="/plant-knowledgebase/*" element={<Navigate to="/livestock" replace />} />
         <Route path="/ingredient-knowledgebase/*" element={<Navigate to="/livestock" replace />} />
-        <Route path="/news" element={<Navigate to="/" replace />} />
-        <Route path="/news/:id" element={<Navigate to="/" replace />} />
-        <Route path="/app/news/*" element={<Navigate to="/" replace />} />
+
+        {/* News Feed — public before login; AuthShell wraps it after login */}
+        <Route path="/news" element={<NewsFeedPage />} />
+        <Route path="/news/:id" element={<NewsArticlePage />} />
+        <Route path="/app/news" element={<Navigate to="/news" replace />} />
+        <Route path="/app/news/:id" element={<NewsArticlePage />} />
 
         <Route path="/events" element={<Phase1EventsComingSoon />} />
         <Route path="/about" element={<About />} />
@@ -157,6 +163,16 @@ export default function App() {
             />
           }
         />
+        <Route
+          path="/over-the-fence"
+          element={
+            <ComingSoon
+              title="Over The Fence DM"
+              description="Over The Fence direct messaging is coming soon to Livestock of America by Oatmeal AI."
+            />
+          }
+        />
+        <Route path="/coming-soon" element={<FeatureComingSoon />} />
 
         <Route
           path="/account"

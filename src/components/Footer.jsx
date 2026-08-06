@@ -16,8 +16,9 @@ export default function Footer() {
 
   const links = [
     { to: '/', label: t('phase1.nav.home', 'Home') },
-    { to: '/animals', label: t('phase1.nav.marketplace', 'Livestock Marketplace') },
-    { to: '/livestock', label: t('phase1.nav.knowledgebase', 'Livestock Knowledgebase') },
+    { to: '/animals', label: t('phase1.nav.marketplace', 'Marketplace') },
+    { to: '/livestock', label: t('phase1.nav.knowledgebase', 'Knowledgebase') },
+    { to: '/news', label: t('phase1.nav.news', 'News Feed') },
     { to: '/events', label: t('phase1.nav.events', 'Events') },
     { to: '/about', label: t('phase1.nav.about', 'About') },
     { to: '/contact-us', label: t('phase1.nav.contact', 'Contact Us') },

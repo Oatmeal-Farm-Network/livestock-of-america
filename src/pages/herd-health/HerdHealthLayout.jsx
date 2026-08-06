@@ -1,5 +1,5 @@
 // src/pages/herd-health/HerdHealthLayout.jsx
-// Shared shell for Herd Health pages — nested nav inside AuthShell.
+// Shared shell for Herd Health pages — nested module nav under the top Header.
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from '../../lib/i18n';
