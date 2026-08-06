@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap");
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  background-color: #f7f2e8;
+  font-family: "Montserrat", sans-serif;
+  color: #2c2c2c;
+}
+
+a {
+  text-decoration: none;
+  color: #819360;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #333333;
+}
+
+a.text-white,
+a.text-white:hover,
+a.regsubmit2,
+a.regsubmit2:hover,
+.regsubmit2 {
+  color: #ffffff !important;
+}
+
+.regsubmit2 {
+  background-color: #819360;
+  font-weight: bold;
+  padding: 10px 32px;
+  text-align: center;
+  font-family: "Lora", "Times New Roman", serif;
+  font-size: 14px;
+  border-radius: 10px;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+}
+
+.regsubmit2:hover {
+  background-color: #5a6d4e;
+}
+
+.min-h-screen {
+  background-color: #f7f2e8;
+}
