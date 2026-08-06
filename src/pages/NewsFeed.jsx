@@ -1,6 +1,6 @@
 // src/NewsFeed.jsx
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import PageMeta from '../components/PageMeta';
 import './NewsFeed.css';

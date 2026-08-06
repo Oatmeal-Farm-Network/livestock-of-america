@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import { isLoggedIn, logout } from '../lib/auth';
 import Header from './Header';
 import AccountSidebar from './AccountSidebar';

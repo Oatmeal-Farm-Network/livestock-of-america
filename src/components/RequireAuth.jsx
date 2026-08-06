@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router';
 
 /** Redirect guests to login, preserving the intended destination. */
 export default function RequireAuth({ children }) {

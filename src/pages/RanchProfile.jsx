@@ -1,7 +1,7 @@
 // src/pages/RanchProfile.jsx
 // Public ranch profile page — /marketplaces/livestock/ranch/:businessId
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';

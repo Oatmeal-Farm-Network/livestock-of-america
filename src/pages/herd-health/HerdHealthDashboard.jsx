@@ -1,6 +1,6 @@
 // src/pages/herd-health/HerdHealthDashboard.jsx
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import HerdHealthLayout from './HerdHealthLayout';
 import { useHerdBusinessId } from './useHerdBusinessId';
