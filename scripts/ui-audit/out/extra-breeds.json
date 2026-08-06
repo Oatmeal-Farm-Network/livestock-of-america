@@ -1,0 +1,2617 @@
+[
+  {
+    "species": "chickens",
+    "breedId": 2264,
+    "name": "Barnevelder"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2265,
+    "name": "Bianca_di_Saluzzo"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3188,
+    "name": "Black Sex-Link"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2943,
+    "name": "Booted Bantams"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2286,
+    "name": "Braekel"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2285,
+    "name": "Brahma"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2287,
+    "name": "Buckeye"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2288,
+    "name": "California Gray"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2267,
+    "name": "Campine"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2268,
+    "name": "Catalanas"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2289,
+    "name": "Chantecler"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2327,
+    "name": "Ciuffina Ghigi"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2944,
+    "name": "Cochin"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2282,
+    "name": "Cornish"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2945,
+    "name": "Crevecoeur"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2290,
+    "name": "Cubalaya"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2946,
+    "name": "Delaware"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2291,
+    "name": "Derbyshire Redcaps"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2292,
+    "name": "Dominique"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2293,
+    "name": "Dorking"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2971,
+    "name": "Dutch Bantam"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2269,
+    "name": "Easter Egger"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2270,
+    "name": "Egyptian Fayoumi"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2294,
+    "name": "Ermellinato"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2295,
+    "name": "Faverolles"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2947,
+    "name": "Fayoumi"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2972,
+    "name": "Friesian"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2973,
+    "name": "Frizzle"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3356,
+    "name": "Ga Noi"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3357,
+    "name": "Gasconne"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3358,
+    "name": "Gatinaise"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3359,
+    "name": "Gauloise dorée"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3362,
+    "name": "German Langshan"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3360,
+    "name": "Gimmizah"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3361,
+    "name": "Giriraja"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3363,
+    "name": "Gournay"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2948,
+    "name": "Hamburg"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2297,
+    "name": "Holland"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2949,
+    "name": "Houdan"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2300,
+    "name": "Iowa Blue"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2298,
+    "name": "Italian Naked Neck"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2299,
+    "name": "Italian Polish"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2283,
+    "name": "Ixworth"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2950,
+    "name": "Japanese Bantams"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2301,
+    "name": "Java"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2284,
+    "name": "Jersey Giant"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2272,
+    "name": "Kraienkopp"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2951,
+    "name": "La Fleche"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2273,
+    "name": "Lakenvelder"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2966,
+    "name": "Langshan"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2974,
+    "name": "Legbars"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2975,
+    "name": "Lincolnshire Buff"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2274,
+    "name": "Livorno"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2952,
+    "name": "Malay"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2968,
+    "name": "Malaysian Serama Bantam"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2275,
+    "name": "Marans"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2302,
+    "name": "Marsh Daisy"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2303,
+    "name": "Mericanel della Brianza"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2304,
+    "name": "Millefiori di Lonigo"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2305,
+    "name": "Millefiori Piemontese"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2276,
+    "name": "Minorca"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2306,
+    "name": "Modenese"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2953,
+    "name": "Modern Games"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2307,
+    "name": "Mugellese"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2308,
+    "name": "Naked Neck"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2976,
+    "name": "Nankin Bantams"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2309,
+    "name": "New Hampshire"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2310,
+    "name": "Norfolk Grey"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2271,
+    "name": "Norwegian Jaerhones"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2954,
+    "name": "Old English Gam"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2277,
+    "name": "Orloff"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2311,
+    "name": "Orpingtons"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2977,
+    "name": "Pekin Bantam"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2278,
+    "name": "Penedesencas"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2312,
+    "name": "Pepoi"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2955,
+    "name": "Phoenixe"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2263,
+    "name": "Pita Pinta Austuriana"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2314,
+    "name": "Plymouth Rock"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3005,
+    "name": "Polish"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2315,
+    "name": "Poltavas"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2316,
+    "name": "Polverara"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3364,
+    "name": "Qiandongnan Xiao Xiang"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3365,
+    "name": "Qingyuan Partridge"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2317,
+    "name": "Red Shaver"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2961,
+    "name": "Red Stars"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2956,
+    "name": "Redcap"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2318,
+    "name": "Rhode Island Red"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2319,
+    "name": "Rhode Island Whites"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2978,
+    "name": "Rhodebar"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2320,
+    "name": "Robusta Lionata"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2321,
+    "name": "Robusta Maculata"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2322,
+    "name": "Romagnola"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2957,
+    "name": "Rosecomb"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2970,
+    "name": "Rumpless Araucana"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2323,
+    "name": "Scots Dumpy"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2324,
+    "name": "Scots Grey"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2959,
+    "name": "Sebright"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2279,
+    "name": "Siciliana Buttercup"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2960,
+    "name": "Silkie"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2962,
+    "name": "Sultan"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2963,
+    "name": "Sumatra"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2326,
+    "name": "Sussex"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3006,
+    "name": "Swedish Flower"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2979,
+    "name": "Thuringian"
+  },
+  {
+    "species": "chickens",
+    "breedId": 3366,
+    "name": "Utrerana"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2329,
+    "name": "Valdarnese"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2328,
+    "name": "Valdarno"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2980,
+    "name": "Vorwerks"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2964,
+    "name": "Welsummer"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2280,
+    "name": "White-Faced Black Spanish"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2331,
+    "name": "Wyandotte"
+  },
+  {
+    "species": "chickens",
+    "breedId": 2981,
+    "name": "Yamato Gunkei "
+  },
+  {
+    "species": "chickens",
+    "breedId": 2965,
+    "name": "Yokohama"
+  },
+  {
+    "species": "horses",
+    "breedId": 472,
+    "name": "Abaco Barb"
+  },
+  {
+    "species": "horses",
+    "breedId": 2396,
+    "name": "Abstang"
+  },
+  {
+    "species": "horses",
+    "breedId": 473,
+    "name": "Abtenauer"
+  },
+  {
+    "species": "horses",
+    "breedId": 474,
+    "name": "Abyssinian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2397,
+    "name": "Adaev"
+  },
+  {
+    "species": "horses",
+    "breedId": 475,
+    "name": "Aegidienberger"
+  },
+  {
+    "species": "horses",
+    "breedId": 2398,
+    "name": "Ainos"
+  },
+  {
+    "species": "horses",
+    "breedId": 476,
+    "name": "Akhal-Teke"
+  },
+  {
+    "species": "horses",
+    "breedId": 477,
+    "name": "Albanian"
+  },
+  {
+    "species": "horses",
+    "breedId": 478,
+    "name": "Altai"
+  },
+  {
+    "species": "horses",
+    "breedId": 479,
+    "name": "Alter Real"
+  },
+  {
+    "species": "horses",
+    "breedId": 2399,
+    "name": "Altmärkisches Kaltblut"
+  },
+  {
+    "species": "horses",
+    "breedId": 2400,
+    "name": "Altwurttemberg"
+  },
+  {
+    "species": "horses",
+    "breedId": 2401,
+    "name": "American Albino"
+  },
+  {
+    "species": "horses",
+    "breedId": 2405,
+    "name": "American Classic Shetland Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 480,
+    "name": "American Cream Draft"
+  },
+  {
+    "species": "horses",
+    "breedId": 2402,
+    "name": "American Drum"
+  },
+  {
+    "species": "horses",
+    "breedId": 481,
+    "name": "American Indian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2403,
+    "name": "American Miniature Horse"
+  },
+  {
+    "species": "horses",
+    "breedId": 2404,
+    "name": "American Mustang"
+  },
+  {
+    "species": "horses",
+    "breedId": 482,
+    "name": "American Paint"
+  },
+  {
+    "species": "horses",
+    "breedId": 483,
+    "name": "American Quarter"
+  },
+  {
+    "species": "horses",
+    "breedId": 484,
+    "name": "American Saddlebred"
+  },
+  {
+    "species": "horses",
+    "breedId": 2407,
+    "name": "American Spotted Paso"
+  },
+  {
+    "species": "horses",
+    "breedId": 2408,
+    "name": "American Standardbred"
+  },
+  {
+    "species": "horses",
+    "breedId": 2409,
+    "name": "American Thoroughbred"
+  },
+  {
+    "species": "horses",
+    "breedId": 2410,
+    "name": "American Walking Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 485,
+    "name": "American Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 2411,
+    "name": "Amur"
+  },
+  {
+    "species": "horses",
+    "breedId": 2412,
+    "name": "Anadolu Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2413,
+    "name": "Andean"
+  },
+  {
+    "species": "horses",
+    "breedId": 2414,
+    "name": "Andino Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 487,
+    "name": "Andravida"
+  },
+  {
+    "species": "horses",
+    "breedId": 489,
+    "name": "Anglo-Arab-Sardo"
+  },
+  {
+    "species": "horses",
+    "breedId": 488,
+    "name": "Anglo-Arabian"
+  },
+  {
+    "species": "horses",
+    "breedId": 490,
+    "name": "Anglo-Kabarda"
+  },
+  {
+    "species": "horses",
+    "breedId": 2415,
+    "name": "Anglo-Karachai"
+  },
+  {
+    "species": "horses",
+    "breedId": 491,
+    "name": "Appaloosa"
+  },
+  {
+    "species": "horses",
+    "breedId": 2416,
+    "name": "Appaloosa Sport"
+  },
+  {
+    "species": "horses",
+    "breedId": 2417,
+    "name": "Appendix Quarter"
+  },
+  {
+    "species": "horses",
+    "breedId": 2418,
+    "name": "AraAppaloosa"
+  },
+  {
+    "species": "horses",
+    "breedId": 493,
+    "name": "Arabian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2419,
+    "name": "Arabo-Friesian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2421,
+    "name": "Araboulonnais"
+  },
+  {
+    "species": "horses",
+    "breedId": 2422,
+    "name": "Aralusion"
+  },
+  {
+    "species": "horses",
+    "breedId": 2423,
+    "name": "Ardahan"
+  },
+  {
+    "species": "horses",
+    "breedId": 494,
+    "name": "Ardennes"
+  },
+  {
+    "species": "horses",
+    "breedId": 495,
+    "name": "Arenberg-Nordkirchen"
+  },
+  {
+    "species": "horses",
+    "breedId": 2424,
+    "name": "Argentine Anglo"
+  },
+  {
+    "species": "horses",
+    "breedId": 496,
+    "name": "Argentine Criollo"
+  },
+  {
+    "species": "horses",
+    "breedId": 2425,
+    "name": "Argentine Polo Ponies"
+  },
+  {
+    "species": "horses",
+    "breedId": 2426,
+    "name": "Argentinian Modeponies"
+  },
+  {
+    "species": "horses",
+    "breedId": 2428,
+    "name": "Ariègeois Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2429,
+    "name": "Arravani"
+  },
+  {
+    "species": "horses",
+    "breedId": 2430,
+    "name": "Asiatic Wild"
+  },
+  {
+    "species": "horses",
+    "breedId": 2431,
+    "name": "Asil"
+  },
+  {
+    "species": "horses",
+    "breedId": 2433,
+    "name": "Astrikan"
+  },
+  {
+    "species": "horses",
+    "breedId": 497,
+    "name": "Asturcón"
+  },
+  {
+    "species": "horses",
+    "breedId": 498,
+    "name": "Augeron"
+  },
+  {
+    "species": "horses",
+    "breedId": 500,
+    "name": "Australian Draught"
+  },
+  {
+    "species": "horses",
+    "breedId": 2434,
+    "name": "Australian Ponies"
+  },
+  {
+    "species": "horses",
+    "breedId": 501,
+    "name": "Australian Stockhorse"
+  },
+  {
+    "species": "horses",
+    "breedId": 502,
+    "name": "Austrian Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 2435,
+    "name": "Autre Que Pur Sang"
+  },
+  {
+    "species": "horses",
+    "breedId": 503,
+    "name": "Auvergne"
+  },
+  {
+    "species": "horses",
+    "breedId": 504,
+    "name": "Auxois"
+  },
+  {
+    "species": "horses",
+    "breedId": 505,
+    "name": "Avelignese"
+  },
+  {
+    "species": "horses",
+    "breedId": 506,
+    "name": "Azerbaijan"
+  },
+  {
+    "species": "horses",
+    "breedId": 2436,
+    "name": "Azores Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 507,
+    "name": "Azteca"
+  },
+  {
+    "species": "horses",
+    "breedId": 2437,
+    "name": "Baguale"
+  },
+  {
+    "species": "horses",
+    "breedId": 2438,
+    "name": "Baguio Light"
+  },
+  {
+    "species": "horses",
+    "breedId": 2440,
+    "name": "Bahr-El-Ghazal"
+  },
+  {
+    "species": "horses",
+    "breedId": 2441,
+    "name": "Baikal"
+  },
+  {
+    "species": "horses",
+    "breedId": 508,
+    "name": "Baise"
+  },
+  {
+    "species": "horses",
+    "breedId": 2442,
+    "name": "Baixadeiro"
+  },
+  {
+    "species": "horses",
+    "breedId": 2444,
+    "name": "Bakhtiari"
+  },
+  {
+    "species": "horses",
+    "breedId": 2445,
+    "name": "Baladi"
+  },
+  {
+    "species": "horses",
+    "breedId": 2446,
+    "name": "Bali"
+  },
+  {
+    "species": "horses",
+    "breedId": 510,
+    "name": "Balikun"
+  },
+  {
+    "species": "horses",
+    "breedId": 511,
+    "name": "Baluchi"
+  },
+  {
+    "species": "horses",
+    "breedId": 512,
+    "name": "Ban'ei"
+  },
+  {
+    "species": "horses",
+    "breedId": 2448,
+    "name": "Banat"
+  },
+  {
+    "species": "horses",
+    "breedId": 2449,
+    "name": "Bandiagara"
+  },
+  {
+    "species": "horses",
+    "breedId": 513,
+    "name": "Banker"
+  },
+  {
+    "species": "horses",
+    "breedId": 514,
+    "name": "Barb"
+  },
+  {
+    "species": "horses",
+    "breedId": 515,
+    "name": "Bardigiano"
+  },
+  {
+    "species": "horses",
+    "breedId": 2452,
+    "name": "Basuto Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2453,
+    "name": "Batak Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 518,
+    "name": "Bavarian Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 520,
+    "name": "Belgian Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 2459,
+    "name": "Bhirum"
+  },
+  {
+    "species": "horses",
+    "breedId": 2460,
+    "name": "Bhotia"
+  },
+  {
+    "species": "horses",
+    "breedId": 521,
+    "name": "Black Forest"
+  },
+  {
+    "species": "horses",
+    "breedId": 522,
+    "name": "Blazer"
+  },
+  {
+    "species": "horses",
+    "breedId": 2465,
+    "name": "Boerperd"
+  },
+  {
+    "species": "horses",
+    "breedId": 2388,
+    "name": "Bose"
+  },
+  {
+    "species": "horses",
+    "breedId": 2468,
+    "name": "Bosnian"
+  },
+  {
+    "species": "horses",
+    "breedId": 523,
+    "name": "Boulonnais"
+  },
+  {
+    "species": "horses",
+    "breedId": 524,
+    "name": "Brabant"
+  },
+  {
+    "species": "horses",
+    "breedId": 525,
+    "name": "Brandenburgers"
+  },
+  {
+    "species": "horses",
+    "breedId": 526,
+    "name": "Brazilian Sport"
+  },
+  {
+    "species": "horses",
+    "breedId": 527,
+    "name": "Breton"
+  },
+  {
+    "species": "horses",
+    "breedId": 2473,
+    "name": "British Spotted Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 528,
+    "name": "Brumbie"
+  },
+  {
+    "species": "horses",
+    "breedId": 499,
+    "name": "Brumby "
+  },
+  {
+    "species": "horses",
+    "breedId": 2476,
+    "name": "Buckskin"
+  },
+  {
+    "species": "horses",
+    "breedId": 2477,
+    "name": "Bucovina"
+  },
+  {
+    "species": "horses",
+    "breedId": 529,
+    "name": "Budyonny"
+  },
+  {
+    "species": "horses",
+    "breedId": 2390,
+    "name": "Buohai"
+  },
+  {
+    "species": "horses",
+    "breedId": 530,
+    "name": "Burguete"
+  },
+  {
+    "species": "horses",
+    "breedId": 2799,
+    "name": "Burmese Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2481,
+    "name": "Buryats"
+  },
+  {
+    "species": "horses",
+    "breedId": 2480,
+    "name": "Busak Posavec"
+  },
+  {
+    "species": "horses",
+    "breedId": 531,
+    "name": "Byelorussian Harness"
+  },
+  {
+    "species": "horses",
+    "breedId": 532,
+    "name": "Calabrese"
+  },
+  {
+    "species": "horses",
+    "breedId": 533,
+    "name": "Camargue"
+  },
+  {
+    "species": "horses",
+    "breedId": 534,
+    "name": "Camarillo White"
+  },
+  {
+    "species": "horses",
+    "breedId": 2483,
+    "name": "Campeiro"
+  },
+  {
+    "species": "horses",
+    "breedId": 535,
+    "name": "Campolina"
+  },
+  {
+    "species": "horses",
+    "breedId": 536,
+    "name": "Canadian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2485,
+    "name": "Canadian Rustic Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2486,
+    "name": "Canadian Sport"
+  },
+  {
+    "species": "horses",
+    "breedId": 2490,
+    "name": "Cape"
+  },
+  {
+    "species": "horses",
+    "breedId": 538,
+    "name": "Carolina Marsh Tacky"
+  },
+  {
+    "species": "horses",
+    "breedId": 539,
+    "name": "Carthusian"
+  },
+  {
+    "species": "horses",
+    "breedId": 540,
+    "name": "Caspian"
+  },
+  {
+    "species": "horses",
+    "breedId": 542,
+    "name": "Castillonais"
+  },
+  {
+    "species": "horses",
+    "breedId": 543,
+    "name": "Catria"
+  },
+  {
+    "species": "horses",
+    "breedId": 544,
+    "name": "Cavallo Romano della Maremma Laziale"
+  },
+  {
+    "species": "horses",
+    "breedId": 2492,
+    "name": "Cayuse Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2495,
+    "name": "Cerbat Mustangs"
+  },
+  {
+    "species": "horses",
+    "breedId": 2393,
+    "name": "Chahou Post Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2394,
+    "name": "Chaidamu Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2395,
+    "name": "Chakouyi"
+  },
+  {
+    "species": "horses",
+    "breedId": 2504,
+    "name": "Cheju Ponies"
+  },
+  {
+    "species": "horses",
+    "breedId": 546,
+    "name": "Chilean Corralero"
+  },
+  {
+    "species": "horses",
+    "breedId": 2510,
+    "name": "Chincoteague"
+  },
+  {
+    "species": "horses",
+    "breedId": 547,
+    "name": "Choctaw"
+  },
+  {
+    "species": "horses",
+    "breedId": 548,
+    "name": "Cleveland Bay"
+  },
+  {
+    "species": "horses",
+    "breedId": 549,
+    "name": "Clydesdales"
+  },
+  {
+    "species": "horses",
+    "breedId": 550,
+    "name": "Colonial Spanish"
+  },
+  {
+    "species": "horses",
+    "breedId": 551,
+    "name": "Colorado Ranger"
+  },
+  {
+    "species": "horses",
+    "breedId": 553,
+    "name": "Comtois"
+  },
+  {
+    "species": "horses",
+    "breedId": 2371,
+    "name": "Connemara"
+  },
+  {
+    "species": "horses",
+    "breedId": 2520,
+    "name": "Corsican"
+  },
+  {
+    "species": "horses",
+    "breedId": 554,
+    "name": "Costa Rican"
+  },
+  {
+    "species": "horses",
+    "breedId": 556,
+    "name": "Criollo"
+  },
+  {
+    "species": "horses",
+    "breedId": 2526,
+    "name": "Croatian Coldblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 2527,
+    "name": "Cuban Paso"
+  },
+  {
+    "species": "horses",
+    "breedId": 2528,
+    "name": "Cuban Pintos"
+  },
+  {
+    "species": "horses",
+    "breedId": 558,
+    "name": "Cumberland"
+  },
+  {
+    "species": "horses",
+    "breedId": 516,
+    "name": "Curly"
+  },
+  {
+    "species": "horses",
+    "breedId": 560,
+    "name": "Czech Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 571,
+    "name": "East Bulgarian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2558,
+    "name": "Einsiedler"
+  },
+  {
+    "species": "horses",
+    "breedId": 2563,
+    "name": "Eriskay"
+  },
+  {
+    "species": "horses",
+    "breedId": 2089,
+    "name": "Esperia Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 573,
+    "name": "Estonian"
+  },
+  {
+    "species": "horses",
+    "breedId": 574,
+    "name": "Estonian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2566,
+    "name": "Exmoor"
+  },
+  {
+    "species": "horses",
+    "breedId": 575,
+    "name": "Falabella"
+  },
+  {
+    "species": "horses",
+    "breedId": 2567,
+    "name": "Faroe Ponies"
+  },
+  {
+    "species": "horses",
+    "breedId": 2569,
+    "name": "Fell"
+  },
+  {
+    "species": "horses",
+    "breedId": 2870,
+    "name": "Ferghana"
+  },
+  {
+    "species": "horses",
+    "breedId": 577,
+    "name": "Finnish Universal"
+  },
+  {
+    "species": "horses",
+    "breedId": 2570,
+    "name": "Finnish Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 579,
+    "name": "Fjord"
+  },
+  {
+    "species": "horses",
+    "breedId": 578,
+    "name": "Fleuves"
+  },
+  {
+    "species": "horses",
+    "breedId": 580,
+    "name": "Florida Cracker"
+  },
+  {
+    "species": "horses",
+    "breedId": 581,
+    "name": "Fouta"
+  },
+  {
+    "species": "horses",
+    "breedId": 582,
+    "name": "Frederiksborg"
+  },
+  {
+    "species": "horses",
+    "breedId": 583,
+    "name": "Freiberger"
+  },
+  {
+    "species": "horses",
+    "breedId": 2578,
+    "name": "French Riding"
+  },
+  {
+    "species": "horses",
+    "breedId": 2574,
+    "name": "French Saddlebred"
+  },
+  {
+    "species": "horses",
+    "breedId": 584,
+    "name": "French Trotter"
+  },
+  {
+    "species": "horses",
+    "breedId": 586,
+    "name": "Friesian"
+  },
+  {
+    "species": "horses",
+    "breedId": 585,
+    "name": "Friesian Cross"
+  },
+  {
+    "species": "horses",
+    "breedId": 587,
+    "name": "Friesian Sporthorses"
+  },
+  {
+    "species": "horses",
+    "breedId": 588,
+    "name": "Furioso"
+  },
+  {
+    "species": "horses",
+    "breedId": 589,
+    "name": "Galiceno"
+  },
+  {
+    "species": "horses",
+    "breedId": 590,
+    "name": "Galician Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2581,
+    "name": "Galloway"
+  },
+  {
+    "species": "horses",
+    "breedId": 2583,
+    "name": "Garrano"
+  },
+  {
+    "species": "horses",
+    "breedId": 2584,
+    "name": "Gayoe"
+  },
+  {
+    "species": "horses",
+    "breedId": 3068,
+    "name": "Gayoe"
+  },
+  {
+    "species": "horses",
+    "breedId": 2939,
+    "name": "Gelderlander"
+  },
+  {
+    "species": "horses",
+    "breedId": 3008,
+    "name": "Georgian Grande"
+  },
+  {
+    "species": "horses",
+    "breedId": 2587,
+    "name": "German Riding Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2593,
+    "name": "Golden Saddlebred"
+  },
+  {
+    "species": "horses",
+    "breedId": 2595,
+    "name": "Gotland Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 596,
+    "name": "Groningen"
+  },
+  {
+    "species": "horses",
+    "breedId": 597,
+    "name": "Gypsey Vanner"
+  },
+  {
+    "species": "horses",
+    "breedId": 598,
+    "name": "Hackney"
+  },
+  {
+    "species": "horses",
+    "breedId": 599,
+    "name": "Hafling"
+  },
+  {
+    "species": "horses",
+    "breedId": 2420,
+    "name": "Haflinger"
+  },
+  {
+    "species": "horses",
+    "breedId": 2865,
+    "name": "Hagerman"
+  },
+  {
+    "species": "horses",
+    "breedId": 600,
+    "name": "Hanoverian"
+  },
+  {
+    "species": "horses",
+    "breedId": 601,
+    "name": "Heck"
+  },
+  {
+    "species": "horses",
+    "breedId": 602,
+    "name": "Heihe"
+  },
+  {
+    "species": "horses",
+    "breedId": 2613,
+    "name": "Henson"
+  },
+  {
+    "species": "horses",
+    "breedId": 2614,
+    "name": "Hequ"
+  },
+  {
+    "species": "horses",
+    "breedId": 2375,
+    "name": "Highland Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 603,
+    "name": "Hirzai"
+  },
+  {
+    "species": "horses",
+    "breedId": 604,
+    "name": "Hispano-Breton"
+  },
+  {
+    "species": "horses",
+    "breedId": 606,
+    "name": "Holsteiner"
+  },
+  {
+    "species": "horses",
+    "breedId": 2386,
+    "name": "Hucul"
+  },
+  {
+    "species": "horses",
+    "breedId": 607,
+    "name": "Hungarian Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 2629,
+    "name": "Iberian Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 608,
+    "name": "Icelandic"
+  },
+  {
+    "species": "horses",
+    "breedId": 2631,
+    "name": "Indian Country Bred"
+  },
+  {
+    "species": "horses",
+    "breedId": 610,
+    "name": "Iomud"
+  },
+  {
+    "species": "horses",
+    "breedId": 611,
+    "name": "Irish Draught"
+  },
+  {
+    "species": "horses",
+    "breedId": 612,
+    "name": "Irish Sport "
+  },
+  {
+    "species": "horses",
+    "breedId": 613,
+    "name": "Italian Heavy Draft"
+  },
+  {
+    "species": "horses",
+    "breedId": 2373,
+    "name": "Italian Saddle"
+  },
+  {
+    "species": "horses",
+    "breedId": 2090,
+    "name": "Italian TPR Agricultural"
+  },
+  {
+    "species": "horses",
+    "breedId": 614,
+    "name": "Italian Trotter"
+  },
+  {
+    "species": "horses",
+    "breedId": 615,
+    "name": "Jaca Navarra"
+  },
+  {
+    "species": "horses",
+    "breedId": 2638,
+    "name": "Java"
+  },
+  {
+    "species": "horses",
+    "breedId": 2639,
+    "name": "Jejus"
+  },
+  {
+    "species": "horses",
+    "breedId": 616,
+    "name": "Jutland"
+  },
+  {
+    "species": "horses",
+    "breedId": 617,
+    "name": "Kabarda"
+  },
+  {
+    "species": "horses",
+    "breedId": 618,
+    "name": "Kaimanawa"
+  },
+  {
+    "species": "horses",
+    "breedId": 619,
+    "name": "Karabair"
+  },
+  {
+    "species": "horses",
+    "breedId": 620,
+    "name": "Karabakh"
+  },
+  {
+    "species": "horses",
+    "breedId": 2650,
+    "name": "Karacabey"
+  },
+  {
+    "species": "horses",
+    "breedId": 2651,
+    "name": "Karachay"
+  },
+  {
+    "species": "horses",
+    "breedId": 622,
+    "name": "Kathiawari"
+  },
+  {
+    "species": "horses",
+    "breedId": 623,
+    "name": "Kazakh"
+  },
+  {
+    "species": "horses",
+    "breedId": 624,
+    "name": "Kentucky Mountain Saddle"
+  },
+  {
+    "species": "horses",
+    "breedId": 2656,
+    "name": "Kerry Bog"
+  },
+  {
+    "species": "horses",
+    "breedId": 625,
+    "name": "Kiger Mustang"
+  },
+  {
+    "species": "horses",
+    "breedId": 626,
+    "name": "Kinsky"
+  },
+  {
+    "species": "horses",
+    "breedId": 2658,
+    "name": "Kirdi"
+  },
+  {
+    "species": "horses",
+    "breedId": 627,
+    "name": "Kisber Felver"
+  },
+  {
+    "species": "horses",
+    "breedId": 2379,
+    "name": "Kiso Pferd"
+  },
+  {
+    "species": "horses",
+    "breedId": 628,
+    "name": "Kladruber"
+  },
+  {
+    "species": "horses",
+    "breedId": 629,
+    "name": "Knabstrupper"
+  },
+  {
+    "species": "horses",
+    "breedId": 630,
+    "name": "Konik"
+  },
+  {
+    "species": "horses",
+    "breedId": 2667,
+    "name": "Kushum"
+  },
+  {
+    "species": "horses",
+    "breedId": 2674,
+    "name": "Landais"
+  },
+  {
+    "species": "horses",
+    "breedId": 632,
+    "name": "Latvian"
+  },
+  {
+    "species": "horses",
+    "breedId": 633,
+    "name": "Lipizaan"
+  },
+  {
+    "species": "horses",
+    "breedId": 634,
+    "name": "Lithuanian Heavy Draught"
+  },
+  {
+    "species": "horses",
+    "breedId": 635,
+    "name": "Lokai"
+  },
+  {
+    "species": "horses",
+    "breedId": 636,
+    "name": "Losino"
+  },
+  {
+    "species": "horses",
+    "breedId": 2689,
+    "name": "Lundy"
+  },
+  {
+    "species": "horses",
+    "breedId": 637,
+    "name": "Lusitano"
+  },
+  {
+    "species": "horses",
+    "breedId": 640,
+    "name": "Malapolski"
+  },
+  {
+    "species": "horses",
+    "breedId": 641,
+    "name": "Mallorquin"
+  },
+  {
+    "species": "horses",
+    "breedId": 642,
+    "name": "Mangalarga"
+  },
+  {
+    "species": "horses",
+    "breedId": 643,
+    "name": "Mangalarga Marchador"
+  },
+  {
+    "species": "horses",
+    "breedId": 644,
+    "name": "Maremmano"
+  },
+  {
+    "species": "horses",
+    "breedId": 647,
+    "name": "Marwari"
+  },
+  {
+    "species": "horses",
+    "breedId": 2697,
+    "name": "Masuren"
+  },
+  {
+    "species": "horses",
+    "breedId": 648,
+    "name": "Mecklenburger"
+  },
+  {
+    "species": "horses",
+    "breedId": 2698,
+    "name": "Megezh"
+  },
+  {
+    "species": "horses",
+    "breedId": 649,
+    "name": "Menorquin"
+  },
+  {
+    "species": "horses",
+    "breedId": 651,
+    "name": "Messara"
+  },
+  {
+    "species": "horses",
+    "breedId": 654,
+    "name": "Miniature"
+  },
+  {
+    "species": "horses",
+    "breedId": 2703,
+    "name": "Minusin"
+  },
+  {
+    "species": "horses",
+    "breedId": 655,
+    "name": "Misaki"
+  },
+  {
+    "species": "horses",
+    "breedId": 656,
+    "name": "Missouri Fox-Trotter"
+  },
+  {
+    "species": "horses",
+    "breedId": 2381,
+    "name": "Miyako"
+  },
+  {
+    "species": "horses",
+    "breedId": 657,
+    "name": "Monchino"
+  },
+  {
+    "species": "horses",
+    "breedId": 658,
+    "name": "Mongolian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2706,
+    "name": "Montana Travler"
+  },
+  {
+    "species": "horses",
+    "breedId": 659,
+    "name": "Monterufoli Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 660,
+    "name": "Morab"
+  },
+  {
+    "species": "horses",
+    "breedId": 661,
+    "name": "Morgan"
+  },
+  {
+    "species": "horses",
+    "breedId": 2711,
+    "name": "Mountain Pleasure"
+  },
+  {
+    "species": "horses",
+    "breedId": 662,
+    "name": "Moyle"
+  },
+  {
+    "species": "horses",
+    "breedId": 664,
+    "name": "Murghese"
+  },
+  {
+    "species": "horses",
+    "breedId": 665,
+    "name": "Mustang"
+  },
+  {
+    "species": "horses",
+    "breedId": 666,
+    "name": "Namib Desert"
+  },
+  {
+    "species": "horses",
+    "breedId": 667,
+    "name": "Nangchen"
+  },
+  {
+    "species": "horses",
+    "breedId": 2091,
+    "name": "Napoletano"
+  },
+  {
+    "species": "horses",
+    "breedId": 2719,
+    "name": "Narragansett Pacer"
+  },
+  {
+    "species": "horses",
+    "breedId": 2718,
+    "name": "Narym"
+  },
+  {
+    "species": "horses",
+    "breedId": 668,
+    "name": "National Show"
+  },
+  {
+    "species": "horses",
+    "breedId": 2720,
+    "name": "Navarra"
+  },
+  {
+    "species": "horses",
+    "breedId": 2376,
+    "name": "New Forest Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2726,
+    "name": "New Kirgiz"
+  },
+  {
+    "species": "horses",
+    "breedId": 2378,
+    "name": "Newfoundland"
+  },
+  {
+    "species": "horses",
+    "breedId": 669,
+    "name": "Nez Perce"
+  },
+  {
+    "species": "horses",
+    "breedId": 670,
+    "name": "Nivernais"
+  },
+  {
+    "species": "horses",
+    "breedId": 671,
+    "name": "Nokota"
+  },
+  {
+    "species": "horses",
+    "breedId": 672,
+    "name": "Noma"
+  },
+  {
+    "species": "horses",
+    "breedId": 673,
+    "name": "Nonius"
+  },
+  {
+    "species": "horses",
+    "breedId": 2729,
+    "name": "Nooitgedacht"
+  },
+  {
+    "species": "horses",
+    "breedId": 674,
+    "name": "Nordlandshest / Lyngshest"
+  },
+  {
+    "species": "horses",
+    "breedId": 2730,
+    "name": "Norfolk Trotter"
+  },
+  {
+    "species": "horses",
+    "breedId": 675,
+    "name": "Norico"
+  },
+  {
+    "species": "horses",
+    "breedId": 676,
+    "name": "Norman Cob"
+  },
+  {
+    "species": "horses",
+    "breedId": 678,
+    "name": "North Swedish"
+  },
+  {
+    "species": "horses",
+    "breedId": 680,
+    "name": "Novokirghiz"
+  },
+  {
+    "species": "horses",
+    "breedId": 2737,
+    "name": "Ob Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2740,
+    "name": "Old English Black"
+  },
+  {
+    "species": "horses",
+    "breedId": 682,
+    "name": "Oldenburg"
+  },
+  {
+    "species": "horses",
+    "breedId": 683,
+    "name": "Orlov Trotter"
+  },
+  {
+    "species": "horses",
+    "breedId": 2741,
+    "name": "Orlov-rostopchin"
+  },
+  {
+    "species": "horses",
+    "breedId": 684,
+    "name": "Ostfriesen"
+  },
+  {
+    "species": "horses",
+    "breedId": 2749,
+    "name": "Padang Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2377,
+    "name": "Palomino"
+  },
+  {
+    "species": "horses",
+    "breedId": 687,
+    "name": "Paso Fino"
+  },
+  {
+    "species": "horses",
+    "breedId": 685,
+    "name": "Patterned"
+  },
+  {
+    "species": "horses",
+    "breedId": 688,
+    "name": "Pentro"
+  },
+  {
+    "species": "horses",
+    "breedId": 689,
+    "name": "Percheron Heavy"
+  },
+  {
+    "species": "horses",
+    "breedId": 3009,
+    "name": "Peruvian Paso"
+  },
+  {
+    "species": "horses",
+    "breedId": 2758,
+    "name": "Pindos"
+  },
+  {
+    "species": "horses",
+    "breedId": 692,
+    "name": "Pintabian"
+  },
+  {
+    "species": "horses",
+    "breedId": 693,
+    "name": "Pleven"
+  },
+  {
+    "species": "horses",
+    "breedId": 694,
+    "name": "Poitevin"
+  },
+  {
+    "species": "horses",
+    "breedId": 2767,
+    "name": "Pony of the Americas"
+  },
+  {
+    "species": "horses",
+    "breedId": 695,
+    "name": "Pottok"
+  },
+  {
+    "species": "horses",
+    "breedId": 696,
+    "name": "Pryor Mountain Mustang"
+  },
+  {
+    "species": "horses",
+    "breedId": 699,
+    "name": "Qatgani "
+  },
+  {
+    "species": "horses",
+    "breedId": 2871,
+    "name": "Quagga"
+  },
+  {
+    "species": "horses",
+    "breedId": 700,
+    "name": "Quarab"
+  },
+  {
+    "species": "horses",
+    "breedId": 701,
+    "name": "Quarter"
+  },
+  {
+    "species": "horses",
+    "breedId": 702,
+    "name": "Racking"
+  },
+  {
+    "species": "horses",
+    "breedId": 2615,
+    "name": "Reliable"
+  },
+  {
+    "species": "horses",
+    "breedId": 703,
+    "name": "Retuerta"
+  },
+  {
+    "species": "horses",
+    "breedId": 704,
+    "name": "Rhenish German Coldblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 707,
+    "name": "Riwoches"
+  },
+  {
+    "species": "horses",
+    "breedId": 708,
+    "name": "Rocky Mountain"
+  },
+  {
+    "species": "horses",
+    "breedId": 710,
+    "name": "Rottaler"
+  },
+  {
+    "species": "horses",
+    "breedId": 712,
+    "name": "Russian Heavy Draft"
+  },
+  {
+    "species": "horses",
+    "breedId": 2781,
+    "name": "Russian Trotter"
+  },
+  {
+    "species": "horses",
+    "breedId": 2782,
+    "name": "Sable Island Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 690,
+    "name": "Salernitano"
+  },
+  {
+    "species": "horses",
+    "breedId": 714,
+    "name": "Salerno"
+  },
+  {
+    "species": "horses",
+    "breedId": 715,
+    "name": "Samolaco"
+  },
+  {
+    "species": "horses",
+    "breedId": 2785,
+    "name": "Sandalwood"
+  },
+  {
+    "species": "horses",
+    "breedId": 716,
+    "name": "Sanfratellano dei Nebrodi"
+  },
+  {
+    "species": "horses",
+    "breedId": 2787,
+    "name": "Sanhe"
+  },
+  {
+    "species": "horses",
+    "breedId": 717,
+    "name": "Sarcidano"
+  },
+  {
+    "species": "horses",
+    "breedId": 719,
+    "name": "Schleswig"
+  },
+  {
+    "species": "horses",
+    "breedId": 2791,
+    "name": "Schwarzwaelder Fuchs"
+  },
+  {
+    "species": "horses",
+    "breedId": 720,
+    "name": "Sella Italiano"
+  },
+  {
+    "species": "horses",
+    "breedId": 2793,
+    "name": "Selle Francais"
+  },
+  {
+    "species": "horses",
+    "breedId": 2795,
+    "name": "Senner"
+  },
+  {
+    "species": "horses",
+    "breedId": 722,
+    "name": "Shagya Arabian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2092,
+    "name": "Shetland Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 723,
+    "name": "Shire"
+  },
+  {
+    "species": "horses",
+    "breedId": 724,
+    "name": "Sicilian"
+  },
+  {
+    "species": "horses",
+    "breedId": 725,
+    "name": "Silesian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2801,
+    "name": "Single Footing"
+  },
+  {
+    "species": "horses",
+    "breedId": 2804,
+    "name": "Skyros Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2805,
+    "name": "Slovak Sport Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 727,
+    "name": "Sokolsky"
+  },
+  {
+    "species": "horses",
+    "breedId": 2807,
+    "name": "Somali Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 726,
+    "name": "Sorraia"
+  },
+  {
+    "species": "horses",
+    "breedId": 2812,
+    "name": "South German Coldblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 728,
+    "name": "Soviet Heavy Draft"
+  },
+  {
+    "species": "horses",
+    "breedId": 731,
+    "name": "Spanischer Mustang"
+  },
+  {
+    "species": "horses",
+    "breedId": 486,
+    "name": "Spanish"
+  },
+  {
+    "species": "horses",
+    "breedId": 729,
+    "name": "Spanish Barb"
+  },
+  {
+    "species": "horses",
+    "breedId": 730,
+    "name": "Spanish Jennet"
+  },
+  {
+    "species": "horses",
+    "breedId": 732,
+    "name": "Spanish-Norman"
+  },
+  {
+    "species": "horses",
+    "breedId": 2814,
+    "name": "Spiti Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2406,
+    "name": "Sport Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 734,
+    "name": "Spotted Saddle"
+  },
+  {
+    "species": "horses",
+    "breedId": 735,
+    "name": "Spotted Saddle"
+  },
+  {
+    "species": "horses",
+    "breedId": 737,
+    "name": "Suffolk Punch"
+  },
+  {
+    "species": "horses",
+    "breedId": 739,
+    "name": "Swedish Ardennes"
+  },
+  {
+    "species": "horses",
+    "breedId": 740,
+    "name": "Swedish Warmblood"
+  },
+  {
+    "species": "horses",
+    "breedId": 742,
+    "name": "Taishu"
+  },
+  {
+    "species": "horses",
+    "breedId": 2824,
+    "name": "Tarpan"
+  },
+  {
+    "species": "horses",
+    "breedId": 743,
+    "name": "Tawleed"
+  },
+  {
+    "species": "horses",
+    "breedId": 2829,
+    "name": "Tebetan Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 745,
+    "name": "Tennessee Walking"
+  },
+  {
+    "species": "horses",
+    "breedId": 2826,
+    "name": "Tennuvian"
+  },
+  {
+    "species": "horses",
+    "breedId": 746,
+    "name": "Tersk"
+  },
+  {
+    "species": "horses",
+    "breedId": 747,
+    "name": "Thoroughbred"
+  },
+  {
+    "species": "horses",
+    "breedId": 2093,
+    "name": "Timor Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 748,
+    "name": "Tinker"
+  },
+  {
+    "species": "horses",
+    "breedId": 2382,
+    "name": "Tokara"
+  },
+  {
+    "species": "horses",
+    "breedId": 750,
+    "name": "Tolfetano"
+  },
+  {
+    "species": "horses",
+    "breedId": 751,
+    "name": "Tori"
+  },
+  {
+    "species": "horses",
+    "breedId": 752,
+    "name": "Trait du Nord"
+  },
+  {
+    "species": "horses",
+    "breedId": 753,
+    "name": "Trakehner"
+  },
+  {
+    "species": "horses",
+    "breedId": 2835,
+    "name": "Turk"
+  },
+  {
+    "species": "horses",
+    "breedId": 756,
+    "name": "Unmol"
+  },
+  {
+    "species": "horses",
+    "breedId": 757,
+    "name": "Uzunyayla"
+  },
+  {
+    "species": "horses",
+    "breedId": 758,
+    "name": "Ventasso"
+  },
+  {
+    "species": "horses",
+    "breedId": 1260,
+    "name": "Vestland Fjord"
+  },
+  {
+    "species": "horses",
+    "breedId": 759,
+    "name": "Virginia Highlander"
+  },
+  {
+    "species": "horses",
+    "breedId": 760,
+    "name": "Vlaamperd"
+  },
+  {
+    "species": "horses",
+    "breedId": 761,
+    "name": "Vladimir Heavy Draft"
+  },
+  {
+    "species": "horses",
+    "breedId": 762,
+    "name": "Vyatka"
+  },
+  {
+    "species": "horses",
+    "breedId": 763,
+    "name": "Waler"
+  },
+  {
+    "species": "horses",
+    "breedId": 765,
+    "name": "Walkaloosa"
+  },
+  {
+    "species": "horses",
+    "breedId": 2846,
+    "name": "Welara Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 768,
+    "name": "Welsh Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 769,
+    "name": "Westphalian"
+  },
+  {
+    "species": "horses",
+    "breedId": 770,
+    "name": "Wielkopolski"
+  },
+  {
+    "species": "horses",
+    "breedId": 771,
+    "name": "Württemberger"
+  },
+  {
+    "species": "horses",
+    "breedId": 772,
+    "name": "Xilingol"
+  },
+  {
+    "species": "horses",
+    "breedId": 773,
+    "name": "Yakutian"
+  },
+  {
+    "species": "horses",
+    "breedId": 2856,
+    "name": "Yanqi Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 774,
+    "name": "Yili"
+  },
+  {
+    "species": "horses",
+    "breedId": 775,
+    "name": "Yonaguni"
+  },
+  {
+    "species": "horses",
+    "breedId": 2863,
+    "name": "Zanskari Pony"
+  },
+  {
+    "species": "horses",
+    "breedId": 2864,
+    "name": "Zeeland"
+  },
+  {
+    "species": "horses",
+    "breedId": 777,
+    "name": "Zemaituka"
+  },
+  {
+    "species": "horses",
+    "breedId": 776,
+    "name": "Zweibrücker"
+  },
+  {
+    "species": "llamas",
+    "breedId": 1898,
+    "name": "Argentine"
+  },
+  {
+    "species": "llamas",
+    "breedId": 1903,
+    "name": "Suri"
+  }
+]

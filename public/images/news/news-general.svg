@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a5530"/>
+      <stop offset="100%" style="stop-color:#819360"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="400" fill="url(#bg)"/>
+  <!-- Sun -->
+  <circle cx="650" cy="100" r="50" fill="#fbbf24" opacity="0.25"/>
+  <circle cx="650" cy="100" r="35" fill="#fbbf24" opacity="0.15"/>
+  <!-- Rolling field rows (perspective) -->
+  <g stroke="#a3b87a" stroke-width="1.5" opacity="0.2">
+    <path d="M0,250 Q200,230 400,250 Q600,270 800,250" fill="none"/>
+    <path d="M0,275 Q200,260 400,275 Q600,290 800,275" fill="none"/>
+    <path d="M0,300 Q200,290 400,300 Q600,310 800,300" fill="none"/>
+    <path d="M0,325 Q200,318 400,325 Q600,332 800,325" fill="none"/>
+    <path d="M0,350 Q200,345 400,350 Q600,355 800,350" fill="none"/>
+    <path d="M0,375 Q200,372 400,375 Q600,378 800,375" fill="none"/>
+  </g>
+  <!-- Wheat stalks -->
+  <g stroke="#d4a94a" stroke-width="2" opacity="0.3" fill="none">
+    <path d="M150,250 Q155,180 160,140"/>
+    <ellipse cx="160" cy="135" rx="5" ry="15" fill="#d4a94a" opacity="0.3"/>
+    <path d="M300,260 Q305,190 310,150"/>
+    <ellipse cx="310" cy="145" rx="5" ry="15" fill="#d4a94a" opacity="0.3"/>
+    <path d="M450,255 Q455,185 460,145"/>
+    <ellipse cx="460" cy="140" rx="5" ry="15" fill="#d4a94a" opacity="0.3"/>
+    <path d="M220,255 Q225,200 230,165"/>
+    <ellipse cx="230" cy="160" rx="5" ry="13" fill="#d4a94a" opacity="0.3"/>
+    <path d="M380,258 Q385,195 390,160"/>
+    <ellipse cx="390" cy="155" rx="5" ry="13" fill="#d4a94a" opacity="0.3"/>
+  </g>
+  <!-- Tractor silhouette -->
+  <g fill="#ffffff" opacity="0.1">
+    <rect x="540" y="210" width="80" height="40" rx="5"/>
+    <rect x="560" y="195" width="40" height="20" rx="3"/>
+    <circle cx="555" cy="255" r="18"/>
+    <circle cx="610" cy="255" r="12"/>
+    <line x1="520" y1="230" x2="540" y2="230" stroke="#ffffff" stroke-width="3" opacity="0.1"/>
+  </g>
+  <text x="400" y="385" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-size="14" letter-spacing="3">AGRICULTURE NEWS</text>
+</svg>

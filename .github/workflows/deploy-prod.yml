@@ -1,0 +1,106 @@
+name: Deploy LOA Frontend Production
+
+# main → livestock-frontend-prod
+# API target: livestock prod Cloud Run only (not OFN main backend).
+# Do not deploy until prod vars exist; fail clearly if missing.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.PROD_GCP_PROJECT_ID }}
+  REGION: ${{ vars.PROD_REGION || 'us-central1' }}
+  GAR_REPOSITORY: ${{ vars.PROD_ARTIFACT_REGISTRY_REPOSITORY || 'oatmeal-farm-registry' }}
+  SERVICE_NAME: livestock-frontend-prod
+  IMAGE_NAME: livestock-frontend
+  RUNTIME_SERVICE_ACCOUNT: ${{ vars.PROD_FRONTEND_RUNTIME_SA }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Require production secrets and bake vars
+        shell: bash
+        run: |
+          missing=0
+          require() {
+            local name="$1" value="$2"
+            if [ -z "$value" ]; then
+              echo "::error::Missing required GitHub Actions secret/variable: $name"
+              missing=1
+            fi
+          }
+          require PROD_GCP_PROJECT_ID "${{ secrets.PROD_GCP_PROJECT_ID }}"
+          require PROD_GCP_WORKLOAD_IDENTITY_PROVIDER "${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER }}"
+          require PROD_GCP_SERVICE_ACCOUNT "${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}"
+          require PROD_FRONTEND_RUNTIME_SA "${{ vars.PROD_FRONTEND_RUNTIME_SA }}"
+          require PROD_LIVESTOCK_API_URL "${{ vars.PROD_LIVESTOCK_API_URL }}"
+          if [ "$missing" -ne 0 ]; then
+            echo "Production deploy blocked until all PROD_* secrets/vars are set."
+            echo "See docs/LOA_FRONTEND_DEPLOY.md — livestock API URL required (no OFN backend)."
+            exit 1
+          fi
+
+      - name: Derive commit SHA tag
+        shell: bash
+        run: echo "COMMIT_SHA=${GITHUB_SHA::12}" >> "$GITHUB_ENV"
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+
+      - name: Build Docker image (bake production VITE_*)
+        env:
+          VITE_LIVESTOCK_API_URL: ${{ vars.PROD_LIVESTOCK_API_URL }}
+          VITE_SAIGE_API_URL: ${{ vars.PROD_SAIGE_URL }}
+          VITE_CONTACT_EMAIL: ${{ vars.PROD_CONTACT_EMAIL }}
+        run: |
+          docker build \
+            --build-arg "VITE_LIVESTOCK_API_URL=${VITE_LIVESTOCK_API_URL}" \
+            --build-arg "VITE_SAIGE_API_URL=${VITE_SAIGE_API_URL}" \
+            --build-arg "VITE_CONTACT_EMAIL=${VITE_CONTACT_EMAIL}" \
+            -t "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
+            .
+
+      - name: Push Docker image
+        run: |
+          docker push "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}"
+
+      - name: Deploy to Cloud Run (production)
+        run: |
+          gcloud run deploy "${SERVICE_NAME}" \
+            --image "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
+            --region "${REGION}" \
+            --project "${PROJECT_ID}" \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 512Mi \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 10 \
+            --service-account "${RUNTIME_SERVICE_ACCOUNT}" \
+            --quiet
+
+      - name: Show deployed URL
+        run: |
+          gcloud run services describe "${SERVICE_NAME}" \
+            --region "${REGION}" \
+            --project "${PROJECT_ID}" \
+            --format='value(status.url)'
