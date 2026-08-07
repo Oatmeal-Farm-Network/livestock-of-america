@@ -320,14 +320,27 @@ function PedigreeTree({ ancestry }) {
 }
 
 // ── Fiber stats table ─────────────────────────────────────────────────────────
+const FIBER_VALUE_FIELDS = [
+  'Average', 'StandardDev', 'COV', 'GreaterThan30',
+  'Curve', 'CF', 'CrimpPerInch', 'Length', 'ShearWeight', 'BlanketWeight',
+];
+
+/** Date cell text — legacy rows store '0' for an absent month/day/year. */
+function fiberDate(r) {
+  return [r.SampleDateMonth, r.SampleDateDay, r.SampleDateYear]
+    .filter((p) => p && p !== '0')
+    .join('/');
+}
+
 function FiberStats({ rows }) {
   const { t } = useTranslation();
-  if (!rows || rows.length === 0) return null;
-  const hasData = rows.some((r) =>
-    r.Average || r.StandardDev || r.COV || r.GreaterThan30 ||
-    r.BlanketWeight || r.ShearWeight || r.CF || r.Length || r.Curve || r.CrimpPerInch
+  // Most Fiber records are blank legacy placeholders. Every cell falls back to
+  // an em-dash, so an empty row renders as a line of dashes — drop those. The
+  // API filters them too; this keeps the table right against any backend.
+  const visible = (rows || []).filter(
+    (r) => fiberDate(r) || FIBER_VALUE_FIELDS.some((f) => r[f]),
   );
-  if (!hasData) return null;
+  if (visible.length === 0) return null;
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
@@ -352,14 +365,10 @@ function FiberStats({ rows }) {
             </tr>
           </thead>
           <tbody>
-            {rows.map((r, i) => {
-              const dateParts = [];
-              if (r.SampleDateMonth && r.SampleDateMonth !== '0') dateParts.push(r.SampleDateMonth);
-              if (r.SampleDateDay && r.SampleDateDay !== '0') dateParts.push(r.SampleDateDay);
-              if (r.SampleDateYear && r.SampleDateYear !== '0') dateParts.push(r.SampleDateYear);
+            {visible.map((r, i) => {
               return (
                 <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : ''}>
-                  <td className="py-1.5 pr-3 whitespace-nowrap">{dateParts.join('/') || '—'}</td>
+                  <td className="py-1.5 pr-3 whitespace-nowrap">{fiberDate(r) || '—'}</td>
                   <td className="py-1.5 text-center">{r.Average || '—'}</td>
                   <td className="py-1.5 text-center">{r.StandardDev || '—'}</td>
                   <td className="py-1.5 text-center">{r.COV || '—'}</td>

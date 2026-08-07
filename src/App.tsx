@@ -111,21 +111,21 @@ export default function App() {
             </RequireAuth>
           }
         />
+        {/* Public: "View Ranch Profile" and "Contact Seller" on the animal
+            detail page point here, so gating it bounced both to login. The
+            same component is already public at /directory/business/:id, and
+            every endpoint it calls is public. */}
         <Route
           path="/marketplaces/livestock/ranch/:businessId"
-          element={
-            <RequireAuth>
-              <RanchProfile />
-            </RequireAuth>
-          }
+          element={<RanchProfile />}
         />
+        {/* Public: listings link straight here, so gating it sent every
+            for-sale and stud click to the login page instead of the animal.
+            The detail endpoint is public and the page holds no auth-only
+            data — SaveButton prompts for login on click when needed. */}
         <Route
           path="/marketplaces/livestock/animal/:id"
-          element={
-            <RequireAuth>
-              <LivestockAnimalDetail />
-            </RequireAuth>
-          }
+          element={<LivestockAnimalDetail />}
         />
         <Route path="/marketplaces/livestock/:slug" element={<LivestockForSale />} />
 
