@@ -2,78 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import { API_ENDPOINTS } from '../config';
+import { DIRECTORY_CATEGORIES, directoryTitleKey } from '../../lib/directoryCategories';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import PageMeta from '../../components/PageMeta';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import KnowledgebaseLandingHero from '../../components/KnowledgebaseLandingHero';
-
-// Directory category images — served from /public/images (WebP)
-const agriAssociaImg      = '/images/AgriculturalAssociations.webp';
-const artisianImg         = '/images/ArtisanProducers.webp';
-const brImg               = '/images/BusinessResourcesDirectoryImage.webp';
-const crafOrgImg          = '/images/CrafterOrganizations.webp';
-const farmersMarketImg    = '/images/FarmersMarket.webp';
-const farmsRanchesImg     = '/images/Farm.webp';
-const fiberImg            = '/images/FiberCooperatives.webp';
-const fiberMillsImg       = '/images/FiberMill.webp';
-const fisheriesImg        = '/images/Fishery.webp';
-const fishermenImg        = '/images/Fishermen.webp';
-const foodAggregatorsImg  = '/images/FoodAggregators.webp';
-const foodCopImg          = '/images/FoodCooperatives.webp';
-const foodHubImg          = '/images/FoodHubs.webp';
-const groceryStoreImg     = '/images/GroceryStores.webp';
-const herbTeaImg          = '/images/Herbs.webp';
-const hungerReliefImg     = '/images/HumanReleafOrganization.webp';
-const manfacImg           = '/images/Manufacturers.webp';
-const marinasImg          = '/images/Marina.webp';
-const meatImg             = '/images/MeatWholesalers.webp';
-const realEstateImg       = '/images/RealEstateAgents.webp';
-const restaurantsImg      = '/images/Restaurants.webp';
-const retailersImg        = '/images/Retailers.webp';
-const serviceProvidersImg = '/images/ServiceProviders.webp';
-const transporterImg      = '/images/Transportation.webp';
-const universitiesImg     = '/images/University.webp';
-const vetImg              = '/images/Vetrinarians.webp';
-const vineyardsImg        = '/images/Vineyard.webp';
-const wineriesImg         = '/images/Winery.webp';
-const othersImg           = '/icons/Other.png';
-
-// Categories surfaced in the public directory. Sourced from the
-// `businesstypelookup` table (excluding the "N/A" placeholder row) and
-// ordered alphabetically by BusinessType to match GET /api/businesses/types.
-const CATEGORIES_BASE = [
-  { slug: 'agricultural-associations', img: agriAssociaImg },
-  { slug: 'artisan-producers',         img: artisianImg },
-  { slug: 'business-resources',        img: brImg },
-  { slug: 'crafter-organizations',     img: crafOrgImg },
-  { slug: 'farmers-markets',           img: farmersMarketImg },
-  { slug: 'farms-ranches',             img: farmsRanchesImg },
-  { slug: 'fiber-cooperatives',        img: fiberImg },
-  { slug: 'fiber-mills',               img: fiberMillsImg },
-  { slug: 'fisheries',                 img: fisheriesImg },
-  { slug: 'fishermen',                 img: fishermenImg },
-  { slug: 'food-aggregators',          img: foodAggregatorsImg },
-  { slug: 'food-cooperatives',         img: foodCopImg },
-  { slug: 'food-hubs',                 img: foodHubImg },
-  { slug: 'grocery-stores',            img: groceryStoreImg },
-  { slug: 'herb-and-tea-producers',    img: herbTeaImg },
-  { slug: 'hunger-relief-organizations', img: hungerReliefImg },
-  { slug: 'manufacturers',             img: manfacImg },
-  { slug: 'marinas',                   img: marinasImg },
-  { slug: 'meat-wholesalers',          img: meatImg },
-  { slug: 'real-estate-agents',        img: realEstateImg },
-  { slug: 'restaurants',               img: restaurantsImg },
-  { slug: 'retailers',                 img: retailersImg },
-  { slug: 'service-providers',         img: serviceProvidersImg },
-  { slug: 'transporters',              img: transporterImg },
-  { slug: 'universities',              img: universitiesImg },
-  { slug: 'veterinarians',             img: vetImg },
-  { slug: 'vineyards',                 img: vineyardsImg },
-  { slug: 'wineries',                  img: wineriesImg },
-  // "Other" is intentionally pinned to the bottom rather than sorted in.
-  { slug: 'others',                    img: othersImg },
-];
 
 const EAGER_COUNT = 4;
 
@@ -83,10 +17,11 @@ export default function DirectoryList() {
 
   const CATEGORIES = useMemo(
     () =>
-      CATEGORIES_BASE.map((c) => {
-        const k = c.slug.replace(/-/g, '_');
-        return { ...c, title: t(`directory_list.cat_${k}_title`), desc: t(`directory_list.cat_${k}_desc`) };
-      }),
+      DIRECTORY_CATEGORIES.map((c) => ({
+        ...c,
+        title: t(directoryTitleKey(c.slug), c.label),
+        desc: t(`directory_list.cat_${c.slug.replace(/-/g, '_')}_desc`),
+      })),
     [t]
   );
 
@@ -169,7 +104,7 @@ export default function DirectoryList() {
           description="Find what you're looking for across 29 categories — from farms and food hubs to restaurants, fiber mills, and more. Search and connect with local farms, food businesses, and organizations in your area."
           stats={[
             { value: '4,085', label: 'Documented Varieties' },
-            { value: String(CATEGORIES_BASE.length), label: 'Core Classifications' },
+            { value: String(DIRECTORY_CATEGORIES.length), label: 'Core Classifications' },
             { value: '24', label: 'New Entries This Month' },
           ]}
           searchPlaceholder="Search producers, mills, or markets..."

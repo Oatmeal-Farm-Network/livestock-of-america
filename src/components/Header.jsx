@@ -9,6 +9,7 @@ import {
   studPath,
   speciesLinks,
 } from '../lib/livestockSpecies';
+import { directoryLinks } from '../lib/directoryCategories';
 
 const HEADER_BG = '#8b3a2b';
 const LORA = "'Lora', 'Times New Roman', serif";
@@ -36,7 +37,13 @@ const NAV = [
     columns: 2,
     species: 'studs',
   },
-  { label: 'Directory', fallbackKey: 'phase1.nav.directory', to: '/directory' },
+  {
+    label: 'Directory',
+    fallbackKey: 'phase1.nav.directory',
+    // 29 categories — too tall for one column.
+    columns: 3,
+    categories: 'directory',
+  },
   {
     label: 'Newsfeed',
     fallbackKey: 'phase1.nav.news',
@@ -235,6 +242,15 @@ export default function Header({ force = false }) {
         }
         if (item.species === 'studs') {
           return { ...item, children: speciesLinks(STUD_SPECIES, studPath, t) };
+        }
+        if (item.categories === 'directory') {
+          return {
+            ...item,
+            children: [
+              { label: t('phase1.nav.all_directory', 'All Directory Categories'), to: '/directory' },
+              ...directoryLinks(t),
+            ],
+          };
         }
         return item;
       }),
