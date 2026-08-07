@@ -66,7 +66,9 @@ export default function LivestockAbout() {
   const { t } = useTranslation();
   const { species } = useParams();
   const { language } = useLanguage();
-  const guest = !isLoggedIn();
+  // Knowledgebase is public reference content — full species profile shows for
+  // everyone, signed in or not. (Toggle back to `!isLoggedIn()` to re-gate.)
+  const guest = false;
   const [info, setInfo] = useState(null);
   const [colors, setColors] = useState([]);
   const [loading, setLoading] = useState(true);

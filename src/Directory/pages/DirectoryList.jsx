@@ -1,0 +1,204 @@
+import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router';
+import { useTranslation } from '../../lib/i18n';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import PageMeta from '../../components/PageMeta';
+import Breadcrumbs from '../../components/Breadcrumbs';
+import KnowledgebaseLandingHero from '../../components/KnowledgebaseLandingHero';
+
+// Directory category images — served from /public/images (WebP)
+const agriAssociaImg      = '/images/AgriculturalAssociations.webp';
+const artisianImg         = '/images/ArtisanProducers.webp';
+const brImg               = '/images/BusinessResourcesDirectoryImage.webp';
+const crafOrgImg          = '/images/CrafterOrganizations.webp';
+const farmersMarketImg    = '/images/FarmersMarket.webp';
+const farmsRanchesImg     = '/images/Farm.webp';
+const fiberImg            = '/images/FiberCooperatives.webp';
+const fiberMillsImg       = '/images/FiberMill.webp';
+const fisheriesImg        = '/images/Fishery.webp';
+const fishermenImg        = '/images/Fishermen.webp';
+const foodAggregatorsImg  = '/images/FoodAggregators.webp';
+const foodCopImg          = '/images/FoodCooperatives.webp';
+const foodHubImg          = '/images/FoodHubs.webp';
+const groceryStoreImg     = '/images/GroceryStores.webp';
+const herbTeaImg          = '/images/Herbs.webp';
+const hungerReliefImg     = '/images/HumanReleafOrganization.webp';
+const manfacImg           = '/images/Manufacturers.webp';
+const marinasImg          = '/images/Marina.webp';
+const meatImg             = '/images/MeatWholesalers.webp';
+const realEstateImg       = '/images/RealEstateAgents.webp';
+const restaurantsImg      = '/images/Restaurants.webp';
+const retailersImg        = '/images/Retailers.webp';
+const serviceProvidersImg = '/images/ServiceProviders.webp';
+const transporterImg      = '/images/Transportation.webp';
+const universitiesImg     = '/images/University.webp';
+const vetImg              = '/images/Vetrinarians.webp';
+const vineyardsImg        = '/images/Vineyard.webp';
+const wineriesImg         = '/images/Winery.webp';
+const othersImg           = '/icons/Other.png';
+
+// Categories surfaced in the public directory. Sourced from the
+// `businesstypelookup` table (excluding the "N/A" placeholder row) and
+// ordered alphabetically by BusinessType to match GET /api/businesses/types.
+const CATEGORIES_BASE = [
+  { slug: 'agricultural-associations', img: agriAssociaImg },
+  { slug: 'artisan-producers',         img: artisianImg },
+  { slug: 'business-resources',        img: brImg },
+  { slug: 'crafter-organizations',     img: crafOrgImg },
+  { slug: 'farmers-markets',           img: farmersMarketImg },
+  { slug: 'farms-ranches',             img: farmsRanchesImg },
+  { slug: 'fiber-cooperatives',        img: fiberImg },
+  { slug: 'fiber-mills',               img: fiberMillsImg },
+  { slug: 'fisheries',                 img: fisheriesImg },
+  { slug: 'fishermen',                 img: fishermenImg },
+  { slug: 'food-aggregators',          img: foodAggregatorsImg },
+  { slug: 'food-cooperatives',         img: foodCopImg },
+  { slug: 'food-hubs',                 img: foodHubImg },
+  { slug: 'grocery-stores',            img: groceryStoreImg },
+  { slug: 'herb-and-tea-producers',    img: herbTeaImg },
+  { slug: 'hunger-relief-organizations', img: hungerReliefImg },
+  { slug: 'manufacturers',             img: manfacImg },
+  { slug: 'marinas',                   img: marinasImg },
+  { slug: 'meat-wholesalers',          img: meatImg },
+  { slug: 'real-estate-agents',        img: realEstateImg },
+  { slug: 'restaurants',               img: restaurantsImg },
+  { slug: 'retailers',                 img: retailersImg },
+  { slug: 'service-providers',         img: serviceProvidersImg },
+  { slug: 'transporters',              img: transporterImg },
+  { slug: 'universities',              img: universitiesImg },
+  { slug: 'veterinarians',             img: vetImg },
+  { slug: 'vineyards',                 img: vineyardsImg },
+  { slug: 'wineries',                  img: wineriesImg },
+  // "Other" is intentionally pinned to the bottom rather than sorted in.
+  { slug: 'others',                    img: othersImg },
+];
+
+const EAGER_COUNT = 4;
+
+export default function DirectoryList() {
+  const { t } = useTranslation();
+  const [filter, setFilter] = useState('');
+
+  const CATEGORIES = useMemo(
+    () =>
+      CATEGORIES_BASE.map((c) => {
+        const k = c.slug.replace(/-/g, '_');
+        return { ...c, title: t(`directory_list.cat_${k}_title`), desc: t(`directory_list.cat_${k}_desc`) };
+      }),
+    [t]
+  );
+
+  const filtered = useMemo(() => {
+    const q = filter.trim().toLowerCase();
+    if (!q) return CATEGORIES;
+    return CATEGORIES.filter(
+      (cat) =>
+        cat.title?.toLowerCase().includes(q) ||
+        cat.desc?.toLowerCase().includes(q) ||
+        cat.slug.includes(q)
+    );
+  }, [CATEGORIES, filter]);
+
+  return (
+    <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
+      <PageMeta
+        title="Farm & Food Business Directory | Find Local Farms & Producers"
+        description="Find farms, food hubs, farmers markets, restaurants, processors, artisan producers, and more in our comprehensive farm and food business directory."
+        keywords="farm directory, food business directory, local farms, farmers markets, food hubs, restaurants, artisan producers, agricultural businesses, farm listings"
+        canonical="https://oatmealfarmnetwork.com/directory"
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'CollectionPage',
+          name: 'Farm & Food Business Directory',
+          description: 'Comprehensive directory of farms, food producers, markets, and agricultural businesses.',
+          url: 'https://oatmealfarmnetwork.com/directory',
+        }}
+      />
+      <Header />
+
+      <div className="mx-auto px-4 pt-2 md:pt-6" style={{ maxWidth: '1300px' }}>
+        <Breadcrumbs items={[
+          { label: t('directory_list.breadcrumb_home'), to: '/' },
+          { label: t('directory_list.breadcrumb_directory') },
+        ]} />
+
+        <KnowledgebaseLandingHero
+          image="/images/KBHeroDirectory.png"
+          alt="The Food System Directory"
+          title="The Food System Directory"
+          description="Find what you're looking for across 29 categories — from farms and food hubs to restaurants, fiber mills, and more. Search and connect with local farms, food businesses, and organizations in your area."
+          stats={[
+            { value: '4,085', label: 'Documented Varieties' },
+            { value: String(CATEGORIES_BASE.length), label: 'Core Classifications' },
+            { value: '24', label: 'New Entries This Month' },
+          ]}
+          searchPlaceholder="Search producers, mills, or markets..."
+          searchValue={filter}
+          onSearchChange={setFilter}
+        />
+      </div>
+
+      <div className="mx-auto px-4 py-8" style={{ maxWidth: '1300px' }}>
+        <h2
+          className="text-xl md:text-2xl font-bold mb-5"
+          style={{ fontFamily: "'Lora','Times New Roman',serif", color: '#3D6B34' }}
+        >
+          {t('directory_list.section_heading')}
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {filtered.map((cat, index) => (
+            <div
+              key={cat.slug}
+              className="flex bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md hover:border-[#819360] transition-all duration-200"
+            >
+              <Link to={`/directory/${cat.slug}`} className="shrink-0 overflow-hidden" style={{ width: '155px', height: '155px' }}>
+                <img
+                  src={cat.img}
+                  alt={cat.title}
+                  width="155"
+                  height="155"
+                  loading={index < EAGER_COUNT ? 'eager' : 'lazy'}
+                  decoding={index < EAGER_COUNT ? 'sync' : 'async'}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  onError={(e) => { e.target.src = '/images/DirectoryHome.webp'; }}
+                />
+              </Link>
+
+              <div className="flex flex-col justify-between px-5 py-4 flex-1 min-w-0">
+                <div>
+                  <Link
+                    to={`/directory/${cat.slug}`}
+                    className="font-bold text-sm hover:underline"
+                    style={{ color: '#3D6B34' }}
+                  >
+                    {cat.title}
+                  </Link>
+                  <p className="text-xs text-gray-600 leading-relaxed mt-1">{cat.desc}</p>
+                </div>
+                <div className="mt-3">
+                  <Link
+                    to={`/directory/${cat.slug}`}
+                    className="text-xs font-bold hover:underline"
+                    style={{ color: '#3D6B34' }}
+                  >
+                    {t('directory_list.btn_explore')}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filtered.length === 0 && (
+          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400">
+            No directory categories match your search.
+          </div>
+        )}
+      </div>
+
+      <Footer />
+    </div>
+  );
+}

@@ -127,7 +127,9 @@ export default function LivestockDB() {
 
   const breedLabel = total > 0 ? total.toLocaleString() : '2,500+';
   const popularSpecies = SPECIES.filter((s) => POPULAR.includes(s.slug));
-  const guest = !isLoggedIn();
+  // Knowledgebase is public reference content — the full species index shows
+  // for everyone, signed in or not. (Toggle back to `!isLoggedIn()` to re-gate.)
+  const guest = false;
   const firstName = typeof window !== 'undefined' ? localStorage.getItem('first_name') || '' : '';
 
   const searchForm = (

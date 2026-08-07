@@ -15,7 +15,9 @@ export default function LivestockBreed() {
   const { t } = useTranslation();
   const { species, breedId } = useParams();
   const { language } = useLanguage();
-  const guest = !isLoggedIn();
+  // Knowledgebase is public reference content — full breed profile shows for
+  // everyone, signed in or not. (Toggle back to `!isLoggedIn()` to re-gate.)
+  const guest = false;
   const [breed, setBreed] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imageFailed, setImageFailed] = useState(false);

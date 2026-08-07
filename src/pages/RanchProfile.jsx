@@ -1,7 +1,7 @@
 // src/pages/RanchProfile.jsx
 // Public ranch profile page — /marketplaces/livestock/ranch/:businessId
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router';
+import { Link, useParams, useSearchParams, useLocation } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -212,13 +212,90 @@ function ContactTab({ ranch }) {
 
 const btnStyle = { padding: '5px 12px', border: '1px solid #ccc', borderRadius: '8px', backgroundColor: '#fff', cursor: 'pointer', fontSize: '0.85rem' };
 
+function stripHtml(s) {
+  return (s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// Pull the first <img> out of a blog post's body — content is stored as JSON
+// text blocks with embedded <figure><img> HTML, so most posts have no explicit
+// cover_image but do carry an image inside their content.
+function firstImageFromContent(content) {
+  if (!content) return null;
+  const findImg = (html) => {
+    if (typeof html !== 'string') return null;
+    const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    return m ? m[1] : null;
+  };
+  try {
+    const blocks = JSON.parse(content);
+    if (Array.isArray(blocks)) {
+      for (const b of blocks) {
+        if (!b) continue;
+        if (b.type === 'image' || b.type === 'img') {
+          const src = b.url || b.src || b.image || (typeof b.content === 'string' ? b.content : null);
+          if (typeof src === 'string' && /^(https?:|\/|data:)/.test(src)) return src;
+        }
+        const inHtml = findImg(b.content) || findImg(b.html) || findImg(b.text);
+        if (inHtml) return inHtml;
+      }
+      return null;
+    }
+  } catch { /* not JSON — treat as HTML below */ }
+  return findImg(String(content));
+}
+
+function BlogTab({ posts }) {
+  const { t } = useTranslation();
+  if (!posts) return <div className="py-5 text-gray-400">{t('ranch_profile.loading', 'Loading…')}</div>;
+  if (posts.length === 0) return <div className="py-5 text-gray-400">No blog posts yet.</div>;
+  return (
+    <div className="flex flex-col gap-4">
+      {posts.map((p) => {
+        const id = p.blog_id ?? p.BlogID ?? p.id;
+        const title = p.title || p.BlogHeadline || 'Untitled';
+        const excerpt = stripHtml(p.excerpt || p.content || p.Body || p.BlogText1 || '').slice(0, 180);
+        const cover = p.cover_image || p.featured_image_url || p.FeaturedImageURL
+          || firstImageFromContent(p.content || p.Body || p.BlogText1);
+        const date = p.published_at || p.PublishedAt || p.created_at || null;
+        return (
+          <Link
+            key={id}
+            to={`/blog/${id}`}
+            className="flex gap-4 rounded-lg border border-gray-200 bg-white p-4 no-underline hover:shadow-sm"
+          >
+            {cover && (
+              <img
+                src={cover}
+                alt=""
+                className="shrink-0 rounded object-cover"
+                style={{ width: 96, height: 96 }}
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            )}
+            <div className="min-w-0">
+              <h3 className="m-0 mb-1 text-base font-bold text-gray-800" style={{ fontFamily: LORA }}>{title}</h3>
+              {date && <p className="m-0 mb-1 text-xs text-gray-400">{new Date(date).toLocaleDateString()}</p>}
+              {excerpt && <p className="m-0 text-sm leading-relaxed text-gray-600">{excerpt}{excerpt.length >= 180 ? '…' : ''}</p>}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function RanchProfile() {
   const { t } = useTranslation();
-  const { businessId } = useParams();
+  const { businessId: paramId } = useParams();
+  const location = useLocation();
+  // Works both at /marketplaces/livestock/ranch/:businessId (param) and at
+  // /directory/business, where the business arrives via router state.
+  const businessId = paramId || location.state?.business?.BusinessID;
   const [searchParams, setSearchParams] = useSearchParams();
   const [ranch, setRanch] = useState(null);
   const [loading, setLoading] = useState(true);
   const [animalCounts, setAnimalCounts] = useState({ for_sale: 0, studs: 0 });
+  const [blogPosts, setBlogPosts] = useState(null);
 
   const activeTab = searchParams.get('tab') || 'home';
   const setTab = (tab) => setSearchParams({ tab });
@@ -239,6 +316,15 @@ export default function RanchProfile() {
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d && setAnimalCounts((prev) => ({ ...prev, studs: d.total })))
       .catch(() => {});
+
+    setBlogPosts(null);
+    fetch(`${API_URL}/api/blog/posts?business_id=${businessId}&limit=50`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        const posts = Array.isArray(d) ? d : (d?.posts || d?.data || []);
+        setBlogPosts(posts);
+      })
+      .catch(() => setBlogPosts([]));
   }, [businessId]);
 
   if (loading) {
@@ -268,9 +354,11 @@ export default function RanchProfile() {
     );
   }
 
+  const blogCount = blogPosts ? blogPosts.length : 0;
   const TABS = [
     { key: 'home', label: t('ranch_profile.tab_home', 'Home'), always: true },
-    { key: 'animals', label: t('ranch_profile.tab_animals', 'For Sale ({{count}})', { count: animalCounts.for_sale }), show: animalCounts.for_sale > 0 },
+    { key: 'blog', label: `Blog (${blogCount})`, show: blogCount > 0 },
+    { key: 'animals', label: t('ranch_profile.tab_animals', 'Animals For Sale ({{count}})', { count: animalCounts.for_sale }), show: animalCounts.for_sale > 0 },
     { key: 'studs', label: t('ranch_profile.tab_studs', 'Studs ({{count}})', { count: animalCounts.studs }), show: animalCounts.studs > 0 },
     { key: 'contact', label: t('ranch_profile.tab_contact', 'Contact'), always: true },
   ].filter((tab) => tab.always || tab.show);
@@ -416,6 +504,7 @@ export default function RanchProfile() {
           </div>
         )}
 
+        {activeTab === 'blog' && <BlogTab posts={blogPosts} />}
         {activeTab === 'animals' && <AnimalsTab businessId={businessId} isStuds={false} />}
         {activeTab === 'studs' && <AnimalsTab businessId={businessId} isStuds={true} />}
         {activeTab === 'contact' && <ContactTab ranch={ranch} />}

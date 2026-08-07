@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import About from "./pages/About";
+import AboutOatmealAI from "./pages/AboutOatmealAI";
 import ContactUs from "./pages/ContactUs";
 import ContactUsConfirm from "./pages/ContactUsConfirm";
 import ComingSoon from "./pages/ComingSoon";
@@ -20,6 +21,10 @@ import LivestockAbout from "./pages/LivestockAbout";
 import Dashboard from "./pages/Dashboard";
 import NewsFeedPage from "./pages/NewsFeedPage";
 import NewsArticlePage from "./pages/NewsArticlePage";
+import DirectoryList from "./Directory/pages/DirectoryList";
+import DirectoryDetail from "./Directory/pages/DirectoryDetail";
+import BlogList from "./pages/BlogList";
+import BlogDetail from "./pages/BlogDetail";
 import RequireAuth from "./components/RequireAuth";
 import AnimalsHome from "./pages/seller/AnimalsHome";
 import AnimalAdd from "./pages/seller/AnimalAdd";
@@ -143,26 +148,18 @@ export default function App() {
 
         <Route path="/events" element={<Phase1EventsComingSoon />} />
         <Route path="/about" element={<About />} />
+        <Route path="/about/oatmeal-ai" element={<AboutOatmealAI />} />
         <Route path="/contact-us" element={<ContactUsGuest />} />
         <Route path="/contact-us/confirm" element={<ContactUsConfirmGuest />} />
-        <Route
-          path="/blog"
-          element={
-            <ComingSoon
-              title="Blog"
-              description="The Livestock of America blog is coming soon."
-            />
-          }
-        />
+        <Route path="/blog" element={<BlogList />} />
+        <Route path="/blog/:postId" element={<BlogDetail />} />
         <Route
           path="/directory"
-          element={
-            <ComingSoon
-              title="Directory"
-              description="The industry directory is coming soon. Browse ranches from the marketplace today."
-            />
-          }
+          element={<DirectoryList />}
         />
+        <Route path="/directory/business/:businessId" element={<RanchProfile />} />
+        <Route path="/directory/business" element={<RanchProfile />} />
+        <Route path="/directory/:directoryType" element={<DirectoryDetail />} />
         <Route
           path="/over-the-fence"
           element={
