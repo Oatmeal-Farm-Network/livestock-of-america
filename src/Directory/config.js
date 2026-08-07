@@ -9,4 +9,5 @@ export const API_ENDPOINTS = {
     COUNTRIES: `${API_BASE_URL}/businesses/countries`,
     STATES: `${API_BASE_URL}/businesses/states`,
     BUSINESSES: `${API_BASE_URL}/businesses/`,
+    BUSINESS_SEARCH: `${API_BASE_URL}/businesses/search`,
 };

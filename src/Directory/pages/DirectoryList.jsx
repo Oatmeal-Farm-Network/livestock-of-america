@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
+import { API_ENDPOINTS } from '../config';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import PageMeta from '../../components/PageMeta';
@@ -100,6 +101,44 @@ export default function DirectoryList() {
     );
   }, [CATEGORIES, filter]);
 
+  // Business-name search. The tile filter above only ever matched the 29
+  // category names, so a real business name found nothing.
+  const [businesses, setBusinesses] = useState([]);
+  const [bizTotal, setBizTotal] = useState(0);
+  const [bizLoading, setBizLoading] = useState(false);
+
+  useEffect(() => {
+    const q = filter.trim();
+    if (q.length < 2) {
+      setBusinesses([]);
+      setBizTotal(0);
+      setBizLoading(false);
+      return undefined;
+    }
+    let cancelled = false;
+    setBizLoading(true);
+    // Debounced so typing doesn't fire a request per keystroke.
+    const timer = setTimeout(() => {
+      fetch(`${API_ENDPOINTS.BUSINESS_SEARCH}?q=${encodeURIComponent(q)}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (cancelled) return;
+          setBusinesses(Array.isArray(data?.businesses) ? data.businesses : []);
+          setBizTotal(data?.total || 0);
+          setBizLoading(false);
+        })
+        .catch(() => {
+          if (cancelled) return;
+          setBusinesses([]);
+          setBizTotal(0);
+          setBizLoading(false);
+        });
+    }, 250);
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [filter]);
+
+  const searching = filter.trim().length >= 2;
+
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
@@ -140,11 +179,71 @@ export default function DirectoryList() {
       </div>
 
       <div className="mx-auto px-4 py-8" style={{ maxWidth: '1300px' }}>
+        {searching && (
+          <section className="mb-10">
+            <h2
+              className="text-xl md:text-2xl font-bold mb-1"
+              style={{ fontFamily: "'Lora','Times New Roman',serif", color: '#3D6B34' }}
+            >
+              Businesses
+            </h2>
+            <p className="text-xs text-gray-500 mb-4">
+              {bizLoading
+                ? 'Searching…'
+                : bizTotal === 0
+                  ? `No businesses match “${filter.trim()}”.`
+                  : `${bizTotal.toLocaleString()} business${bizTotal === 1 ? '' : 'es'} matching “${filter.trim()}”` +
+                    (businesses.length < bizTotal ? ` — showing first ${businesses.length.toLocaleString()}` : '')}
+            </p>
+
+            {!bizLoading && businesses.length > 0 && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {businesses.map((b) => (
+                  <Link
+                    key={b.BusinessID}
+                    to={`/directory/business/${b.BusinessID}`}
+                    className="flex items-center gap-3 bg-white rounded-xl border border-gray-200 p-3 no-underline hover:shadow-md hover:border-[#819360] transition-all duration-200"
+                  >
+                    <div
+                      className="shrink-0 rounded-lg overflow-hidden bg-[#efe9df] flex items-center justify-center"
+                      style={{ width: '48px', height: '48px' }}
+                    >
+                      {b.ProfileImage ? (
+                        <img
+                          src={b.ProfileImage}
+                          alt=""
+                          loading="lazy"
+                          className="w-full h-full object-contain"
+                          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                        />
+                      ) : (
+                        <span className="text-sm font-bold" style={{ color: '#b5ae9f' }}>
+                          {(b.BusinessName || '?').trim().charAt(0).toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="m-0 font-bold text-sm truncate" style={{ color: '#3D6B34' }}>
+                        {b.BusinessName}
+                      </p>
+                      <p className="m-0 text-[11px] text-gray-500 truncate">
+                        {[b.BusinessType, [b.AddressCity, b.AddressState].filter(Boolean).join(', ')]
+                          .filter(Boolean)
+                          .join(' · ')}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
+
         <h2
           className="text-xl md:text-2xl font-bold mb-5"
           style={{ fontFamily: "'Lora','Times New Roman',serif", color: '#3D6B34' }}
         >
-          {t('directory_list.section_heading')}
+          {searching ? 'Categories' : t('directory_list.section_heading')}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
