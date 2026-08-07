@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import ListingPhoto from '../components/ListingPhoto';
+import FlagBackdrop from '../components/FlagBackdrop';
 import { endpoints } from '../config/api';
 
 const CREAM = '#f7f2e8';
@@ -16,13 +17,6 @@ const LINE = '#e5e0d6';
 const LORA = "'Lora', 'Times New Roman', serif";
 
 const BANNER = '/images/LOAwebbanner1898x360.webp';
-
-/**
- * Optional photographic flag backdrop. Leave empty to use the CSS-drawn flag
- * wash below; set it to a path under /public (e.g. '/images/flag-bg.webp')
- * to swap in a real image without touching the layout.
- */
-const FLAG_IMAGE = '';
 
 const ANIMAL_PATH = (id) => `/marketplaces/livestock/animal/${id}`;
 
@@ -78,45 +72,6 @@ function Reveal({ children, className = '', delay = 0 }) {
       style={{ transitionDelay: visible ? `${delay}ms` : '0ms' }}
     >
       {children}
-    </div>
-  );
-}
-
-/** Faded stars-and-stripes page backdrop. */
-function FlagBackdrop() {
-  return (
-    <div className="fixed inset-0 -z-10 pointer-events-none" aria-hidden style={{ backgroundColor: CREAM }}>
-      {FLAG_IMAGE ? (
-        <img src={FLAG_IMAGE} alt="" className="w-full h-full object-cover opacity-25" />
-      ) : (
-        <>
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(178deg, rgba(178,34,52,0.07) 0 3.9%, rgba(178,34,52,0) 3.9% 7.7%)',
-            }}
-          />
-          <div
-            className="absolute left-0 top-0"
-            style={{
-              width: '44%',
-              height: '54%',
-              backgroundColor: 'rgba(62,63,116,0.055)',
-              backgroundImage:
-                'radial-gradient(circle, rgba(255,255,255,0.9) 1px, rgba(255,255,255,0) 1.4px)',
-              backgroundSize: '5.5% 9.8%',
-            }}
-          />
-        </>
-      )}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(115deg, rgba(247,242,232,0.62) 0%, rgba(247,242,232,0.86) 55%, rgba(247,242,232,0.95) 100%)',
-        }}
-      />
     </div>
   );
 }

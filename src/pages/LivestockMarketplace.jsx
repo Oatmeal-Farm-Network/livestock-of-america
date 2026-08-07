@@ -7,6 +7,7 @@ import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
 import SaveButton from '../components/SaveButton';
 import ListingPhoto from '../components/ListingPhoto';
+import FlagBackdrop from '../components/FlagBackdrop';
 import GuestAccessPrompt, { GUEST_LIST_PREVIEW } from '../components/GuestAccessPrompt';
 import { isLoggedIn } from '../lib/auth';
 import {
@@ -747,7 +748,7 @@ export default function LivestockMarketplace() {
 
   /* ── Public marketing marketplace ── */
   return (
-    <div className="min-h-screen font-sans" style={{ backgroundColor: CREAM }}>
+    <div className="min-h-screen font-sans relative">
       <PageMeta
         title="Livestock of America by Oatmeal AI | Livestock Marketplace"
         description="Browse livestock for sale across the United States. Connect with ranchers, breeders, and buyers on Livestock of America by Oatmeal AI."
@@ -774,6 +775,7 @@ export default function LivestockMarketplace() {
           } : null,
         ].filter(Boolean)}
       />
+      <FlagBackdrop />
       <Header />
 
       <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'flex-start' }}>
