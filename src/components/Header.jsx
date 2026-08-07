@@ -1,19 +1,41 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import { isLoggedIn, logout } from '../lib/auth';
+import {
+  FOR_SALE_SPECIES,
+  STUD_SPECIES,
+  forSalePath,
+  studPath,
+  speciesLinks,
+} from '../lib/livestockSpecies';
 
 const HEADER_BG = '#8b3a2b';
 const LORA = "'Lora', 'Times New Roman', serif";
 
 /**
  * LOA top-header nav, in the requested order:
- * Home · Marketplace · Directory · Newsfeed▾ · Knowledgebase · Events · About▾ · Log Out
- * Newsfeed and About are dropdowns. `authTo` swaps the target once signed in.
+ * Home · Livestock for Sale▾ · Studs▾ · Directory · Newsfeed▾ · Knowledgebase ·
+ * Events · About▾ · Log Out
+ *
+ * Species children are built at render so they can be translated; `authTo`
+ * swaps the target once signed in.
  */
 const NAV = [
   { label: 'Home', fallbackKey: 'phase1.nav.home', to: '/', authTo: '/account' },
-  { label: 'Marketplace', fallbackKey: 'phase1.nav.marketplace', to: '/animals' },
+  {
+    label: 'Livestock for Sale',
+    fallbackKey: 'phase1.nav.for_sale',
+    // 29 species — too tall for one column.
+    columns: 3,
+    species: 'for_sale',
+  },
+  {
+    label: 'Studs',
+    fallbackKey: 'phase1.nav.studs',
+    columns: 2,
+    species: 'studs',
+  },
   { label: 'Directory', fallbackKey: 'phase1.nav.directory', to: '/directory' },
   {
     label: 'Newsfeed',
@@ -48,7 +70,7 @@ const linkStyle = {
 };
 
 /** Desktop hover dropdown with a 220ms grace-period close. */
-function NavDropdown({ label, children, onNavigate }) {
+function NavDropdown({ label, children, onNavigate, columns = 1 }) {
   const [open, setOpen] = useState(false);
   const timer = useRef(null);
 
@@ -80,11 +102,22 @@ function NavDropdown({ label, children, onNavigate }) {
       </button>
       {open && (
         <div
-          className="absolute right-0 top-full pt-2 z-[10001]"
+          /* Wide species panels open rightward — anchored right they would
+             run off the left edge on narrower desktop widths. */
+          className={`absolute ${columns > 1 ? 'left-0' : 'right-0'} top-full pt-2 z-[10001]`}
           onMouseEnter={openNow}
           onMouseLeave={closeSoon}
         >
-          <div className="bg-white rounded-md shadow-lg overflow-hidden min-w-[180px] py-1">
+          <div
+            className={`bg-white rounded-md shadow-lg py-1 ${columns > 1 ? 'grid' : 'min-w-[180px]'}`}
+            style={{
+              maxHeight: 'calc(100vh - 120px)',
+              overflowY: 'auto',
+              ...(columns > 1
+                ? { gridTemplateColumns: `repeat(${columns}, minmax(185px, 1fr))` }
+                : null),
+            }}
+          >
             {children.map((c) =>
               c.external ? (
                 <a
@@ -93,7 +126,7 @@ function NavDropdown({ label, children, onNavigate }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => { setOpen(false); onNavigate?.(); }}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
                   style={{ fontFamily: LORA }}
                 >
                   {c.label}
@@ -103,7 +136,7 @@ function NavDropdown({ label, children, onNavigate }) {
                   key={c.label}
                   to={c.to}
                   onClick={() => { setOpen(false); onNavigate?.(); }}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
                   style={{ fontFamily: LORA }}
                 >
                   {c.label}
@@ -118,6 +151,65 @@ function NavDropdown({ label, children, onNavigate }) {
 }
 
 /**
+ * Mobile accordion section. Collapsed by default — the species menus run to
+ * 30 entries, which would bury the rest of the nav if always expanded.
+ */
+function MobileNavSection({ label, items, onNavigate }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        style={{
+          ...linkStyle,
+          opacity: 0.85,
+          fontSize: '0.78rem',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          textAlign: 'left',
+        }}
+      >
+        {label}
+        <span style={{ fontSize: '0.6rem' }}>{expanded ? '▴' : '▾'}</span>
+      </button>
+      {expanded &&
+        items.map((c) =>
+          c.external ? (
+            <a
+              key={c.label}
+              href={c.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onNavigate}
+              style={linkStyle}
+              className="pl-3"
+            >
+              {c.label}
+            </a>
+          ) : (
+            <Link
+              key={c.label}
+              to={c.to}
+              onClick={onNavigate}
+              style={linkStyle}
+              className="pl-3"
+            >
+              {c.label}
+            </Link>
+          ),
+        )}
+    </div>
+  );
+}
+
+/**
  * LOA top header only.
  * Guests: marketing nav + Login. Signed-in: same links + Log Out.
  * AuthShell renders <Header force />; page-level <Header /> is hidden when signed in.
@@ -127,6 +219,27 @@ export default function Header({ force = false }) {
   const navigate = useNavigate();
   const loggedIn = isLoggedIn();
   const [open, setOpen] = useState(false);
+
+  // Species dropdowns are built here (not in NAV) so their labels translate.
+  const navItems = useMemo(
+    () =>
+      NAV.map((item) => {
+        if (item.species === 'for_sale') {
+          return {
+            ...item,
+            children: [
+              { label: t('phase1.nav.all_for_sale', 'All Livestock for Sale'), to: '/animals' },
+              ...speciesLinks(FOR_SALE_SPECIES, forSalePath, t),
+            ],
+          };
+        }
+        if (item.species === 'studs') {
+          return { ...item, children: speciesLinks(STUD_SPECIES, studPath, t) };
+        }
+        return item;
+      }),
+    [t],
+  );
 
   if (loggedIn && !force) return null;
 
@@ -157,12 +270,13 @@ export default function Header({ force = false }) {
 
         {/* Desktop nav */}
         <div className="hidden lg:flex items-center gap-4 flex-wrap justify-end">
-          {NAV.map((item) =>
+          {navItems.map((item) =>
             item.children ? (
               <NavDropdown
                 key={item.label}
                 label={t(item.fallbackKey, item.label)}
                 children={item.children}
+                columns={item.columns}
               />
             ) : (
               <Link key={item.label} to={itemTo(item)} style={linkStyle}>
@@ -198,38 +312,14 @@ export default function Header({ force = false }) {
           className="lg:hidden absolute top-full left-0 w-full border-t border-white/10 shadow-xl z-50 px-5 py-4 flex flex-col gap-3"
           style={{ backgroundColor: HEADER_BG }}
         >
-          {NAV.map((item) =>
+          {navItems.map((item) =>
             item.children ? (
-              <div key={item.label} className="flex flex-col gap-2">
-                <span style={{ ...linkStyle, opacity: 0.7, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  {t(item.fallbackKey, item.label)}
-                </span>
-                {item.children.map((c) =>
-                  c.external ? (
-                    <a
-                      key={c.label}
-                      href={c.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setOpen(false)}
-                      style={linkStyle}
-                      className="pl-3"
-                    >
-                      {c.label}
-                    </a>
-                  ) : (
-                    <Link
-                      key={c.label}
-                      to={c.to}
-                      onClick={() => setOpen(false)}
-                      style={linkStyle}
-                      className="pl-3"
-                    >
-                      {c.label}
-                    </Link>
-                  )
-                )}
-              </div>
+              <MobileNavSection
+                key={item.label}
+                label={t(item.fallbackKey, item.label)}
+                items={item.children}
+                onNavigate={() => setOpen(false)}
+              />
             ) : (
               <Link
                 key={item.label}

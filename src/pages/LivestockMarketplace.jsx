@@ -4,18 +4,28 @@ import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
-import LivestockHeroTabs from '../components/LivestockHeroTabs';
+import Breadcrumbs from '../components/Breadcrumbs';
 import SaveButton from '../components/SaveButton';
 import ListingPhoto from '../components/ListingPhoto';
 import GuestAccessPrompt, { GUEST_LIST_PREVIEW } from '../components/GuestAccessPrompt';
 import { isLoggedIn } from '../lib/auth';
+import {
+  FOR_SALE_SPECIES,
+  STUD_SPECIES,
+  RANCH_SPECIES,
+  forSalePath,
+  studPath,
+  ranchPath,
+} from '../lib/livestockSpecies';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 const CREAM = '#f7f2e8';
 const OLIVE = '#3d6b34';
+const AMBER = '#e59a24';
 const INK = '#2c2c2c';
 const MUTED = '#6b6b6b';
 const LORA = "'Lora', 'Times New Roman', serif";
+const BANNER = '/images/LOAwebbanner1898x360.webp';
 
 const QUICK_SPECIES = [
   { slug: 'cattle', label: 'Cattle', img: '/images/Cattle.webp' },
@@ -27,6 +37,120 @@ const QUICK_SPECIES = [
   { slug: 'alpacas', label: 'Alpacas', img: '/images/Alpaca.webp' },
   { slug: 'bison', label: 'Bison', img: '/images/Bison.webp' },
 ];
+
+/** Card columns per breakpoint — mirrors the grid classes below. */
+function useColumnCount() {
+  const getCount = () => {
+    if (typeof window === 'undefined') return 5;
+    if (window.innerWidth >= 1280) return 5;
+    if (window.innerWidth >= 640) return 4;
+    return 2;
+  };
+  const [cols, setCols] = useState(getCount);
+  useEffect(() => {
+    const update = () => setCols(getCount());
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return cols;
+}
+
+const SIDEBAR_SECTIONS = [
+  { id: 'for_sale', species: FOR_SALE_SPECIES, toPath: forSalePath },
+  { id: 'studs',    species: STUD_SPECIES,     toPath: studPath },
+  { id: 'ranches',  species: RANCH_SPECIES,    toPath: ranchPath },
+];
+
+function Sidebar({ collapsed, onToggle }) {
+  const { t } = useTranslation();
+  const [openSections, setOpenSections] = useState({ for_sale: true });
+
+  const toggleSection = (id) =>
+    setOpenSections((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  return (
+    <div
+      style={{
+        width: collapsed ? '40px' : '220px',
+        minWidth: collapsed ? '40px' : '220px',
+        transition: 'all 0.3s ease',
+        backgroundColor: '#f5f5f0',
+        borderRight: '1px solid #ddd',
+        overflowY: collapsed ? 'hidden' : 'auto',
+        overflowX: 'hidden',
+        position: 'sticky',
+        top: '72px',
+        maxHeight: 'calc(100vh - 72px)',
+        flexShrink: 0,
+      }}
+    >
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={!collapsed}
+        style={{
+          width: '100%', padding: '10px', border: 'none',
+          backgroundColor: AMBER, color: '#fff',
+          fontWeight: 'bold', cursor: 'pointer', fontSize: '14px',
+          display: 'flex', alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'space-between',
+          gap: '6px',
+        }}
+      >
+        {!collapsed && (
+          <span style={{ fontSize: '12px', fontWeight: 600 }}>
+            {t('livestock_mkt.browse', 'Browse')}
+          </span>
+        )}
+        <span style={{ fontSize: '18px' }}>{collapsed ? '☰' : '✕'}</span>
+      </button>
+
+      {!collapsed && (
+        <div style={{ padding: '8px 0' }}>
+          {SIDEBAR_SECTIONS.map((section) => (
+            <div key={section.id}>
+              <button
+                type="button"
+                onClick={() => toggleSection(section.id)}
+                style={{
+                  width: '100%', padding: '8px 12px', border: 'none',
+                  backgroundColor: '#e8e8e0', color: '#333',
+                  fontWeight: '700', fontSize: '12px', textAlign: 'left',
+                  cursor: 'pointer', display: 'flex', justifyContent: 'space-between',
+                  alignItems: 'center', textTransform: 'uppercase', letterSpacing: '0.5px',
+                }}
+              >
+                {t(`livestock_mkt.section_${section.id}`)}
+                <span>{openSections[section.id] ? '▲' : '▼'}</span>
+              </button>
+
+              {openSections[section.id] && (
+                <ul style={{ listStyle: 'none', margin: 0, padding: '4px 0' }}>
+                  {section.species.map((item) => (
+                    <li key={item.key}>
+                      <Link
+                        to={section.toPath(item.slug)}
+                        style={{
+                          display: 'block', padding: '5px 16px',
+                          fontSize: '13px', color: '#4d734d',
+                          textDecoration: 'none',
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#e5ede5'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                      >
+                        {t(`livestock_mkt.${item.key}`, item.label)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function SearchBar({ query, onQueryChange, location, onLocationChange, locations, onSearch }) {
   const { t } = useTranslation();
@@ -190,58 +314,76 @@ function FiltersPanel({
 
 function AnimalCard({ animal }) {
   const { t } = useTranslation();
-  const guest = !isLoggedIn();
-  const breeds = [animal.breeds?.[0], animal.breeds?.[1]].filter(Boolean).join(' · ') || animal.breed || '';
-  const species = animal.species || '';
-  const metaLine = [species, breeds].filter(Boolean).join(' · ');
-  const priceLabel = guest
-    ? t('guest_access.members_only', 'Sign in to view')
-    : animal.price
-      ? `$${Math.round(animal.price).toLocaleString()}`
-      : t('livestock_mkt.price_call');
+  const breeds = [animal.breeds?.[0], animal.breeds?.[1]].filter(Boolean).join(' / ')
+    || animal.breed || '';
+  const priceLabel = animal.price
+    ? `$${Math.round(animal.price).toLocaleString()}`
+    : t('livestock_mkt.price_call');
+  const shortName = animal.full_name?.length > 30
+    ? `${animal.full_name.substring(0, 30)}…`
+    : animal.full_name;
 
   return (
     <Link
       to={`/marketplaces/livestock/animal/${animal.animal_id}`}
-      className="no-underline block h-full group"
+      className="no-underline flex h-full"
       style={{ color: 'inherit' }}
     >
       <article
-        className="bg-white rounded-lg overflow-hidden border h-full flex flex-col transition-shadow group-hover:shadow-md"
-        style={{ borderColor: '#e5e0d6' }}
+        className="bg-white rounded-lg overflow-hidden border w-full h-full flex flex-col transition duration-200 hover:shadow-lg hover:-translate-y-0.5"
+        style={{ borderColor: '#ddd' }}
       >
-        <div className="aspect-[16/10] bg-[#f0ede6] flex items-center justify-center overflow-hidden relative">
+        <div
+          className="w-full shrink-0 flex items-center justify-center overflow-hidden relative"
+          style={{ height: '180px', backgroundColor: '#f0ede6' }}
+        >
           <ListingPhoto
             src={animal.photo}
             alt={animal.full_name}
-            imgClassName="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            imgClassName="w-full h-full object-contain"
           />
           <div className="absolute top-2 right-2 z-10" onClick={(e) => e.preventDefault()}>
             <SaveButton itemType="animal" itemId={animal.animal_id} />
           </div>
         </div>
-        <div className="px-3 pt-2.5 pb-2 flex-1 flex flex-col">
-          <h3
-            className="text-[13px] font-bold leading-snug mb-0.5 line-clamp-2"
-            style={{ fontFamily: LORA, color: INK }}
-          >
-            {animal.full_name}
-          </h3>
-          {metaLine && (
-            <p className="text-[11px] mb-0.5 m-0 truncate" style={{ color: MUTED }}>{metaLine}</p>
+
+        <div className="flex-1 flex flex-col gap-1" style={{ padding: '10px 12px' }}>
+          <div className="font-bold leading-snug" style={{ fontSize: '0.85rem', color: '#222' }}>
+            {shortName}
+          </div>
+          {breeds && (
+            <div style={{ fontSize: '0.78rem', color: '#666' }}>{breeds}</div>
           )}
           {animal.seller && (
-            <p className="text-[11px] mb-1.5 m-0 truncate" style={{ color: MUTED }}>{animal.seller}</p>
+            <div className="truncate" style={{ fontSize: '0.75rem', color: '#888' }}>
+              {animal.seller}{animal.location ? `, ${animal.location}` : ''}
+            </div>
           )}
-          <p className="text-xs font-semibold mt-auto mb-0" style={{ color: OLIVE }}>{priceLabel}</p>
+          <div className="font-semibold" style={{ fontSize: '0.85rem', color: OLIVE, marginTop: '2px' }}>
+            {priceLabel}
+          </div>
         </div>
-        <div className="px-3 py-1.5 border-t flex justify-end" style={{ borderColor: '#f0ede6' }}>
-          <span className="text-[11px] font-bold" style={{ color: OLIVE }}>
+
+        <div
+          className="flex justify-end border-t"
+          style={{ padding: '8px 12px', borderColor: '#f0ede6' }}
+        >
+          <span className="font-bold" style={{ fontSize: '0.78rem', color: OLIVE }}>
             {t('livestock_mkt.explore', 'Explore →')}
           </span>
         </div>
       </article>
     </Link>
+  );
+}
+
+function CardGrid({ animals }) {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-5 gap-4">
+      {animals.map((animal) => (
+        <AnimalCard key={animal.animal_id} animal={animal} />
+      ))}
+    </div>
   );
 }
 
@@ -290,7 +432,13 @@ export default function LivestockMarketplace() {
   const [location, setLocation] = useState('');
   const [priceMax, setPriceMax] = useState(10000);
   const [category, setCategory] = useState('for_sale');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const cols = useColumnCount();
   const guest = !isLoggedIn();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) setSidebarCollapsed(true);
+  }, []);
 
   const handleCategoryChange = (next) => {
     setCategory(next);
@@ -365,7 +513,12 @@ export default function LivestockMarketplace() {
   );
 
   const featured = filtered.slice(0, GUEST_LIST_PREVIEW);
-  const more = filtered.slice(GUEST_LIST_PREVIEW);
+
+  // Guest view mirrors OFN: a top row of `cols` featured cards, then the rest
+  // trimmed to whole rows so the grid never ends on a ragged partial row.
+  const ofnFeatured = listings.slice(0, cols);
+  const ofnRestAll = listings.slice(cols);
+  const ofnRest = ofnRestAll.slice(0, Math.floor(ofnRestAll.length / cols) * cols);
 
   const handleSearch = () => {
     setAppliedQuery(query);
@@ -623,125 +776,92 @@ export default function LivestockMarketplace() {
       />
       <Header />
 
-      <LivestockHeroTabs />
+      <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'flex-start' }}>
+        <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((p) => !p)} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="mt-8">
-          <SearchBar
-            query={query}
-            onQueryChange={setQuery}
-            location={searchLocation}
-            onLocationChange={setSearchLocation}
-            locations={locations}
-            onSearch={handleSearch}
-          />
-        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ width: '100%' }}>
+            <img
+              src={BANNER}
+              alt="Livestock of America"
+              loading="eager"
+              fetchPriority="high"
+              style={{ width: '100%', display: 'block', maxHeight: '200px', objectFit: 'cover' }}
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
+          </div>
 
-        <section className="mt-10">
-          <div>
-            <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: OLIVE }}>
-              Livestock Marketplace
-            </p>
-            <h2
-              className="text-3xl sm:text-4xl font-bold mb-4 leading-tight m-0"
-              style={{ fontFamily: LORA, color: INK }}
+          <div style={{ padding: '1.5rem 1.5rem 1rem' }}>
+            <Breadcrumbs
+              items={[
+                { label: 'Home', to: '/' },
+                { label: t('livestock_mkt.crumb_marketplaces', 'Marketplaces') },
+                { label: t('livestock_mkt.crumb_livestock', 'Livestock') },
+              ]}
+            />
+            <h1
+              className="font-bold"
+              style={{ textAlign: 'center', fontSize: '1.4rem', marginBottom: '0.5rem', color: INK }}
             >
-              {t('livestock_mkt.title', 'Connecting Ranches Across The United States.')}
-            </h2>
-            <p className="text-sm sm:text-base leading-relaxed mb-3 m-0" style={{ color: INK }}>
-              {t(
-                'livestock_mkt.intro1',
-                'Browse animals for sale, stud services, and ranch profiles from breeders coast to coast. Reach sellers directly and grow your herd with confidence.',
-              )}
+              {t('livestock_mkt.title')}
+            </h1>
+            <p style={{ fontSize: '0.9rem', color: '#333', lineHeight: 1.6, marginBottom: '0.5rem' }}>
+              {t('livestock_mkt.intro1')}
             </p>
-            <p className="text-sm sm:text-base leading-relaxed italic mb-5 m-0" style={{ color: MUTED }}>
-              {t(
-                'livestock_mkt.intro2',
-                'From cattle and sheep to alpacas and horses — Livestock of America by Oatmeal AI is built for people who live with the land.',
-              )}
+            <p style={{ fontSize: '0.9rem', color: '#333', lineHeight: 1.6, marginBottom: '1rem' }}>
+              {t('livestock_mkt.intro2')}
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                to="/signup"
-                className="inline-block rounded-lg px-6 py-3 text-sm font-semibold text-white no-underline shadow-sm"
-                style={{ backgroundColor: OLIVE, color: '#ffffff' }}
-              >
-                {t('livestock_mkt.join_now', 'Join Now')}
-              </Link>
-              <Link
-                to="/livestock"
-                className="inline-block rounded-lg px-6 py-3 text-sm font-semibold no-underline border bg-white"
-                style={{ color: INK, borderColor: '#d0c8ba' }}
-              >
-                Research breeds
-              </Link>
+            <Link to="/signup" className="regsubmit2">{t('livestock_mkt.join_now')}</Link>
+          </div>
+
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: '#888' }}>
+              {t('livestock_mkt.loading')}
             </div>
-          </div>
-        </section>
-
-        <section className="mt-10">
-          <p className="m-0 mb-3 text-xs font-semibold uppercase tracking-wider" style={{ color: OLIVE }}>
-            Browse by animal
-          </p>
-          <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
-            {QUICK_SPECIES.map((s) => (
-              <Link
-                key={s.slug}
-                to={`/marketplaces/livestock/${s.slug}`}
-                className="shrink-0 group no-underline"
-              >
-                <div
-                  className="w-[88px] rounded-lg overflow-hidden border bg-white transition-shadow group-hover:shadow-md"
-                  style={{ borderColor: '#e5e0d6' }}
-                >
-                  <div className="aspect-square overflow-hidden bg-[#efe9df]">
-                    <img
-                      src={s.img}
-                      alt={s.label}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                  <p
-                    className="m-0 py-1.5 text-center text-[11px] font-semibold"
-                    style={{ color: INK, fontFamily: LORA }}
+          ) : listings.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: '#888' }}>
+              <p style={{ marginBottom: '1rem' }}>{t('livestock_mkt.no_listings')}</p>
+              <Link to="/signup" className="regsubmit2">{t('livestock_mkt.list_animals')}</Link>
+            </div>
+          ) : (
+            <>
+              {ofnFeatured.length > 0 && (
+                <div style={{ backgroundColor: AMBER, padding: '1.5rem' }}>
+                  <h2
+                    className="font-bold"
+                    style={{ textAlign: 'center', fontSize: '1.3rem', marginBottom: '1.25rem', color: '#222' }}
                   >
-                    {s.label}
-                  </p>
+                    {t('livestock_mkt.featured')}
+                  </h2>
+                  <CardGrid animals={ofnFeatured} />
                 </div>
-              </Link>
-            ))}
-          </div>
-        </section>
+              )}
 
-        {listingsBlock}
-      </div>
+              {ofnRest.length > 0 && (
+                <div style={{ padding: '1.5rem' }}>
+                  <h2
+                    className="font-bold"
+                    style={{ textAlign: 'center', fontSize: '1.3rem', marginBottom: '1.25rem', color: '#222' }}
+                  >
+                    {t('livestock_mkt.more_listings')}
+                  </h2>
+                  <CardGrid animals={ofnRest} />
+                </div>
+              )}
 
-      <section style={{ backgroundColor: '#efe9df' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div className="max-w-xl">
-            <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: OLIVE }}>
-              Before you buy
-            </p>
-            <h2 className="m-0 mb-2 text-xl md:text-2xl font-bold" style={{ fontFamily: LORA, color: INK }}>
-              Research breeds in the knowledgebase
-            </h2>
-            <p className="m-0 text-sm leading-relaxed" style={{ color: MUTED }}>
-              Origins, traits, and farming notes for 29 species — so you know the animal before you make the call.
-            </p>
-          </div>
-          <Link
-            to="/livestock"
-            className="shrink-0 inline-flex rounded-lg px-6 py-3 text-sm font-semibold no-underline text-white"
-            style={{ backgroundColor: OLIVE }}
-          >
-            Open Knowledgebase
-          </Link>
+              <div style={{ padding: '0 1.5rem 1.5rem' }}>
+                <GuestAccessPrompt
+                  title={t('guest_access.mkt_title', 'Sign in for full marketplace access')}
+                  message={t(
+                    'guest_access.mkt_list',
+                    'Create a free account to save listings, contact sellers, and list your own animals.',
+                  )}
+                />
+              </div>
+            </>
+          )}
         </div>
-      </section>
+      </div>
 
       <Footer />
     </div>

@@ -171,7 +171,10 @@
       "news": "News Feed",
       "about": "About",
       "blog": "Blog",
-      "contact": "Contact Us"
+      "contact": "Contact Us",
+      "for_sale": "Livestock for Sale",
+      "studs": "Studs",
+      "all_for_sale": "All Livestock for Sale"
     },
     "knowledgebase": {
       "meta_title": "Livestock Knowledgebase | Plants, Livestock Breeds & Ingredients"
