@@ -125,100 +125,6 @@ function Kicker({ children, color = OLIVE }) {
   );
 }
 
-/** Large lead card in the Heritage Breed Sales row. */
-function HeritageLeadCard({ animal }) {
-  const price = money(animal.price);
-  const meta = [categoryLabel(animal.category), animal.breeds?.[0], animal.location]
-    .filter(Boolean)
-    .join(' · ');
-
-  return (
-    <Link to={ANIMAL_PATH(animal.animal_id)} className="no-underline block group h-full" style={{ color: 'inherit' }}>
-      <article
-        className="h-full overflow-hidden rounded-lg border bg-white flex flex-col transition-shadow group-hover:shadow-lg"
-        style={{ borderColor: LINE }}
-      >
-        <div className="relative aspect-[16/9] overflow-hidden bg-[#efe9df]">
-          <ListingPhoto
-            src={animal.photo}
-            alt={animal.full_name}
-            imgClassName="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-          <div className="absolute top-3 left-3">
-            <Badge>Featured Listing</Badge>
-          </div>
-        </div>
-        <div className="p-5 flex-1 flex flex-col">
-          <div className="flex items-start justify-between gap-4">
-            <h3
-              className="m-0 mb-2 text-xl font-bold leading-snug"
-              style={{ fontFamily: LORA, color: INK }}
-            >
-              {animal.full_name}
-            </h3>
-            <span
-              className="shrink-0 rounded-md border px-3 py-1.5 text-xs font-semibold"
-              style={{ borderColor: LINE, color: price ? OLIVE : MUTED, backgroundColor: '#faf7f1' }}
-            >
-              {price || 'Call for price'}
-            </span>
-          </div>
-          {animal.description && (
-            <p className="m-0 text-[13px] leading-relaxed line-clamp-2" style={{ color: MUTED }}>
-              {animal.description}
-            </p>
-          )}
-          {meta && (
-            <p
-              className="m-0 mt-auto pt-4 text-[11px] uppercase"
-              style={{ color: '#9a9285', letterSpacing: '0.08em' }}
-            >
-              {meta}
-            </p>
-          )}
-        </div>
-      </article>
-    </Link>
-  );
-}
-
-/** Compact side card in the Heritage Breed Sales row. */
-function HeritageSideCard({ animal }) {
-  const price = money(animal.price);
-  return (
-    <Link to={ANIMAL_PATH(animal.animal_id)} className="no-underline block group h-full" style={{ color: 'inherit' }}>
-      <article
-        className="h-full rounded-lg border bg-white p-4 flex flex-col transition-shadow group-hover:shadow-md"
-        style={{ borderColor: LINE }}
-      >
-        <Kicker>{kicker(animal)}</Kicker>
-        <h3
-          className="m-0 mb-1.5 text-[15px] font-bold leading-snug"
-          style={{ fontFamily: LORA, color: INK }}
-        >
-          {animal.full_name}
-        </h3>
-        {animal.description && (
-          <p className="m-0 mb-3 text-[12px] leading-relaxed line-clamp-3" style={{ color: MUTED }}>
-            {animal.description}
-          </p>
-        )}
-        <div className="mt-auto flex items-end justify-between gap-3">
-          <span className="text-[13px] font-semibold" style={{ color: price ? OLIVE : MUTED }}>
-            {price || 'Call for price'}
-          </span>
-          <span
-            className="loa-arrow shrink-0 grid place-items-center w-7 h-7 rounded-full border text-xs transition-colors group-hover:text-white"
-            style={{ borderColor: LINE, color: MUTED }}
-          >
-            →
-          </span>
-        </div>
-      </article>
-    </Link>
-  );
-}
-
 /** Featured Animal for Sale — image left, detail panel right. */
 function FeaturedForSaleCard({ animal }) {
   const price = money(animal.price);
@@ -365,7 +271,7 @@ function EmptyPanel({ message, cta, to }) {
 }
 
 export default function Home() {
-  const [featured, setFeatured] = useState({ for_sale: null, stud: null, heritage: [] });
+  const [featured, setFeatured] = useState({ for_sale: null, stud: null });
 
   useEffect(() => {
     let cancelled = false;
@@ -376,21 +282,18 @@ export default function Home() {
         setFeatured({
           for_sale: data.for_sale || null,
           stud: data.stud || null,
-          heritage: Array.isArray(data.heritage) ? data.heritage : [],
         });
       })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
 
-  const heritageCards = featured.heritage;
-
   return (
     <div className="min-h-screen font-sans flex flex-col relative">
       <PageMeta
         title="Livestock of America by Oatmeal AI | Connecting Ranches Across the United States"
-        description="Heritage breed sales, featured livestock for sale, and championship stud breeding services from ranchers and breeders across America."
-        keywords="livestock of america, oatmeal ai, livestock marketplace, heritage breeds, stud services, ranchers, breeders"
+        description="Featured livestock for sale and championship stud breeding services from ranchers and breeders across America."
+        keywords="livestock of america, oatmeal ai, livestock marketplace, livestock for sale, stud services, ranchers, breeders"
         canonical="https://livestockofamerica.com/"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -400,11 +303,13 @@ export default function Home() {
           description: 'Connecting ranchers, buyers, and livestock professionals across the United States.',
         }}
       />
-      <FlagBackdrop />
       <Header />
 
-      <main className="flex-1">
-        <div className="max-w-[1100px] mx-auto px-5 pt-6 pb-16">
+      {/* Flag band sits under the header, behind the banner and first section.
+          `main` is lifted to z-10 so the content stacks above it. */}
+      <main className="relative flex-1">
+        <FlagBackdrop />
+        <div className="relative z-10 max-w-[1100px] mx-auto px-5 pt-6 pb-16">
           {/* Collage banner */}
           <Reveal>
             <img
@@ -415,34 +320,6 @@ export default function Home() {
               height="360"
             />
           </Reveal>
-
-          {/* Heritage Breed Sales */}
-          <section className="pt-10">
-            <SectionHead
-              title="Heritage Breed Sales"
-              blurb="Curated lineages preserved for generations, offering vigour, genetic integrity, and historical significance."
-            />
-            {heritageCards.length > 0 ? (
-              <div className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-4">
-                <Reveal className="h-full">
-                  <HeritageLeadCard animal={heritageCards[0]} />
-                </Reveal>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-                  {heritageCards.slice(1).map((a, i) => (
-                    <Reveal key={a.animal_id} className="h-full" delay={(i + 1) * 80}>
-                      <HeritageSideCard animal={a} />
-                    </Reveal>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <EmptyPanel
-                message="Heritage listings are on their way."
-                cta="Browse Marketplace"
-                to="/animals"
-              />
-            )}
-          </section>
 
           {/* Featured Animal for Sale */}
           <section className="pt-12">
