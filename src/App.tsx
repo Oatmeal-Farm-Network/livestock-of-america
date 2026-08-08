@@ -48,7 +48,10 @@ import AuthShell from "./components/AuthShell";
 import { isLoggedIn } from "./lib/auth";
 import { SavedItemsProvider } from "./lib/savedItems";
 import Profile from "./pages/Profile";
-import AccountPlaceholder from "./pages/AccountPlaceholder";
+import AccountNew from "./pages/AccountNew";
+import AccountProfile from "./pages/AccountProfile";
+import AccountAssociations from "./pages/AccountAssociations";
+import AccountTeamMembers from "./pages/AccountTeamMembers";
 import Phase1EventsComingSoon from "./pages/Phase1EventsComingSoon";
 
 /** Guests see the marketing homepage; signed-in users land on the dashboard. */
@@ -335,10 +338,7 @@ export default function App() {
           path="/accounts/new"
           element={
             <RequireAuth>
-              <AccountPlaceholder
-                title="Add Account"
-                description="Create a new business account. This flow is coming soon on Livestock of America."
-              />
+              <AccountNew />
             </RequireAuth>
           }
         />
@@ -346,10 +346,7 @@ export default function App() {
           path="/account/users"
           element={
             <RequireAuth>
-              <AccountPlaceholder
-                title="Team"
-                description="Manage team members for this account. Coming soon on Livestock of America."
-              />
+              <AccountTeamMembers />
             </RequireAuth>
           }
         />
@@ -357,10 +354,7 @@ export default function App() {
           path="/account/profile"
           element={
             <RequireAuth>
-              <AccountPlaceholder
-                title="Edit Account"
-                description="Edit account profile details. Coming soon on Livestock of America."
-              />
+              <AccountProfile />
             </RequireAuth>
           }
         />
@@ -368,10 +362,7 @@ export default function App() {
           path="/account/associations"
           element={
             <RequireAuth>
-              <AccountPlaceholder
-                title="Associations"
-                description="Manage association memberships. Coming soon on Livestock of America."
-              />
+              <AccountAssociations />
             </RequireAuth>
           }
         />

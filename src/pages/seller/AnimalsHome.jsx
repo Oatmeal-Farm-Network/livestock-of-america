@@ -241,14 +241,19 @@ export default function AnimalsHome() {
         },
         body: JSON.stringify({ publish: next }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    } catch {
+      if (!res.ok) {
+        // 402 carries the plan-limit explanation; show it verbatim so the member
+        // knows which allowance they hit and what to do about it.
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `HTTP ${res.status}`);
+      }
+    } catch (e) {
       setAnimals((list) =>
         list.map((a) =>
           a.AnimalID === animal.AnimalID ? { ...a, PublishForSale: next ? 0 : 1 } : a,
         ),
       );
-      alert(t('animals_home.err_publish', 'Could not update publish status.'));
+      alert(e?.message || t('animals_home.err_publish', 'Could not update publish status.'));
     } finally {
       setPublishing((p) => {
         const n = { ...p };
@@ -276,14 +281,17 @@ export default function AnimalsHome() {
         },
         body: JSON.stringify({ publish: next }),
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    } catch {
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `HTTP ${res.status}`);
+      }
+    } catch (e) {
       setAnimals((list) =>
         list.map((a) =>
           a.AnimalID === animal.AnimalID ? { ...a, PublishStud: next ? 0 : 1 } : a,
         ),
       );
-      alert(t('animals_home.err_stud_publish', 'Could not update stud status.'));
+      alert(e?.message || t('animals_home.err_stud_publish', 'Could not update stud status.'));
     } finally {
       setPublishing((p) => {
         const n = { ...p };
