@@ -298,6 +298,9 @@ export default function LivestockDB() {
           description="Research livestock breeds, traits, and farming notes."
           noIndex
         />
+        {/* Renders for guests only — signed in, AuthShell supplies the nav and
+            this returns null. Without it this branch had no header at all. */}
+        <Header />
 
         <div className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-6 md:py-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
@@ -370,6 +373,9 @@ export default function LivestockDB() {
 
           {speciesGrid}
         </div>
+
+        {/* Guests only, same as the header above. */}
+        <Footer />
       </div>
     );
   }

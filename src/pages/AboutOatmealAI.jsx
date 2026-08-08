@@ -14,6 +14,13 @@ const INK = '#2c2c2c';
 const MUTED = '#6b6b6b';
 const LORA = "'Lora', 'Times New Roman', serif";
 
+/**
+ * Oatmeal AI mark used as the hero watermark. Replace this file to change it —
+ * nothing else needs editing. It is rendered white via a CSS filter so any
+ * artwork colour reads against the dark hero gradient.
+ */
+const OATMEAL_AI_LOGO = '/images/OatmealaiLogo.webp';
+
 const PLATFORMS = [
   {
     title: 'Livestock of America',
@@ -60,27 +67,33 @@ export default function AboutOatmealAI() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div
-          className="relative min-h-[240px] md:min-h-[320px] flex items-end"
-          style={{ background: `linear-gradient(120deg, ${RUST} 0%, #5f2a1f 60%, ${OLIVE} 140%)` }}
-        >
-          <div className="relative z-10 w-full max-w-[1100px] mx-auto px-5 pb-10 pt-16">
+        <div className="relative min-h-[240px] md:min-h-[320px] flex items-end">
+          {/* Centred logo behind the copy. No colour filter now that the hero
+              sits on the cream page background — the artwork shows as-is. */}
+          <img
+            src={OATMEAL_AI_LOGO}
+            alt=""
+            aria-hidden
+            className="pointer-events-none select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] h-auto object-contain"
+            style={{ opacity: 0.18 }}
+          />
+          <div className="relative z-10 w-full max-w-[1400px] mx-auto px-5 pb-10 pt-16">
             <p
-              className="m-0 mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/85"
-              style={{ fontFamily: LORA }}
+              className="m-0 mb-2 text-xs font-semibold uppercase tracking-[0.14em]"
+              style={{ fontFamily: LORA, color: OLIVE }}
             >
               About
             </p>
             <h1
-              className="m-0 mb-3 text-white max-w-2xl"
-              style={{ fontFamily: LORA, fontWeight: 700, fontSize: 'clamp(1.85rem, 4.5vw, 2.75rem)', lineHeight: 1.15 }}
+              className="m-0 mb-3 max-w-2xl"
+              style={{ fontFamily: LORA, fontWeight: 700, fontSize: 'clamp(1.85rem, 4.5vw, 2.75rem)', lineHeight: 1.15, color: INK }}
             >
               Oatmeal AI
-              <span className="block text-base md:text-lg font-normal mt-1 text-white/90">
+              <span className="block text-base md:text-lg font-normal mt-1" style={{ color: MUTED }}>
                 The company behind Livestock of America
               </span>
             </h1>
-            <p className="m-0 text-base md:text-lg text-white/90 max-w-xl leading-relaxed" style={{ fontFamily: LORA }}>
+            <p className="m-0 text-base md:text-lg max-w-xl leading-relaxed" style={{ fontFamily: LORA, color: MUTED }}>
               Intelligence built for the barn, the field, and the farm office.
             </p>
           </div>

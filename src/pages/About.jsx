@@ -133,22 +133,17 @@ export default function About() {
                   color: INK,
                 }}
               >
-                Built for the people who keep America stocked and fed
+                Built for the people who keep America fed
               </h2>
               <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: INK }}>
                 <strong>Livestock of America by Oatmeal AI</strong> is a dedicated platform for the
-                livestock industry. We help ranches showcase animals online, reach serious buyers,
+                livestock industry. We help ranches showcase animals online, reach buyers,
                 and research breeds with confidence — all in one place.
               </p>
               <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: MUTED }}>
                 From cattle and sheep to alpacas, goats, horses, and bison, LOA supports breeders of
                 every type. Whether you are listing a herd, looking for stud genetics, or learning
                 a new breed before you buy, this is where livestock professionals meet.
-              </p>
-              <p className="m-0 text-base leading-relaxed" style={{ color: MUTED }}>
-                Oatmeal AI powers the intelligence behind the experience — including Saige, our
-                livestock assistant — so ranchers get practical answers grounded in farm and breed
-                context, not generic chat.
               </p>
             </div>
             <div className="shrink-0 md:w-[280px]">
@@ -158,7 +153,7 @@ export default function About() {
                 className="w-full h-auto"
               />
               <p className="m-0 mt-3 text-center text-sm italic" style={{ color: MUTED, fontFamily: LORA }}>
-                Livestock of America by Oatmeal AI
+                Livestock of America 
               </p>
             </div>
           </div>
@@ -168,11 +163,8 @@ export default function About() {
       {/* Pillars */}
       <section style={{ backgroundColor: '#efe9df' }}>
         <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14">
-          <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: OLIVE }}>
-            What you get
-          </p>
           <h2
-            className="m-0 mb-8 max-w-xl"
+            className="m-0 mb-12 max-w-xl"
             style={{
               fontFamily: LORA,
               fontWeight: 700,
@@ -180,7 +172,7 @@ export default function About() {
               color: INK,
             }}
           >
-            Marketplace, knowledge, and AI in one livestock home
+            Marketplace and knowledge
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
             {PILLARS.map((pillar, i) => (
