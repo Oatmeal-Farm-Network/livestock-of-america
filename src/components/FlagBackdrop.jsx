@@ -3,20 +3,28 @@ import React, { useState } from 'react';
 const CREAM = '#f7f2e8';
 
 /**
- * Path to the photographic flag backdrop. Drop the image at
- * `public/images/loa-flag-bg.webp` and it is used automatically; until then
- * the CSS-drawn flag below stands in. Change this constant to point at a
- * different filename.
+ * Backdrop image sources, tried in order.
+ *
+ * The first entry is the photographic flag: drop your photo at
+ * `public/images/loa-flag-bg.webp` and it is used automatically. Until that
+ * file exists the request 404s and we fall through to the SVG flag shipped in
+ * `public/images/`, which is always present.
  */
-export const FLAG_IMAGE = '/images/loa-flag-bg.webp';
+export const FLAG_SOURCES = [
+  '/images/loa-flag-bg.webp',
+  '/images/loa-flag-bg.svg',
+];
 
 /**
- * Faded stars-and-stripes page backdrop, sitting behind the banner and all
- * page content (below the sticky header). Fixed, so it stays put while the
- * page scrolls.
+ * Faded stars-and-stripes page backdrop — sits behind the banner and all page
+ * content, below the sticky header. Fixed, so it stays put while scrolling.
+ *
+ * `opacity` (0-1) tunes how strongly the flag reads; `veil` is the cream
+ * overlay that keeps text legible on top of it.
  */
-export default function FlagBackdrop() {
-  const [usePhoto, setUsePhoto] = useState(true);
+export default function FlagBackdrop({ opacity = 0.85, veil = 0.32 }) {
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const src = FLAG_SOURCES[sourceIndex];
 
   return (
     <div
@@ -24,49 +32,23 @@ export default function FlagBackdrop() {
       aria-hidden
       style={{ backgroundColor: CREAM }}
     >
-      {usePhoto ? (
+      {src && (
         <img
-          src={FLAG_IMAGE}
+          src={src}
           alt=""
           className="w-full h-full object-cover"
-          style={{ opacity: 0.5 }}
-          onError={() => setUsePhoto(false)}
+          style={{ opacity }}
+          // Fall through to the next source (photo -> bundled SVG).
+          onError={() => setSourceIndex((i) => i + 1)}
         />
-      ) : (
-        <>
-          {/* Stripes: warm, low-contrast red on cream. */}
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(177deg, rgba(178,54,60,0.085) 0 3.85%, rgba(178,54,60,0) 3.85% 7.7%)',
-            }}
-          />
-          {/* Canton: muted navy block with a soft star field. */}
-          <div
-            className="absolute left-0 top-0"
-            style={{
-              width: '44%',
-              height: '54%',
-              backgroundColor: 'rgba(60,64,110,0.07)',
-              backgroundImage:
-                'radial-gradient(circle, rgba(255,255,255,0.95) 1px, rgba(255,255,255,0) 1.5px)',
-              backgroundSize: '5.5% 9.8%',
-            }}
-          />
-          {/* Soften the whole thing so it reads as a wash, not a graphic. */}
-          <div
-            className="absolute inset-0"
-            style={{ backdropFilter: 'blur(1.5px)', WebkitBackdropFilter: 'blur(1.5px)' }}
-          />
-        </>
       )}
-      {/* Cream veil: keeps text readable over either the photo or the CSS flag. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(115deg, rgba(247,242,232,0.60) 0%, rgba(247,242,232,0.84) 55%, rgba(247,242,232,0.94) 100%)',
+            `linear-gradient(115deg, rgba(247,242,232,${veil * 0.7}) 0%,` +
+            ` rgba(247,242,232,${veil}) 55%,` +
+            ` rgba(247,242,232,${Math.min(veil * 1.4, 1)}) 100%)`,
         }}
       />
     </div>
