@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router";
 import Home from "./pages/Home";
 import LivestockMarketplace from "./pages/LivestockMarketplace";
 import LivestockForSale from "./pages/LivestockForSale";
@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import About from "./pages/About";
+import AboutOatmealAI from "./pages/AboutOatmealAI";
 import ContactUs from "./pages/ContactUs";
 import ContactUsConfirm from "./pages/ContactUsConfirm";
 import ComingSoon from "./pages/ComingSoon";
@@ -20,6 +21,10 @@ import LivestockAbout from "./pages/LivestockAbout";
 import Dashboard from "./pages/Dashboard";
 import NewsFeedPage from "./pages/NewsFeedPage";
 import NewsArticlePage from "./pages/NewsArticlePage";
+import DirectoryList from "./Directory/pages/DirectoryList";
+import DirectoryDetail from "./Directory/pages/DirectoryDetail";
+import BlogList from "./pages/BlogList";
+import BlogDetail from "./pages/BlogDetail";
 import RequireAuth from "./components/RequireAuth";
 import AnimalsHome from "./pages/seller/AnimalsHome";
 import AnimalAdd from "./pages/seller/AnimalAdd";
@@ -106,21 +111,21 @@ export default function App() {
             </RequireAuth>
           }
         />
+        {/* Public: "View Ranch Profile" and "Contact Seller" on the animal
+            detail page point here, so gating it bounced both to login. The
+            same component is already public at /directory/business/:id, and
+            every endpoint it calls is public. */}
         <Route
           path="/marketplaces/livestock/ranch/:businessId"
-          element={
-            <RequireAuth>
-              <RanchProfile />
-            </RequireAuth>
-          }
+          element={<RanchProfile />}
         />
+        {/* Public: listings link straight here, so gating it sent every
+            for-sale and stud click to the login page instead of the animal.
+            The detail endpoint is public and the page holds no auth-only
+            data — SaveButton prompts for login on click when needed. */}
         <Route
           path="/marketplaces/livestock/animal/:id"
-          element={
-            <RequireAuth>
-              <LivestockAnimalDetail />
-            </RequireAuth>
-          }
+          element={<LivestockAnimalDetail />}
         />
         <Route path="/marketplaces/livestock/:slug" element={<LivestockForSale />} />
 
@@ -143,26 +148,18 @@ export default function App() {
 
         <Route path="/events" element={<Phase1EventsComingSoon />} />
         <Route path="/about" element={<About />} />
+        <Route path="/about/oatmeal-ai" element={<AboutOatmealAI />} />
         <Route path="/contact-us" element={<ContactUsGuest />} />
         <Route path="/contact-us/confirm" element={<ContactUsConfirmGuest />} />
-        <Route
-          path="/blog"
-          element={
-            <ComingSoon
-              title="Blog"
-              description="The Livestock of America blog is coming soon."
-            />
-          }
-        />
+        <Route path="/blog" element={<BlogList />} />
+        <Route path="/blog/:postId" element={<BlogDetail />} />
         <Route
           path="/directory"
-          element={
-            <ComingSoon
-              title="Directory"
-              description="The industry directory is coming soon. Browse ranches from the marketplace today."
-            />
-          }
+          element={<DirectoryList />}
         />
+        <Route path="/directory/business/:businessId" element={<RanchProfile />} />
+        <Route path="/directory/business" element={<RanchProfile />} />
+        <Route path="/directory/:directoryType" element={<DirectoryDetail />} />
         <Route
           path="/over-the-fence"
           element={

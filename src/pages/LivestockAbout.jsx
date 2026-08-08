@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -66,7 +66,9 @@ export default function LivestockAbout() {
   const { t } = useTranslation();
   const { species } = useParams();
   const { language } = useLanguage();
-  const guest = !isLoggedIn();
+  // Knowledgebase is public reference content — full species profile shows for
+  // everyone, signed in or not. (Toggle back to `!isLoggedIn()` to re-gate.)
+  const guest = false;
   const [info, setInfo] = useState(null);
   const [colors, setColors] = useState([]);
   const [loading, setLoading] = useState(true);

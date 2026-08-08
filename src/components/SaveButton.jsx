@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router';
 import { isLoggedIn } from '../lib/auth';
 import { useSavedItems } from '../lib/savedItems';
 

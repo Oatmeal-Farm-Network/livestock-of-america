@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import PageMeta from '../../components/PageMeta';

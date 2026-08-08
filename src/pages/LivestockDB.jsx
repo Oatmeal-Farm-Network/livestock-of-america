@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -127,7 +127,9 @@ export default function LivestockDB() {
 
   const breedLabel = total > 0 ? total.toLocaleString() : '2,500+';
   const popularSpecies = SPECIES.filter((s) => POPULAR.includes(s.slug));
-  const guest = !isLoggedIn();
+  // Knowledgebase is public reference content — the full species index shows
+  // for everyone, signed in or not. (Toggle back to `!isLoggedIn()` to re-gate.)
+  const guest = false;
   const firstName = typeof window !== 'undefined' ? localStorage.getItem('first_name') || '' : '';
 
   const searchForm = (

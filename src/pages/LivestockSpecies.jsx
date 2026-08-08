@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -100,7 +100,9 @@ function BreedCardThumb({ src, alt, eager }) {
 export default function LivestockSpecies() {
   const { t } = useTranslation();
   const { species } = useParams();
-  const guest = !isLoggedIn();
+  // Knowledgebase is public reference content — breeds/species show for
+  // everyone, signed in or not. (Toggle back to `!isLoggedIn()` to re-gate.)
+  const guest = false;
   const { language } = useLanguage();
   const [speciesInfo, setSpeciesInfo]           = useState(null);
   const [availableLetters, setAvailableLetters] = useState([]);

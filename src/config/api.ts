@@ -59,6 +59,7 @@ export const endpoints = {
   marketplaceAnimalProgeny: (id: number | string) =>
     apiUrl(`/api/marketplace/animal/${id}/progeny`),
   homepageListings: () => apiUrl("/api/marketplace/homepage-listings"),
+  homepageFeatured: () => apiUrl("/api/marketplace/homepage-featured"),
   marketplaceSaved: () => apiUrl("/api/marketplace/saved"),
   marketplaceSavedIds: () => apiUrl("/api/marketplace/saved/ids"),
 
