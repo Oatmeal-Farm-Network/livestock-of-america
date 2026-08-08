@@ -63,6 +63,16 @@ export default function About() {
       />
       <Header />
 
+      {/* Breadcrumbs sit directly under the header on every page but Home. */}
+      <div className="mx-auto w-full px-5" style={{ maxWidth: '1100px' }}>
+        <Breadcrumbs
+              items={[
+                { label: t('phase1.nav.home', 'Home'), to: '/' },
+                { label: t('phase1.about.title', 'About') },
+              ]}
+            />
+      </div>
+
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="relative min-h-[260px] md:min-h-[340px] flex items-end">
@@ -108,15 +118,6 @@ export default function About() {
       </section>
 
       <div className="mx-auto px-5 flex-1 w-full" style={{ maxWidth: '1100px' }}>
-        <div className="pt-4">
-          <Breadcrumbs
-            items={[
-              { label: t('phase1.nav.home', 'Home'), to: '/' },
-              { label: t('phase1.about.title', 'About') },
-            ]}
-          />
-        </div>
-
         {/* Intro */}
         <section className="py-10 md:py-12">
           <div className="flex flex-col md:flex-row md:items-start gap-8 md:gap-12">

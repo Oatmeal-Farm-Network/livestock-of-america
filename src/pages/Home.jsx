@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
+import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
@@ -264,6 +265,7 @@ function EmptyPanel({ message, cta, to }) {
 }
 
 export default function Home() {
+  const { t } = useTranslation();
   const [featured, setFeatured] = useState({ for_sale: null, stud: null });
 
   useEffect(() => {
@@ -312,6 +314,25 @@ export default function Home() {
               width="1898"
               height="360"
             />
+          </Reveal>
+
+          {/* Marketplace intro — moved here from /animals */}
+          <Reveal>
+            <section className="pt-8">
+              <h1
+                className="m-0 mb-3 text-center font-bold"
+                style={{ fontFamily: LORA, fontSize: 'clamp(1.35rem, 2.6vw, 1.85rem)', color: INK }}
+              >
+                {t('livestock_mkt.title')}
+              </h1>
+              <p className="m-0 mb-2 text-[0.9rem] leading-relaxed" style={{ color: '#333' }}>
+                {t('livestock_mkt.intro1')}
+              </p>
+              <p className="m-0 mb-4 text-[0.9rem] leading-relaxed" style={{ color: '#333' }}>
+                {t('livestock_mkt.intro2')}
+              </p>
+              <Link to="/signup" className="regsubmit2">{t('livestock_mkt.join_now')}</Link>
+            </section>
           </Reveal>
 
           {/* Featured Animal for Sale */}

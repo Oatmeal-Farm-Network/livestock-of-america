@@ -25,7 +25,6 @@ const AMBER = '#e59a24';
 const INK = '#2c2c2c';
 const MUTED = '#6b6b6b';
 const LORA = "'Lora', 'Times New Roman', serif";
-const BANNER = '/images/LOAwebbanner1898x360.webp';
 
 const QUICK_SPECIES = [
   { slug: 'cattle', label: 'Cattle', img: '/images/Cattle.webp' },
@@ -776,44 +775,21 @@ export default function LivestockMarketplace() {
       />
       <Header />
 
+      {/* Breadcrumbs sit directly under the header on every page but Home. */}
+      <div className="mx-auto w-full px-5" style={{ maxWidth: '1100px' }}>
+        <Breadcrumbs
+          items={[
+            { label: 'Home', to: '/' },
+            { label: t('livestock_mkt.crumb_marketplaces', 'Marketplaces') },
+            { label: t('livestock_mkt.crumb_livestock', 'Livestock') },
+          ]}
+        />
+      </div>
+
       <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', alignItems: 'flex-start' }}>
         <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((p) => !p)} />
 
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ width: '100%' }}>
-            <img
-              src={BANNER}
-              alt="Livestock of America"
-              loading="eager"
-              fetchPriority="high"
-              style={{ width: '100%', display: 'block', maxHeight: '200px', objectFit: 'cover' }}
-              onError={(e) => { e.currentTarget.style.display = 'none'; }}
-            />
-          </div>
-
-          <div style={{ padding: '1.5rem 1.5rem 1rem' }}>
-            <Breadcrumbs
-              items={[
-                { label: 'Home', to: '/' },
-                { label: t('livestock_mkt.crumb_marketplaces', 'Marketplaces') },
-                { label: t('livestock_mkt.crumb_livestock', 'Livestock') },
-              ]}
-            />
-            <h1
-              className="font-bold"
-              style={{ textAlign: 'center', fontSize: '1.4rem', marginBottom: '0.5rem', color: INK }}
-            >
-              {t('livestock_mkt.title')}
-            </h1>
-            <p style={{ fontSize: '0.9rem', color: '#333', lineHeight: 1.6, marginBottom: '0.5rem' }}>
-              {t('livestock_mkt.intro1')}
-            </p>
-            <p style={{ fontSize: '0.9rem', color: '#333', lineHeight: 1.6, marginBottom: '1rem' }}>
-              {t('livestock_mkt.intro2')}
-            </p>
-            <Link to="/signup" className="regsubmit2">{t('livestock_mkt.join_now')}</Link>
-          </div>
-
           {loading ? (
             <div style={{ textAlign: 'center', padding: '3rem', color: '#888' }}>
               {t('livestock_mkt.loading')}

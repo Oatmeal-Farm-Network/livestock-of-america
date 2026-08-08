@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
+import Breadcrumbs from '../components/Breadcrumbs';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import { endpoints } from '../config/api';
@@ -66,6 +67,16 @@ export default function Login() {
     <div className="min-h-screen font-sans flex flex-col">
       <PageMeta title="Sign In | Livestock of America by Oatmeal AI" description="Sign in to Livestock of America by Oatmeal AI." noIndex />
       <Header />
+
+      {/* Breadcrumbs sit directly under the header on every page but Home. */}
+      <div className="mx-auto w-full px-4" style={{ maxWidth: '440px' }}>
+        <Breadcrumbs
+          items={[
+            { label: 'Home', to: '/' },
+            { label: 'Sign In' },
+          ]}
+        />
+      </div>
       <section className="py-16 px-4 flex-1">
         <div className="max-w-md mx-auto">
           <div className="bg-white rounded-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-gray-100 overflow-hidden">

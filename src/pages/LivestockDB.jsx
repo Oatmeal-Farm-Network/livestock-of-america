@@ -302,7 +302,17 @@ export default function LivestockDB() {
             this returns null. Without it this branch had no header at all. */}
         <Header />
 
-        <div className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-6 md:py-8">
+        {/* Breadcrumbs sit directly under the header on every page but Home. */}
+        <div className="mx-auto w-full px-4 sm:px-6" style={{ maxWidth: '1200px' }}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', to: '/' },
+              { label: 'Livestock Database' },
+            ]}
+          />
+        </div>
+
+        <div className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 pb-6 md:pb-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
             <div>
               <p className="m-0 mb-1 text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: OLIVE }}>
