@@ -22,9 +22,16 @@ export const FLAG_SOURCES = [
  * `opacity` (0-1) tunes how strongly the flag reads; `veil` is the cream
  * overlay that keeps text legible on top of it.
  */
-export default function FlagBackdrop({ opacity = 0.85, veil = 0.32 }) {
+export default function FlagBackdrop({ opacity, veil }) {
   const [sourceIndex, setSourceIndex] = useState(0);
   const src = FLAG_SOURCES[sourceIndex];
+
+  // The supplied photo is already washed out, so it needs no help. The drawn
+  // SVG fallback is more saturated and does need toning down — hence the
+  // different defaults per source.
+  const usingPhoto = sourceIndex === 0;
+  const imgOpacity = opacity ?? (usingPhoto ? 1 : 0.85);
+  const veilAlpha = veil ?? (usingPhoto ? 0.06 : 0.32);
 
   return (
     <div
@@ -37,7 +44,7 @@ export default function FlagBackdrop({ opacity = 0.85, veil = 0.32 }) {
           src={src}
           alt=""
           className="w-full h-full object-cover"
-          style={{ opacity }}
+          style={{ opacity: imgOpacity }}
           // Fall through to the next source (photo -> bundled SVG).
           onError={() => setSourceIndex((i) => i + 1)}
         />
@@ -46,9 +53,9 @@ export default function FlagBackdrop({ opacity = 0.85, veil = 0.32 }) {
         className="absolute inset-0"
         style={{
           background:
-            `linear-gradient(115deg, rgba(247,242,232,${veil * 0.7}) 0%,` +
-            ` rgba(247,242,232,${veil}) 55%,` +
-            ` rgba(247,242,232,${Math.min(veil * 1.4, 1)}) 100%)`,
+            `linear-gradient(115deg, rgba(247,242,232,${veilAlpha * 0.7}) 0%,` +
+            ` rgba(247,242,232,${veilAlpha}) 55%,` +
+            ` rgba(247,242,232,${Math.min(veilAlpha * 1.4, 1)}) 100%)`,
         }}
       />
     </div>
