@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router';
+import { Link } from 'react-router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
@@ -13,7 +13,6 @@ const MUTED = '#6b6b6b';
 
 /** Lightweight placeholders for OFN account sub-pages not yet ported to LOA. */
 function Inner({ title, description }) {
-  const location = useLocation();
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>
       <PageMeta title={`${title} | Livestock of America`} noIndex />
@@ -34,10 +33,6 @@ function Inner({ title, description }) {
         <p className="mb-6" style={{ color: MUTED }}>
           {description ||
             'This account tool is coming soon on Livestock of America. Your dashboard is ready — more account pages will follow.'}
-        </p>
-        <p className="text-xs mb-6" style={{ color: MUTED }}>
-          Path: {location.pathname}
-          {location.search}
         </p>
         <Link
           to="/account"

@@ -44,7 +44,6 @@ import HerdHealthEvents, {
   HerdHealthVetContacts,
   HerdHealthReproduction,
 } from "./pages/herd-health/HerdHealthModules";
-import SaigeWidget from "./components/SaigeWidget";
 import AuthShell from "./components/AuthShell";
 import { isLoggedIn } from "./lib/auth";
 import { SavedItemsProvider } from "./lib/savedItems";
@@ -81,12 +80,9 @@ function AppChrome() {
   if (isLoggedIn()) {
     return <AuthShell>{outlet}</AuthShell>;
   }
-  return (
-    <>
-      {outlet}
-      <SaigeWidget />
-    </>
-  );
+  // Saige chat widget is temporarily hidden. To bring it back, restore the
+  // SaigeWidget import and render it here and in AuthShell.
+  return outlet;
 }
 
 export default function App() {

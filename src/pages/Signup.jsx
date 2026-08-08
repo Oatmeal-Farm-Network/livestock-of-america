@@ -11,6 +11,57 @@ const FIELD_CLASS =
   'w-full border border-gray-300 rounded-xl px-4 py-3 text-sm ' +
   'focus:outline-none focus:border-[#819360] focus:ring-2 focus:ring-[#819360]/20 transition-all';
 
+/** Eye / eye-with-slash, sized to sit inside the field. */
+function EyeIcon({ off }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+      {off && <path d="M3 3l18 18" />}
+    </svg>
+  );
+}
+
+/**
+ * Password field with a show/hide toggle.
+ *
+ * The button is type="button" so it never submits the form, and is marked
+ * aria-pressed so screen readers announce the current state rather than just
+ * "button". Padding on the right keeps typed text clear of the icon.
+ */
+function PasswordField({ id, label, value, onChange, placeholder, shown, onToggle }) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-semibold text-gray-700 mb-1.5">
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          id={id}
+          type={shown ? 'text' : 'password'}
+          value={value}
+          onChange={onChange}
+          required
+          autoComplete="new-password"
+          placeholder={placeholder}
+          className={`${FIELD_CLASS} pr-12`}
+        />
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-pressed={shown}
+          aria-label={shown ? 'Hide password' : 'Show password'}
+          title={shown ? 'Hide password' : 'Show password'}
+          className="absolute inset-y-0 right-0 flex items-center px-3.5 text-gray-500 hover:text-[#819360] bg-transparent border-0 cursor-pointer"
+        >
+          <EyeIcon off={shown} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /**
  * Ported from the Oatmeal Farm Network signup page, with one deliberate
  * difference: registration is always open here. OFN gates its form behind a
@@ -25,6 +76,9 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  // Each field toggles independently — revealing one shouldn't reveal both.
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -168,35 +222,25 @@ export default function Signup() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    {t('auth.field_password', 'Password')}
-                  </label>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    autoComplete="new-password"
-                    placeholder={t('auth.password_placeholder', 'Choose a password')}
-                    className={FIELD_CLASS}
-                  />
-                </div>
+                <PasswordField
+                  id="signup-password"
+                  label={t('auth.field_password', 'Password')}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={t('auth.password_placeholder', 'Choose a password')}
+                  shown={showPassword}
+                  onToggle={() => setShowPassword((v) => !v)}
+                />
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                    {t('auth.field_confirm_password', 'Confirm Password')}
-                  </label>
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    autoComplete="new-password"
-                    placeholder={t('auth.password_placeholder', 'Choose a password')}
-                    className={FIELD_CLASS}
-                  />
-                </div>
+                <PasswordField
+                  id="signup-confirm-password"
+                  label={t('auth.field_confirm_password', 'Confirm Password')}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder={t('auth.password_placeholder', 'Choose a password')}
+                  shown={showConfirm}
+                  onToggle={() => setShowConfirm((v) => !v)}
+                />
 
                 <button
                   type="submit"
