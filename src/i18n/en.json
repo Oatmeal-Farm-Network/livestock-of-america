@@ -276,21 +276,9 @@
     "server_error": "Unable to connect to server. Please try again."
   },
   "forgot": {
-    "title": "Retrieve Your Password",
-    "subtitle": "We'll email it to you right away",
-    "intro": "Enter the email address associated with your account and we'll send your password to you.",
-    "send_btn": "Send My Password",
-    "sending": "Sending...",
-    "remember_password": "Remember your password?",
-    "success_title": "Password Sent!",
-    "success_body_pre": "Your password has been emailed to",
-    "success_body_post": "Please check your inbox and log in.",
-    "success_spam": "Don't see it? Check your spam folder.",
-    "go_to_login": "Go to Login",
-    "not_found_pre": "The email address",
-    "not_found_post": "was not found in our system. Please double-check or",
-    "not_found_cta": "create a new account",
-    "request_failed": "Request failed ({{status}}). Please try again."
+    "title": "Reset Your Password",
+    "subtitle": "We'll email you a reset link",
+    "go_to_login": "Go to Login"
   },
   "about": {
     "title": "Supporting Agriculture",
