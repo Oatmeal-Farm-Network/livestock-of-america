@@ -25,13 +25,6 @@ function money(n) {
   return `$${Math.round(Number(n)).toLocaleString()}`;
 }
 
-/** Legacy rows store Category as a bare numeric code — only show real labels. */
-function categoryLabel(value) {
-  const v = (value || '').trim();
-  if (!v || /^\d+$/.test(v)) return '';
-  return v;
-}
-
 function speciesLabel(slug) {
   if (!slug) return '';
   return slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
