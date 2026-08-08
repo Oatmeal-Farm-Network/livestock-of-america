@@ -166,7 +166,7 @@ function FeaturedForSaleCard({ animal }) {
             className="inline-flex items-center rounded-md px-5 py-2.5 text-xs font-bold uppercase no-underline text-white loa-home-cta"
             style={{ backgroundColor: OLIVE, letterSpacing: '0.09em' }}
           >
-            Inquire Now
+            Learn More
           </Link>
         </div>
         {(animal.seller || animal.location) && (
