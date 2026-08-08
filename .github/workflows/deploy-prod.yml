@@ -8,13 +8,21 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Defaults are resource identifiers, not credentials — auth is keyless via
+# Workload Identity Federation, and the security boundary is the IAM binding
+# on the deployer service account, which only trusts tokens carrying
+# attribute.repository == this repo. Any value can still be overridden with a
+# secret or repository variable of the same name.
 env:
-  PROJECT_ID: ${{ secrets.PROD_GCP_PROJECT_ID }}
+  PROJECT_ID: ${{ secrets.PROD_GCP_PROJECT_ID || 'animated-flare-421518' }}
   REGION: ${{ vars.PROD_REGION || 'us-central1' }}
   GAR_REPOSITORY: ${{ vars.PROD_ARTIFACT_REGISTRY_REPOSITORY || 'oatmeal-farm-registry' }}
   SERVICE_NAME: livestock-frontend-prod
   IMAGE_NAME: livestock-frontend
-  RUNTIME_SERVICE_ACCOUNT: ${{ vars.PROD_FRONTEND_RUNTIME_SA }}
+  RUNTIME_SERVICE_ACCOUNT: ${{ vars.PROD_FRONTEND_RUNTIME_SA || 'livestock-of-america@animated-flare-421518.iam.gserviceaccount.com' }}
+  WIF_PROVIDER: ${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER || 'projects/802455386518/locations/global/workloadIdentityPools/github-pool/providers/github-provider' }}
+  DEPLOYER_SA: ${{ secrets.PROD_GCP_SERVICE_ACCOUNT || 'github-deployer@animated-flare-421518.iam.gserviceaccount.com' }}
+  LIVESTOCK_API_URL: ${{ vars.PROD_LIVESTOCK_API_URL || 'https://livestock-backend-prod-802455386518.us-central1.run.app' }}
 
 jobs:
   deploy:
@@ -38,13 +46,13 @@ jobs:
               missing=1
             fi
           }
-          require PROD_GCP_PROJECT_ID "${{ secrets.PROD_GCP_PROJECT_ID }}"
-          require PROD_GCP_WORKLOAD_IDENTITY_PROVIDER "${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER }}"
-          require PROD_GCP_SERVICE_ACCOUNT "${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}"
-          require PROD_FRONTEND_RUNTIME_SA "${{ vars.PROD_FRONTEND_RUNTIME_SA }}"
-          require PROD_LIVESTOCK_API_URL "${{ vars.PROD_LIVESTOCK_API_URL }}"
+          require PROJECT_ID "${PROJECT_ID}"
+          require WIF_PROVIDER "${WIF_PROVIDER}"
+          require DEPLOYER_SA "${DEPLOYER_SA}"
+          require RUNTIME_SERVICE_ACCOUNT "${RUNTIME_SERVICE_ACCOUNT}"
+          require LIVESTOCK_API_URL "${LIVESTOCK_API_URL}"
           if [ "$missing" -ne 0 ]; then
-            echo "Production deploy blocked until all PROD_* secrets/vars are set."
+            echo "Production deploy blocked: a required value resolved empty."
             echo "See docs/LOA_FRONTEND_DEPLOY.md — livestock API URL required (no OFN backend)."
             exit 1
           fi
@@ -56,8 +64,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SA }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -67,7 +75,7 @@ jobs:
 
       - name: Build Docker image (bake production VITE_*)
         env:
-          VITE_LIVESTOCK_API_URL: ${{ vars.PROD_LIVESTOCK_API_URL }}
+          VITE_LIVESTOCK_API_URL: ${{ env.LIVESTOCK_API_URL }}
           VITE_NEWS_API_URL: ${{ vars.PROD_NEWS_API_URL || 'https://oatmeal-ai.com' }}
           VITE_SAIGE_API_URL: ${{ vars.PROD_SAIGE_URL }}
           VITE_CONTACT_EMAIL: ${{ vars.PROD_CONTACT_EMAIL }}
