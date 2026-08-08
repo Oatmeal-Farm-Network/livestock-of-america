@@ -5,8 +5,10 @@ import { useTranslation } from '../lib/i18n';
 import PageMeta from '../components/PageMeta';
 
 const NEWS_API =
+  // Shared Oatmeal AI news service. It serves full articles to everyone, and
+  // unlike a direct Firestore read it also fetches a missing article body from
+  // the publisher on first view, so LOA gets the same text as the other sites.
   import.meta.env.VITE_NEWS_API_URL ||
-  import.meta.env.VITE_LIVESTOCK_API_URL ||
   'https://oatmeal-ai.com';
 
 const CATEGORY_IMAGES = {
@@ -22,33 +24,6 @@ const getHeroImage = (article) => {
   const img = article?.image?.trim();
   if (img && img.startsWith('http')) return img;
   return article?.placeholderImage || CATEGORY_IMAGES[article?.category] || CATEGORY_IMAGES.General;
-};
-
-const PREVIEW_TEXT_CHARS = 450;
-
-const buildPreviewHtml = (html) => {
-  if (!html) return '';
-  if (typeof window === 'undefined' || !window.DOMParser) {
-    return html.slice(0, 800);
-  }
-  try {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const children = Array.from(doc.body.children);
-    if (children.length === 0) {
-      const text = (doc.body.textContent || '').slice(0, PREVIEW_TEXT_CHARS);
-      return `<p>${text}…</p>`;
-    }
-    const parts = [];
-    let charCount = 0;
-    for (const node of children) {
-      parts.push(node.outerHTML);
-      charCount += (node.textContent || '').length;
-      if (charCount >= PREVIEW_TEXT_CHARS) break;
-    }
-    return parts.join('');
-  } catch {
-    return html.slice(0, 800);
-  }
 };
 
 const ArticleDetail = () => {
@@ -80,10 +55,9 @@ const ArticleDetail = () => {
   if (loading) return <div style={{ paddingTop: '3rem', textAlign: 'center', color: '#6b7280' }}>{t('article.loading')}</div>;
   if (error || !article) return <div style={{ paddingTop: '3rem', textAlign: 'center', color: '#dc2626' }}>{error || t('article.not_found')}</div>;
 
-  const tokenRaw = localStorage.getItem('access_token') || localStorage.getItem('AccessToken');
-  const isSignedIn = !!(tokenRaw && tokenRaw !== 'undefined' && tokenRaw !== 'null');
   const fullContent = article.content || '';
-  const displayContent = isSignedIn ? fullContent : buildPreviewHtml(fullContent);
+  // News is public reference content — everyone gets the whole article.
+  const displayContent = fullContent;
 
   const heroImg = getHeroImage(article);
   const articleCanonical = `https://livestockofamerica.com/news/${id}`;
@@ -155,33 +129,13 @@ const ArticleDetail = () => {
         <div style={{ position: 'relative' }}>
           <div className="article-content" style={{ fontSize: '1rem', lineHeight: 1.8, color: '#374151' }}
             dangerouslySetInnerHTML={{ __html: displayContent }} />
-          {!isSignedIn && (
-            <div style={{ marginTop: '1.5rem', padding: '1.25rem 1.5rem', background: 'linear-gradient(180deg, #f9fafb 0%, #eef2e8 100%)', border: '1px solid #d6dec5', borderRadius: '12px', textAlign: 'center' }}>
-              <div style={{ fontSize: '0.95rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                {t('article.sign_in_title')}
-              </div>
-              <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: '0 0 0.9rem', lineHeight: 1.5 }}>
-                {t('article.sign_in_body')}
-              </p>
-              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button onClick={() => navigate('/login')}
-                  style={{ padding: '0.55rem 1.25rem', fontSize: '0.85rem', fontWeight: 600, border: 'none', backgroundColor: '#819360', color: '#fff', borderRadius: '6px', cursor: 'pointer' }}>
-                  {t('article.sign_in_btn')}
-                </button>
-                <button onClick={() => navigate('/register')}
-                  style={{ padding: '0.55rem 1.25rem', fontSize: '0.85rem', fontWeight: 600, border: '1px solid #819360', backgroundColor: '#fff', color: '#819360', borderRadius: '6px', cursor: 'pointer' }}>
-                  {t('article.create_account')}
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       ) : (
         <p style={{ fontSize: '1rem', lineHeight: 1.8, color: '#374151' }}>{article.description}</p>
       )}
 
       <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {isSignedIn && article.link ? (
+        {article.link ? (
           <a href={article.link} target="_blank" rel="noopener noreferrer"
             style={{ color: '#819360', fontWeight: 600, textDecoration: 'none', fontSize: '0.9rem' }}>
             {t('article.view_original', { source: article.source })}

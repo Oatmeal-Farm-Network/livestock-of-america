@@ -306,9 +306,6 @@ export default function Header({ force = false }) {
             </button>
           ) : (
             <>
-              <Link to="/login" style={linkStyle}>
-                {t('nav.login', 'Login')}
-              </Link>
               {/* Signup gets a filled treatment so it reads as the primary action. */}
               <Link
                 to="/signup"
@@ -316,6 +313,9 @@ export default function Header({ force = false }) {
                 className="rounded-md bg-white/15 hover:bg-white/25 transition-colors"
               >
                 {t('auth.sign_up', 'Sign Up')}
+              </Link>
+              <Link to="/login" style={linkStyle}>
+                {t('nav.login', 'Login')}
               </Link>
             </>
           )}
@@ -363,9 +363,6 @@ export default function Header({ force = false }) {
             </button>
           ) : (
             <>
-              <Link to="/login" onClick={() => setOpen(false)} style={linkStyle}>
-                {t('nav.login', 'Login')}
-              </Link>
               <Link
                 to="/signup"
                 onClick={() => setOpen(false)}
@@ -373,6 +370,9 @@ export default function Header({ force = false }) {
                 className="rounded-md bg-white/15 text-center"
               >
                 {t('auth.sign_up', 'Sign Up')}
+              </Link>
+              <Link to="/login" onClick={() => setOpen(false)} style={linkStyle}>
+                {t('nav.login', 'Login')}
               </Link>
             </>
           )}

@@ -21,6 +21,31 @@ const BANNER = '/images/LOAwebbanner1898x360.webp';
 
 const ANIMAL_PATH = (id) => `/marketplaces/livestock/animal/${id}`;
 
+/** Closing section: the rest of the site beyond the marketplace. */
+const EXPLORE = [
+  {
+    title: 'News Feed',
+    body: 'Market movements, policy, weather, and industry stories that affect what you raise and what it sells for — gathered in one place so you are not chasing a dozen sources.',
+    to: '/news',
+    cta: 'Read the news feed',
+    img: '/images/home-news-feed.svg',
+  },
+  {
+    title: 'Knowledgebase',
+    body: 'Origins, traits, temperament, and husbandry notes for thousands of documented breeds across 29 species — worth reading before you buy an animal, not after.',
+    to: '/livestock',
+    cta: 'Explore breeds',
+    img: '/images/KBHeroLivestock.png',
+  },
+  {
+    title: 'Directory',
+    body: 'Farms, ranches, food hubs, fiber mills, processors, veterinarians, and more across 29 categories of the food system — find the businesses behind the supply chain.',
+    to: '/directory',
+    cta: 'Browse the directory',
+    img: '/images/KBHeroDirectory.png',
+  },
+];
+
 function money(n) {
   if (n == null || Number.isNaN(Number(n))) return null;
   return `$${Math.round(Number(n)).toLocaleString()}`;
@@ -376,6 +401,123 @@ export default function Home() {
           </section>
         </div>
       </main>
+
+      {/* Breed associations and registries */}
+      <section style={{ backgroundColor: CREAM }}>
+        <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_minmax(0,420px)] gap-8 md:gap-12 items-center">
+            <Reveal>
+              <p
+                className="m-0 mb-2 text-[10px] font-bold uppercase"
+                style={{ color: OLIVE, letterSpacing: '0.14em' }}
+              >
+                Breed associations
+              </p>
+              <h2
+                className="m-0 mb-3"
+                style={{
+                  fontFamily: LORA,
+                  fontWeight: 700,
+                  fontSize: 'clamp(1.35rem, 2.6vw, 1.85rem)',
+                  color: INK,
+                }}
+              >
+                The registries behind the bloodlines
+              </h2>
+              <p className="m-0 mb-4 text-sm leading-relaxed" style={{ color: MUTED }}>
+                Breed associations keep the herd books, set the standards, and certify the
+                pedigrees that give an animal its provenance. They run the shows and sales,
+                publish the genetic evaluations breeders rely on, and connect newcomers to
+                established producers.
+              </p>
+              <p className="m-0 mb-6 text-sm leading-relaxed" style={{ color: MUTED }}>
+                Whether you are registering your first animal, verifying a pedigree before
+                a purchase, or looking for the association that governs your breed, the
+                directory lists agricultural associations across the country.
+              </p>
+              <Link
+                to="/directory/agricultural-associations"
+                className="inline-flex items-center rounded-md px-5 py-2.5 text-xs font-bold uppercase no-underline text-white loa-home-cta"
+                style={{ backgroundColor: OLIVE, letterSpacing: '0.09em' }}
+              >
+                Browse Associations
+              </Link>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <div
+                className="overflow-hidden rounded-lg border"
+                style={{ borderColor: LINE, backgroundColor: '#ebe6dc' }}
+              >
+                <img
+                  src="/images/AgriculturalAssociations.webp"
+                  alt="Agricultural and breed associations"
+                  loading="lazy"
+                  className="w-full h-auto object-cover"
+                  style={{ maxHeight: 260 }}
+                  onError={(e) => { e.currentTarget.src = '/images/AgricuturalAssociationsHeader.webp'; }}
+                />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Beyond the marketplace — news, breed research, and the directory. */}
+      <section style={{ backgroundColor: '#efe9df' }}>
+        <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14">
+          <Reveal>
+            <h2
+              className="m-0 mb-1.5"
+              style={{
+                fontFamily: LORA,
+                fontWeight: 700,
+                fontSize: 'clamp(1.35rem, 2.6vw, 1.85rem)',
+                color: INK,
+              }}
+            >
+              More than a marketplace
+            </h2>
+            <p className="m-0 mb-8 max-w-2xl text-[13px] leading-relaxed" style={{ color: MUTED }}>
+              Livestock of America also keeps you current on the industry, deep on the breeds,
+              and connected to the businesses that make up the food system.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
+            {EXPLORE.map((item, i) => (
+              <Reveal
+                key={item.title}
+                delay={i * 80}
+                className={`md:px-5 ${i > 0 ? 'md:border-l md:border-[#e0d8cc]' : 'md:pl-0'}`}
+              >
+                <div className="mb-4 overflow-hidden rounded-lg" style={{ height: 150, backgroundColor: '#ebe6dc' }}>
+                  <img
+                    src={item.img}
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                    onError={(e) => { e.currentTarget.src = '/images/HomepageLivestockDB.webp'; }}
+                  />
+                </div>
+                <h3 className="m-0 mb-2 text-lg font-bold" style={{ fontFamily: LORA, color: INK }}>
+                  {item.title}
+                </h3>
+                <p className="m-0 mb-4 text-sm leading-relaxed" style={{ color: MUTED }}>
+                  {item.body}
+                </p>
+                <Link
+                  to={item.to}
+                  className="text-sm font-semibold no-underline hover:underline"
+                  style={{ color: OLIVE }}
+                >
+                  {item.cta} →
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer />
 

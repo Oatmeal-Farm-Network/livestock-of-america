@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { openSaigeChat } from '../components/SaigeWidget';
 import { isLoggedIn } from '../lib/auth';
 
 const CREAM = '#f7f2e8';
@@ -31,18 +30,17 @@ const PILLARS = [
     img: '/images/KBHeroLivestock.png',
   },
   {
-    title: 'Saige AI',
-    body: 'Ask practical livestock questions and get answers grounded in farm context — powered by Oatmeal AI.',
-    to: null,
-    cta: 'Ask Saige',
-    img: '/images/SaigeBanner.webp',
-    saige: true,
+    title: 'Directory',
+    body: 'Find farms, ranches, food hubs, fiber mills, processors, and more across 29 categories of the food system.',
+    to: '/directory',
+    cta: 'Browse directory',
+    // Same banner the /directory landing page uses for its hero.
+    img: '/images/KBHeroDirectory.png',
   },
 ];
 
 export default function About() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const guest = !isLoggedIn();
 
   return (
@@ -74,8 +72,10 @@ export default function About() {
       </div>
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="relative min-h-[260px] md:min-h-[340px] flex items-end">
+      <section className="relative">
+        {/* Centred hero band — the image, its gradient and the copy all sit
+            inside this 1400px column rather than bleeding to the viewport. */}
+        <div className="relative min-h-[260px] md:min-h-[340px] flex items-end overflow-hidden mx-auto w-full max-w-[1400px]">
           <img
             src="/images/AboutUs.webp"
             alt=""
@@ -91,7 +91,7 @@ export default function About() {
                 'linear-gradient(105deg, rgba(44,36,28,0.82) 0%, rgba(44,36,28,0.5) 55%, rgba(44,36,28,0.28) 100%)',
             }}
           />
-          <div className="relative z-10 w-full max-w-[1100px] mx-auto px-5 pb-10 pt-16">
+          <div className="relative z-10 w-full mx-auto px-5 pb-10 pt-16">
             <p
               className="m-0 mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/85"
               style={{ fontFamily: LORA }}
@@ -137,7 +137,7 @@ export default function About() {
                 Built for the people who keep America fed
               </h2>
               <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: INK }}>
-                <strong>Livestock of America by Oatmeal AI</strong> is a dedicated platform for the
+                <strong>Livestock of America</strong> is a dedicated platform for the
                 livestock industry. We help ranches showcase animals online, reach buyers,
                 and research breeds with confidence — all in one place.
               </p>
@@ -147,16 +147,7 @@ export default function About() {
                 a new breed before you buy, this is where livestock professionals meet.
               </p>
             </div>
-            <div className="shrink-0 md:w-[280px]">
-              <img
-                src="/images/loa-header-logo.png"
-                alt="Livestock of America"
-                className="w-full h-auto"
-              />
-              <p className="m-0 mt-3 text-center text-sm italic" style={{ color: MUTED, fontFamily: LORA }}>
-                Livestock of America 
-              </p>
-            </div>
+           
           </div>
         </section>
       </div>
@@ -198,30 +189,13 @@ export default function About() {
                 <p className="m-0 mb-4 text-sm leading-relaxed" style={{ color: MUTED }}>
                   {pillar.body}
                 </p>
-                {pillar.saige ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (guest) {
-                        navigate('/login', { state: { from: { pathname: '/about' } } });
-                        return;
-                      }
-                      openSaigeChat();
-                    }}
-                    className="text-sm font-semibold border-0 bg-transparent p-0 cursor-pointer hover:underline"
-                    style={{ color: OLIVE }}
-                  >
-                    {pillar.cta} →
-                  </button>
-                ) : (
-                  <Link
-                    to={pillar.to}
-                    className="text-sm font-semibold no-underline hover:underline"
-                    style={{ color: OLIVE }}
-                  >
-                    {pillar.cta} →
-                  </Link>
-                )}
+                <Link
+                  to={pillar.to}
+                  className="text-sm font-semibold no-underline hover:underline"
+                  style={{ color: OLIVE }}
+                >
+                  {pillar.cta} →
+                </Link>
               </div>
             ))}
           </div>
