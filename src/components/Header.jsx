@@ -8,6 +8,7 @@ import {
   forSalePath,
   studPath,
   speciesLinks,
+  knowledgebasePath,
 } from '../lib/livestockSpecies';
 import { directoryLinks } from '../lib/directoryCategories';
 
@@ -52,7 +53,13 @@ const NAV = [
       { label: 'Blog', to: '/blog' },
     ],
   },
-  { label: 'Knowledgebase', fallbackKey: 'phase1.nav.knowledgebase', to: '/livestock' },
+  {
+    label: 'Knowledgebase',
+    fallbackKey: 'phase1.nav.knowledgebase',
+    // Same 29 species as the marketplace — too tall for one column.
+    columns: 3,
+    species: 'knowledgebase',
+  },
   { label: 'Events', fallbackKey: 'phase1.nav.events', to: '/events' },
   {
     label: 'About',
@@ -242,6 +249,15 @@ export default function Header({ force = false }) {
         }
         if (item.species === 'studs') {
           return { ...item, children: speciesLinks(STUD_SPECIES, studPath, t) };
+        }
+        if (item.species === 'knowledgebase') {
+          return {
+            ...item,
+            children: [
+              { label: t('phase1.nav.all_knowledgebase', 'All Livestock Species'), to: '/livestock' },
+              ...speciesLinks(FOR_SALE_SPECIES, knowledgebasePath, t),
+            ],
+          };
         }
         if (item.categories === 'directory') {
           return {
