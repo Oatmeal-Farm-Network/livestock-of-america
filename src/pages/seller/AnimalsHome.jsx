@@ -135,7 +135,15 @@ export default function AnimalsHome() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const BusinessID = searchParams.get('BusinessID');
+  // A URL can carry the literal strings "null" or "undefined" when a link was
+  // built from an unset value. Those are not ids, and passing one to the API
+  // returns an error that reads as "your animals failed to load" rather than
+  // "no business selected" — so normalise them away before anything uses it.
+  const rawBusinessID = searchParams.get('BusinessID');
+  const BusinessID =
+    rawBusinessID && rawBusinessID !== 'null' && rawBusinessID !== 'undefined' && /^\d+$/.test(rawBusinessID)
+      ? rawBusinessID
+      : null;
   const tabParam = searchParams.get('tab');
   const { Business, LoadBusiness, businesses } = useAccount();
   const { refresh: refreshSavedIds, isSaved } = useSavedItems();
@@ -160,6 +168,18 @@ export default function AnimalsHome() {
     setSearchParams(params, { replace: true });
   };
 
+  // Landing here without a usable id is normal (a stale link, or the sidebar
+  // before the account finished loading). Adopt the member's own business and
+  // correct the URL instead of showing an error.
+  useEffect(() => {
+    if (BusinessID || !businesses?.length) return;
+    const first = businesses[0].BusinessID ?? businesses[0].businessId ?? businesses[0].id;
+    if (first == null) return;
+    const params = new URLSearchParams(searchParams);
+    params.set('BusinessID', String(first));
+    setSearchParams(params, { replace: true });
+  }, [BusinessID, businesses, searchParams, setSearchParams]);
+
   useEffect(() => {
     if (!BusinessID) {
       setLoading(false);
@@ -167,6 +187,7 @@ export default function AnimalsHome() {
     }
     LoadBusiness(BusinessID);
     const token = getToken();
+    setError(false);
     setLoading(true);
     fetch(endpoints.authAnimals(BusinessID), {
       headers: { Authorization: `Bearer ${token}` },
