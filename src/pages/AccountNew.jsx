@@ -3,6 +3,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from '../lib/i18n';
+import { loadStripe } from '@stripe/stripe-js';
+import { EmbeddedCheckoutProvider, EmbeddedCheckout } from '@stripe/react-stripe-js';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
@@ -232,6 +234,7 @@ function PaymentStep({ data, businessId, peopleId, cycle, onBack }) {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [err, setErr]   = useState('');
+  const [clientSecret, setClientSecret] = useState(null);
 
   const amount = Number(cycle === 'yearly' ? data?.yearly : data?.monthly) || 0;
   const paid   = amount > 0;
@@ -258,7 +261,13 @@ function PaymentStep({ data, businessId, peopleId, cycle, onBack }) {
     }
   };
 
-  const payWithStripe = async () => {
+  // Stripe.js is loaded once per publishable key. The key comes from the server
+  // rather than a build-time variable so it always matches the mode the backend
+  // is transacting in — a live key against a test session simply fails.
+  const [stripePromise, setStripePromise] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+
+  const beginPayment = async () => {
     setBusy(true); setErr('');
     try {
       const res = await fetch(`${API_URL}/api/platform-subscriptions/package-checkout/${businessId}`, {
@@ -271,16 +280,48 @@ function PaymentStep({ data, businessId, peopleId, cycle, onBack }) {
         }),
       });
       const body = await res.json().catch(() => ({}));
-      if (!res.ok || !body.checkout_url) {
+      if (!res.ok || !body.client_secret) {
         throw new Error(body.detail || 'Could not start checkout. Please try again.');
       }
-      // Progress stays in sessionStorage so cancelling at Stripe returns here.
-      window.location.href = body.checkout_url;
+      if (!body.publishable_key) {
+        throw new Error('Stripe is missing a publishable key. Ask an admin to add one.');
+      }
+      setStripePromise(loadStripe(body.publishable_key));
+      setClientSecret(body.client_secret);
+      setShowForm(true);
     } catch (e) {
       setErr(e.message);
+    } finally {
       setBusy(false);
     }
   };
+
+  if (showForm && clientSecret && stripePromise) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-baseline justify-between">
+          <h3 className="m-0 text-lg font-bold" style={{ color: C.text }}>{data.tier}</h3>
+          <span className="text-sm font-semibold" style={{ color: C.text }}>
+            {money(amount)} / {cycle === 'yearly' ? 'year' : 'month'}
+          </span>
+        </div>
+
+        {/* Stripe renders the card fields inside this iframe. The member stays
+            on livestockofamerica.com and the card never reaches our server. */}
+        <div style={{ border: `1px solid ${C.sageBorder}`, borderRadius: 12, overflow: 'hidden' }}>
+          <EmbeddedCheckoutProvider stripe={stripePromise} options={{ clientSecret }}>
+            <EmbeddedCheckout />
+          </EmbeddedCheckoutProvider>
+        </div>
+
+        <button
+          onClick={() => { setShowForm(false); setClientSecret(null); }}
+          className="border border-gray-300 rounded px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
+          ← Back
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5">
@@ -299,8 +340,9 @@ function PaymentStep({ data, businessId, peopleId, cycle, onBack }) {
               </span>
             </p>
             <p className="mt-3 mb-0 text-sm text-gray-500">
-              You will be taken to Stripe to enter your payment details. Your card
-              is handled entirely by Stripe and never stored on our servers.
+              Payment is processed securely by Stripe without leaving this page.
+              Your card details go directly to Stripe and are never stored on our
+              servers.
             </p>
           </>
         ) : (
@@ -321,10 +363,10 @@ function PaymentStep({ data, businessId, peopleId, cycle, onBack }) {
           className="border border-gray-300 rounded px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
           ← Back
         </button>
-        <button onClick={paid ? payWithStripe : finishFree} disabled={busy} className="regsubmit2">
+        <button onClick={paid ? beginPayment : finishFree} disabled={busy} className="regsubmit2">
           {busy
-            ? (paid ? 'Redirecting to Stripe…' : 'Finishing…')
-            : (paid ? `Pay ${money(amount)} with Stripe` : 'Finish setup')}
+            ? (paid ? 'Preparing payment…' : 'Finishing…')
+            : (paid ? `Pay ${money(amount)}` : 'Finish setup')}
         </button>
       </div>
     </div>
@@ -470,6 +512,33 @@ export default function AccountNew() {
     return Object.keys(e).length === 0;
   };
 
+  // Stripe sends the member back here with ?session_id= once the embedded form
+  // completes. Confirm against the API rather than trusting the URL, then finish.
+  const [returned, setReturned] = useState(null);
+  useEffect(() => {
+    const sessionId = new URLSearchParams(window.location.search).get('session_id');
+    if (!sessionId) return;
+    (async () => {
+      try {
+        const token = localStorage.getItem('access_token') || localStorage.getItem('AccessToken') || '';
+        const res = await fetch(
+          `${API_URL}/api/platform-subscriptions/checkout-session/${sessionId}`,
+          { headers: { Authorization: `Bearer ${token}` } });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok && body.status === 'complete') {
+          setReturned({ ok: true, packageName: body.package_name });
+          clearProgress(peopleId);
+        } else {
+          // Session still open or expired: leave the wizard where it was so the
+          // member can try again rather than being told something went wrong.
+          setReturned({ ok: false });
+        }
+      } catch {
+        setReturned({ ok: false });
+      }
+    })();
+  }, [peopleId]);
+
   // Only worth persisting once the Business exists — before that a refresh has
   // nothing to resume and step 1 is the correct place to land.
   useEffect(() => {
@@ -549,7 +618,23 @@ export default function AccountNew() {
           </div>
 
           {/* ── STEP 1: account details ──────────────────────────────────────── */}
-          {step === 1 && (
+          {returned?.ok && (
+            <div className="text-center py-10">
+              <div className="text-4xl mb-3">✓</div>
+              <h2 className="text-xl font-bold mb-2" style={{ color: C.text }}>Payment received</h2>
+              <p className="text-sm text-gray-500 mb-6">
+                {returned.packageName ? `${returned.packageName} is being activated.` : 'Your plan is being activated.'}
+                {' '}A receipt is on its way by email.
+              </p>
+              <button
+                onClick={() => navigate(`/account?PeopleID=${peopleId}&BusinessID=${createdBusinessId || ''}`)}
+                className="regsubmit2">
+                Go to my account
+              </button>
+            </div>
+          )}
+
+          {!returned?.ok && step === 1 && (
             <div className="space-y-5">
 
               <div>
@@ -682,7 +767,7 @@ export default function AccountNew() {
           )}
 
           {/* ── STEP 2: choose a subscription plan ───────────────────────────── */}
-          {step === 2 && (
+          {!returned?.ok && step === 2 && (
             <SubscriptionStep
               businessTypeId={form.BusinessTypeID}
               onBack={() => setStep(1)}
@@ -700,7 +785,7 @@ export default function AccountNew() {
           )}
 
           {/* ── STEP 3: checkout ─────────────────────────────────────────────── */}
-          {step === 3 && checkoutData && (
+          {!returned?.ok && step === 3 && checkoutData && (
             <CheckoutPanel
               data={checkoutData}
               onBack={() => setStep(2)}
@@ -708,7 +793,7 @@ export default function AccountNew() {
             />
           )}
 
-          {(step === 3 || step === 4) && !checkoutData && (
+          {!returned?.ok && (step === 3 || step === 4) && !checkoutData && (
             <div className="text-center py-8 text-gray-500 text-sm">
               No plan selected yet.{' '}
               <button onClick={() => setStep(2)} className="text-[#4A5C43] underline">Go back to plans</button>
@@ -716,7 +801,7 @@ export default function AccountNew() {
           )}
 
           {/* ── STEP 4: payment ──────────────────────────────────────────────── */}
-          {step === 4 && checkoutData && (
+          {!returned?.ok && step === 4 && checkoutData && (
             <PaymentStep
               data={checkoutData}
               businessId={createdBusinessId}
