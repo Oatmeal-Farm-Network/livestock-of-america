@@ -24,7 +24,7 @@ const LORA = "'Lora', 'Times New Roman', serif";
  * swaps the target once signed in.
  */
 const NAV = [
-  { label: 'Home', fallbackKey: 'phase1.nav.home', to: '/', authTo: '/account' },
+  { label: 'Home', fallbackKey: 'phase1.nav.home', to: '/' },
   {
     label: 'Livestock for Sale',
     fallbackKey: 'phase1.nav.for_sale',

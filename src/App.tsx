@@ -55,13 +55,6 @@ import AccountTeamMembers from "./pages/AccountTeamMembers";
 import Phase1EventsComingSoon from "./pages/Phase1EventsComingSoon";
 
 /** Guests see the marketing homepage; signed-in users land on the dashboard. */
-function HomeGate() {
-  if (isLoggedIn()) {
-    return <Navigate to="/account" replace />;
-  }
-  return <Home />;
-}
-
 /** Contact Us is guest-only; signed-in users use the workspace instead. */
 function ContactUsGuest() {
   if (isLoggedIn()) {
@@ -98,7 +91,10 @@ export default function App() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
       <Route element={<AppChrome />}>
-        <Route path="/" element={<HomeGate />} />
+        {/* The home page is reachable by everyone. Signed-in visitors used to be
+            bounced to /account here, which made the header's Home link impossible
+            to follow — it always landed on the workspace instead. */}
+        <Route path="/" element={<Home />} />
         <Route path="/animals" element={<LivestockMarketplace />} />
         <Route path="/marketplaces/livestock" element={<LivestockMarketplace />} />
         <Route path="/marketplaces/livestock/studs/:slug" element={<LivestockForSale />} />

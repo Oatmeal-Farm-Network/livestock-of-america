@@ -328,6 +328,43 @@ export default function AccountSidebar({ onNavigate }) {
         {Expanded !== false ? <CollapseIcon /> : <ExpandIcon />}
       </button>
 
+      {/* Dashboard — pinned above the account picker so the first thing in the
+          sidebar is the way back to the workspace. It sits outside <nav> now, so
+          it carries the horizontal padding <nav> used to supply. */}
+      <div className="px-2 pt-2 shrink-0">
+            <div className="mb-1">
+              <div className={`flex items-center rounded-lg hover:bg-white/50 transition-all ${Expanded === false ? 'justify-center' : ''}`}>
+                <Link
+                  to={BusinessID ? biz('/account', `PeopleID=${peopleId}`) : '/account'}
+                  onClick={onNavigate}
+                  title={Expanded === false ? t('account_sidebar.sec_dashboard', 'Dashboard') : undefined}
+                  className={`flex items-center py-2 text-gray-700 text-sm flex-1 min-w-0 no-underline ${(Expanded !== false) ? 'gap-3 px-3' : 'justify-center'}`}
+                >
+                  <span className="w-4 h-4 shrink-0 flex items-center justify-center">{ICONS.dashboard}</span>
+                  {(Expanded !== false) && <span className="grow text-left whitespace-nowrap">{t('account_sidebar.sec_dashboard', 'Dashboard')}</span>}
+                </Link>
+                {(Expanded !== false) && (
+                  <button
+                    onClick={() => toggleSection('Account')}
+                    className="pr-3 py-2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      {isAccountOpen ? <path d="M3 10l5-5 5 5" /> : <path d="M3 6l5 5 5-5" />}
+                    </svg>
+                  </button>
+                )}
+              </div>
+              {isAccountOpen && Expanded !== false && (
+                <div className="flex flex-col gap-0.5 mt-0.5">
+                  <NavChild to={biz('/account/profile')} label={t('account_sidebar.edit_profile', 'Edit Profile')} />
+                  <NavChild to={biz('/account/team')} label={t('account_sidebar.team_members', 'Team Members')} />
+                  <NavChild to={biz('/account/change-type')} label={t('account_sidebar.change_account_type', 'Change Account Type')} />
+                  <NavChild to={biz('/account/delete')} label={t('account_sidebar.delete_account', 'Delete Account')} />
+                </div>
+              )}
+            </div>
+      </div>
+
       {/* Accounts dropdown — always visible */}
       <div className="px-2 pt-2 pb-2 border-b border-gray-300/50 shrink-0">
         <NavSection
@@ -365,39 +402,6 @@ export default function AccountSidebar({ onNavigate }) {
           )}
 
           <nav className="flex flex-col gap-1 p-2 grow overflow-y-auto">
-
-            {/* Dashboard */}
-            <div className="mb-1">
-              <div className={`flex items-center rounded-lg hover:bg-white/50 transition-all ${Expanded === false ? 'justify-center' : ''}`}>
-                <Link
-                  to={BusinessID ? biz('/account', `PeopleID=${peopleId}`) : '/account'}
-                  onClick={onNavigate}
-                  title={Expanded === false ? t('account_sidebar.sec_dashboard', 'Dashboard') : undefined}
-                  className={`flex items-center py-2 text-gray-700 text-sm flex-1 min-w-0 no-underline ${(Expanded !== false) ? 'gap-3 px-3' : 'justify-center'}`}
-                >
-                  <span className="w-4 h-4 shrink-0 flex items-center justify-center">{ICONS.dashboard}</span>
-                  {(Expanded !== false) && <span className="grow text-left whitespace-nowrap">{t('account_sidebar.sec_dashboard', 'Dashboard')}</span>}
-                </Link>
-                {(Expanded !== false) && (
-                  <button
-                    onClick={() => toggleSection('Account')}
-                    className="pr-3 py-2 text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      {isAccountOpen ? <path d="M3 10l5-5 5 5" /> : <path d="M3 6l5 5 5-5" />}
-                    </svg>
-                  </button>
-                )}
-              </div>
-              {isAccountOpen && Expanded !== false && (
-                <div className="flex flex-col gap-0.5 mt-0.5">
-                  <NavChild to={biz('/account/profile')} label={t('account_sidebar.edit_profile', 'Edit Profile')} />
-                  <NavChild to={biz('/account/team')} label={t('account_sidebar.team_members', 'Team Members')} />
-                  <NavChild to={biz('/account/change-type')} label={t('account_sidebar.change_account_type', 'Change Account Type')} />
-                  <NavChild to={biz('/account/delete')} label={t('account_sidebar.delete_account', 'Delete Account')} />
-                </div>
-              )}
-            </div>
 
         {/* ── Grouped feature navigation ── */}
         <NavGroup icon={ICONS.farmOps} label="Farm Operations" expanded={Expanded !== false} isOpen={OpenSections?.['g_farmops'] || false} onToggle={() => toggleSection('g_farmops')}>
