@@ -420,7 +420,7 @@ export default function LivestockDB() {
       <section className="relative overflow-hidden">
         <div className="relative min-h-[280px] md:min-h-[380px] flex items-end">
           <img
-            src="/images/KBHeroLivestock.png"
+            src="/images/KBHeroLivestock.webp"
             alt="Online Livestock Knowledgebase"
             className="absolute inset-0 w-full h-full object-cover"
             loading="eager"

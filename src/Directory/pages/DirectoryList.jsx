@@ -98,7 +98,7 @@ export default function DirectoryList() {
         ]} />
 
         <KnowledgebaseLandingHero
-          image="/images/KBHeroDirectory.png"
+          image="/images/KBHeroDirectory.webp"
           alt="The Food System Directory"
           title="The Food System Directory"
           description="Find what you're looking for across 29 categories — from farms and food hubs to restaurants, fiber mills, and more. Search and connect with local farms, food businesses, and organizations in your area."

@@ -35,14 +35,14 @@ const EXPLORE = [
     body: 'Origins, traits, temperament, and husbandry notes for thousands of documented breeds across 29 species — worth reading before you buy an animal, not after.',
     to: '/livestock',
     cta: 'Explore breeds',
-    img: '/images/KBHeroLivestock.png',
+    img: '/images/KBHeroLivestock.webp',
   },
   {
     title: 'Directory',
     body: 'Farms, ranches, food hubs, fiber mills, processors, veterinarians, and more across 29 categories of the food system — find the businesses behind the supply chain.',
     to: '/directory',
     cta: 'Browse the directory',
-    img: '/images/KBHeroDirectory.png',
+    img: '/images/KBHeroDirectory.webp',
   },
 ];
 

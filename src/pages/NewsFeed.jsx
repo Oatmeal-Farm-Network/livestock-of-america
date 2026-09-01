@@ -24,7 +24,7 @@ const CATEGORY_IMAGES = {
 };
 
 const GREEN_CATS = new Set(['AgTech', 'Livestock', 'Markets']);
-const HERO_FALLBACK = '/images/NewsHeroWheat.png';
+const HERO_FALLBACK = '/images/NewsHeroWheat.webp';
 
 /** Snapshot rows — same futures symbols as Commodity Prices page */
 const SNAPSHOT_COMMODITIES = [
@@ -393,7 +393,7 @@ const NewsFeed = () => {
         description="Stay current with agricultural news covering markets, weather, policy, AgTech, and livestock. Curated daily for farmers, ranchers, and food producers."
         keywords="farm news, agricultural news, commodity markets, farm policy, AgTech news, livestock news, weather alerts, crop markets"
         canonical="https://livestockofamerica.com/news"
-        image="/images/NewsHeroWheat.png"
+        image="/images/NewsHeroWheat.webp"
         imageAlt="Livestock of America Newsroom"
         jsonLd={[
           {

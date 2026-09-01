@@ -14,7 +14,7 @@ const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 // Fallback card images (same as LivestockDB index) keyed by slug
 const FALLBACK_IMAGES = {
   'alpacas':      '/images/AlpacasHeader.webp',
-  'bison':        '/images/BisonHeader.png',
+  'bison':        '/images/BisonHeader.webp',
   'buffalo':      '/images/BuffaloHeader.webp',
   'camels':       '/images/camelHeader.webp',
   'cattle':       '/images/CattleHeader.webp',

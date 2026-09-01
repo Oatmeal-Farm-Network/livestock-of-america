@@ -27,7 +27,7 @@ const PILLARS = [
     body: 'Research breeds, origins, and husbandry notes across dozens of livestock species — built for producers, not tourists.',
     to: '/livestock',
     cta: 'Explore breeds',
-    img: '/images/KBHeroLivestock.png',
+    img: '/images/KBHeroLivestock.webp',
   },
   {
     title: 'Directory',
@@ -35,7 +35,7 @@ const PILLARS = [
     to: '/directory',
     cta: 'Browse directory',
     // Same banner the /directory landing page uses for its hero.
-    img: '/images/KBHeroDirectory.png',
+    img: '/images/KBHeroDirectory.webp',
   },
 ];
 
