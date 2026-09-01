@@ -10,14 +10,19 @@ import { useAccount } from '../lib/AccountContext';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
+// OFN's list covered its whole catalogue — nursery, packhouse, crop budgets and
+// thirty others that Livestock of America does not have. Listing them here gave
+// admins thirty-odd rows of toggles that control nothing.
+//
+// These are the features LOA actually exposes to a business, each matching a
+// destination that is currently visible in the workspace sidebar. Add a key here
+// when the corresponding section is unhidden in lib/hiddenFeatures.
 const FEATURE_KEYS = [
-  'precision_ag','farm_kpi','nursery_management','outgrower_management','procurement',
-  'work_orders','packhouse_qc','plant_tagging','export_compliance',
-  'livestock','farm_2_table','products','services','events','accounting',
-  'my_website','blog','certifications','supplier_directory','csa_management',
-  'job_board','land_leasing','grants_programs','education_center','cold_chain',
-  'farmer_settlement','supply_chain','hr_management','farm_inputs',
-  'crop_budgets','traceability','food_aggregation','forums','testimonials',
+  'livestock',        // Livestock → Animals: list, add, delete, transfer, packages, statistics
+  'herd_health',      // Livestock → Herd Health
+  'blog',             // Community → Blog
+  'team_members',     // Administration → Roles & Permissions
+  'account_settings', // Administration → Settings
 ];
 
 const SEVERITY_COLOR = {
