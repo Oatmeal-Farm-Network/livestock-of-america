@@ -14,6 +14,7 @@
  * namesake link.
  */
 export const HIDDEN_FEATURES = new Set([
+  // Community sections
   'forums',
   'events',
   'testimonials',
@@ -21,6 +22,23 @@ export const HIDDEN_FEATURES = new Set([
   'pairsley',
   'provenance',
   'properties',
+
+  // The whole Programs group. Its NavGroup is wrapped in anyOn() over exactly
+  // these four, so hiding all four removes the group heading with it — there
+  // is no separate key for the group itself.
+  'certifications',
+  'commodity_prices',
+  'education_center',
+  'grants_programs',
+
+  // The whole Business Mgmt group, same arrangement over these seven.
+  'accounting',
+  'cash_flow_forecast',
+  'document_vault',
+  'farm_pl',
+  'meetings',
+  'my_website',
+  'report_center',
 ]);
 
 /** True when a feature key is hidden for now. */
