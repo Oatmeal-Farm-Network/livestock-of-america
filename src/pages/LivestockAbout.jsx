@@ -16,7 +16,7 @@ const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 // (e.g. emus, which skips the breed-list page because it only has one breed).
 const FALLBACK_IMAGES = {
   'alpacas':      '/images/AlpacasHeader.webp',
-  'bison':        '/images/BisonHeader.png',
+  'bison':        '/images/BisonHeader.webp',
   'buffalo':      '/images/BuffaloHeader.webp',
   'camels':       '/images/camelHeader.webp',
   'cattle':       '/images/CattleHeader.webp',

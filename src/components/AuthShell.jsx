@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router';
 import { isLoggedIn, logout } from '../lib/auth';
 import Header from './Header';
 import AccountSidebar from './AccountSidebar';
-import SaigeWidget from './SaigeWidget';
 
 const CREAM = '#f7f2e8';
 
@@ -77,7 +76,7 @@ export default function AuthShell({ children }) {
         <div className="flex-1 min-w-0 flex flex-col">{children}</div>
       </div>
 
-      <SaigeWidget />
+      {/* Saige chat widget temporarily hidden — see App.tsx. */}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
+import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
@@ -20,16 +21,34 @@ const BANNER = '/images/LOAwebbanner1898x360.webp';
 
 const ANIMAL_PATH = (id) => `/marketplaces/livestock/animal/${id}`;
 
+/** Closing section: the rest of the site beyond the marketplace. */
+const EXPLORE = [
+  {
+    title: 'News Feed',
+    body: 'Market movements, policy, weather, and industry stories that affect what you raise and what it sells for — gathered in one place so you are not chasing a dozen sources.',
+    to: '/news',
+    cta: 'Read the news feed',
+    img: '/images/home-news-feed.svg',
+  },
+  {
+    title: 'Knowledgebase',
+    body: 'Origins, traits, temperament, and husbandry notes for thousands of documented breeds across 29 species — worth reading before you buy an animal, not after.',
+    to: '/livestock',
+    cta: 'Explore breeds',
+    img: '/images/KBHeroLivestock.webp',
+  },
+  {
+    title: 'Directory',
+    body: 'Farms, ranches, food hubs, fiber mills, processors, veterinarians, and more across 29 categories of the food system — find the businesses behind the supply chain.',
+    to: '/directory',
+    cta: 'Browse the directory',
+    img: '/images/KBHeroDirectory.webp',
+  },
+];
+
 function money(n) {
   if (n == null || Number.isNaN(Number(n))) return null;
   return `$${Math.round(Number(n)).toLocaleString()}`;
-}
-
-/** Legacy rows store Category as a bare numeric code — only show real labels. */
-function categoryLabel(value) {
-  const v = (value || '').trim();
-  if (!v || /^\d+$/.test(v)) return '';
-  return v;
 }
 
 function speciesLabel(slug) {
@@ -125,100 +144,6 @@ function Kicker({ children, color = OLIVE }) {
   );
 }
 
-/** Large lead card in the Heritage Breed Sales row. */
-function HeritageLeadCard({ animal }) {
-  const price = money(animal.price);
-  const meta = [categoryLabel(animal.category), animal.breeds?.[0], animal.location]
-    .filter(Boolean)
-    .join(' · ');
-
-  return (
-    <Link to={ANIMAL_PATH(animal.animal_id)} className="no-underline block group h-full" style={{ color: 'inherit' }}>
-      <article
-        className="h-full overflow-hidden rounded-lg border bg-white flex flex-col transition-shadow group-hover:shadow-lg"
-        style={{ borderColor: LINE }}
-      >
-        <div className="relative aspect-[16/9] overflow-hidden bg-[#efe9df]">
-          <ListingPhoto
-            src={animal.photo}
-            alt={animal.full_name}
-            imgClassName="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-          <div className="absolute top-3 left-3">
-            <Badge>Featured Listing</Badge>
-          </div>
-        </div>
-        <div className="p-5 flex-1 flex flex-col">
-          <div className="flex items-start justify-between gap-4">
-            <h3
-              className="m-0 mb-2 text-xl font-bold leading-snug"
-              style={{ fontFamily: LORA, color: INK }}
-            >
-              {animal.full_name}
-            </h3>
-            <span
-              className="shrink-0 rounded-md border px-3 py-1.5 text-xs font-semibold"
-              style={{ borderColor: LINE, color: price ? OLIVE : MUTED, backgroundColor: '#faf7f1' }}
-            >
-              {price || 'Call for price'}
-            </span>
-          </div>
-          {animal.description && (
-            <p className="m-0 text-[13px] leading-relaxed line-clamp-2" style={{ color: MUTED }}>
-              {animal.description}
-            </p>
-          )}
-          {meta && (
-            <p
-              className="m-0 mt-auto pt-4 text-[11px] uppercase"
-              style={{ color: '#9a9285', letterSpacing: '0.08em' }}
-            >
-              {meta}
-            </p>
-          )}
-        </div>
-      </article>
-    </Link>
-  );
-}
-
-/** Compact side card in the Heritage Breed Sales row. */
-function HeritageSideCard({ animal }) {
-  const price = money(animal.price);
-  return (
-    <Link to={ANIMAL_PATH(animal.animal_id)} className="no-underline block group h-full" style={{ color: 'inherit' }}>
-      <article
-        className="h-full rounded-lg border bg-white p-4 flex flex-col transition-shadow group-hover:shadow-md"
-        style={{ borderColor: LINE }}
-      >
-        <Kicker>{kicker(animal)}</Kicker>
-        <h3
-          className="m-0 mb-1.5 text-[15px] font-bold leading-snug"
-          style={{ fontFamily: LORA, color: INK }}
-        >
-          {animal.full_name}
-        </h3>
-        {animal.description && (
-          <p className="m-0 mb-3 text-[12px] leading-relaxed line-clamp-3" style={{ color: MUTED }}>
-            {animal.description}
-          </p>
-        )}
-        <div className="mt-auto flex items-end justify-between gap-3">
-          <span className="text-[13px] font-semibold" style={{ color: price ? OLIVE : MUTED }}>
-            {price || 'Call for price'}
-          </span>
-          <span
-            className="loa-arrow shrink-0 grid place-items-center w-7 h-7 rounded-full border text-xs transition-colors group-hover:text-white"
-            style={{ borderColor: LINE, color: MUTED }}
-          >
-            →
-          </span>
-        </div>
-      </article>
-    </Link>
-  );
-}
-
 /** Featured Animal for Sale — image left, detail panel right. */
 function FeaturedForSaleCard({ animal }) {
   const price = money(animal.price);
@@ -267,7 +192,7 @@ function FeaturedForSaleCard({ animal }) {
             className="inline-flex items-center rounded-md px-5 py-2.5 text-xs font-bold uppercase no-underline text-white loa-home-cta"
             style={{ backgroundColor: OLIVE, letterSpacing: '0.09em' }}
           >
-            Inquire Now
+            Learn More
           </Link>
         </div>
         {(animal.seller || animal.location) && (
@@ -365,7 +290,8 @@ function EmptyPanel({ message, cta, to }) {
 }
 
 export default function Home() {
-  const [featured, setFeatured] = useState({ for_sale: null, stud: null, heritage: [] });
+  const { t } = useTranslation();
+  const [featured, setFeatured] = useState({ for_sale: null, stud: null });
 
   useEffect(() => {
     let cancelled = false;
@@ -376,21 +302,18 @@ export default function Home() {
         setFeatured({
           for_sale: data.for_sale || null,
           stud: data.stud || null,
-          heritage: Array.isArray(data.heritage) ? data.heritage : [],
         });
       })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
 
-  const heritageCards = featured.heritage;
-
   return (
     <div className="min-h-screen font-sans flex flex-col relative">
       <PageMeta
         title="Livestock of America by Oatmeal AI | Connecting Ranches Across the United States"
-        description="Heritage breed sales, featured livestock for sale, and championship stud breeding services from ranchers and breeders across America."
-        keywords="livestock of america, oatmeal ai, livestock marketplace, heritage breeds, stud services, ranchers, breeders"
+        description="Featured livestock for sale and championship stud breeding services from ranchers and breeders across America."
+        keywords="livestock of america, oatmeal ai, livestock marketplace, livestock for sale, stud services, ranchers, breeders"
         canonical="https://livestockofamerica.com/"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -400,11 +323,13 @@ export default function Home() {
           description: 'Connecting ranchers, buyers, and livestock professionals across the United States.',
         }}
       />
-      <FlagBackdrop />
       <Header />
 
-      <main className="flex-1">
-        <div className="max-w-[1100px] mx-auto px-5 pt-6 pb-16">
+      {/* Flag band sits under the header, behind the banner and first section.
+          `main` is lifted to z-10 so the content stacks above it. */}
+      <main className="relative flex-1">
+        <FlagBackdrop />
+        <div className="relative z-10 max-w-[1100px] mx-auto px-5 pt-6 pb-16">
           {/* Collage banner */}
           <Reveal>
             <img
@@ -416,33 +341,24 @@ export default function Home() {
             />
           </Reveal>
 
-          {/* Heritage Breed Sales */}
-          <section className="pt-10">
-            <SectionHead
-              title="Heritage Breed Sales"
-              blurb="Curated lineages preserved for generations, offering vigour, genetic integrity, and historical significance."
-            />
-            {heritageCards.length > 0 ? (
-              <div className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-4">
-                <Reveal className="h-full">
-                  <HeritageLeadCard animal={heritageCards[0]} />
-                </Reveal>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-                  {heritageCards.slice(1).map((a, i) => (
-                    <Reveal key={a.animal_id} className="h-full" delay={(i + 1) * 80}>
-                      <HeritageSideCard animal={a} />
-                    </Reveal>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <EmptyPanel
-                message="Heritage listings are on their way."
-                cta="Browse Marketplace"
-                to="/animals"
-              />
-            )}
-          </section>
+          {/* Marketplace intro — moved here from /animals */}
+          <Reveal>
+            <section className="pt-8">
+              <h1
+                className="m-0 mb-3 text-center font-bold"
+                style={{ fontFamily: LORA, fontSize: 'clamp(1.35rem, 2.6vw, 1.85rem)', color: INK }}
+              >
+                {t('livestock_mkt.title')}
+              </h1>
+              <p className="m-0 mb-2 text-[0.9rem] leading-relaxed" style={{ color: '#333' }}>
+                {t('livestock_mkt.intro1')}
+              </p>
+              <p className="m-0 mb-4 text-[0.9rem] leading-relaxed" style={{ color: '#333' }}>
+                {t('livestock_mkt.intro2')}
+              </p>
+              <Link to="/signup" className="regsubmit2">{t('livestock_mkt.join_now')}</Link>
+            </section>
+          </Reveal>
 
           {/* Featured Animal for Sale */}
           <section className="pt-12">
@@ -485,6 +401,123 @@ export default function Home() {
           </section>
         </div>
       </main>
+
+      {/* Breed associations and registries */}
+      <section style={{ backgroundColor: CREAM }}>
+        <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_minmax(0,420px)] gap-8 md:gap-12 items-center">
+            <Reveal>
+              <p
+                className="m-0 mb-2 text-[10px] font-bold uppercase"
+                style={{ color: OLIVE, letterSpacing: '0.14em' }}
+              >
+                Breed associations
+              </p>
+              <h2
+                className="m-0 mb-3"
+                style={{
+                  fontFamily: LORA,
+                  fontWeight: 700,
+                  fontSize: 'clamp(1.35rem, 2.6vw, 1.85rem)',
+                  color: INK,
+                }}
+              >
+                The registries behind the bloodlines
+              </h2>
+              <p className="m-0 mb-4 text-sm leading-relaxed" style={{ color: MUTED }}>
+                Breed associations keep the herd books, set the standards, and certify the
+                pedigrees that give an animal its provenance. They run the shows and sales,
+                publish the genetic evaluations breeders rely on, and connect newcomers to
+                established producers.
+              </p>
+              <p className="m-0 mb-6 text-sm leading-relaxed" style={{ color: MUTED }}>
+                Whether you are registering your first animal, verifying a pedigree before
+                a purchase, or looking for the association that governs your breed, the
+                directory lists agricultural associations across the country.
+              </p>
+              <Link
+                to="/directory/agricultural-associations"
+                className="inline-flex items-center rounded-md px-5 py-2.5 text-xs font-bold uppercase no-underline text-white loa-home-cta"
+                style={{ backgroundColor: OLIVE, letterSpacing: '0.09em' }}
+              >
+                Browse Associations
+              </Link>
+            </Reveal>
+
+            <Reveal delay={100}>
+              <div
+                className="overflow-hidden rounded-lg border"
+                style={{ borderColor: LINE, backgroundColor: '#ebe6dc' }}
+              >
+                <img
+                  src="/images/AgriculturalAssociations.webp"
+                  alt="Agricultural and breed associations"
+                  loading="lazy"
+                  className="w-full h-auto object-cover"
+                  style={{ maxHeight: 260 }}
+                  onError={(e) => { e.currentTarget.src = '/images/AgricuturalAssociationsHeader.webp'; }}
+                />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Beyond the marketplace — news, breed research, and the directory. */}
+      <section style={{ backgroundColor: '#efe9df' }}>
+        <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14">
+          <Reveal>
+            <h2
+              className="m-0 mb-1.5"
+              style={{
+                fontFamily: LORA,
+                fontWeight: 700,
+                fontSize: 'clamp(1.35rem, 2.6vw, 1.85rem)',
+                color: INK,
+              }}
+            >
+              More than a marketplace
+            </h2>
+            <p className="m-0 mb-8 max-w-2xl text-[13px] leading-relaxed" style={{ color: MUTED }}>
+              Livestock of America also keeps you current on the industry, deep on the breeds,
+              and connected to the businesses that make up the food system.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
+            {EXPLORE.map((item, i) => (
+              <Reveal
+                key={item.title}
+                delay={i * 80}
+                className={`md:px-5 ${i > 0 ? 'md:border-l md:border-[#e0d8cc]' : 'md:pl-0'}`}
+              >
+                <div className="mb-4 overflow-hidden rounded-lg" style={{ height: 150, backgroundColor: '#ebe6dc' }}>
+                  <img
+                    src={item.img}
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                    onError={(e) => { e.currentTarget.src = '/images/HomepageLivestockDB.webp'; }}
+                  />
+                </div>
+                <h3 className="m-0 mb-2 text-lg font-bold" style={{ fontFamily: LORA, color: INK }}>
+                  {item.title}
+                </h3>
+                <p className="m-0 mb-4 text-sm leading-relaxed" style={{ color: MUTED }}>
+                  {item.body}
+                </p>
+                <Link
+                  to={item.to}
+                  className="text-sm font-semibold no-underline hover:underline"
+                  style={{ color: OLIVE }}
+                >
+                  {item.cta} →
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer />
 

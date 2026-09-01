@@ -247,6 +247,21 @@ function NavGroup({ icon, label, expanded, isOpen, onToggle, children }) {
 export default function AccountSidebar({ onNavigate }) {
   _sidebarNavigate = onNavigate || null;
   const { Business, BusinessID, Expanded, setExpanded, OpenSections, setOpenSections, businesses, websiteSlug, setWebsiteSlug } = useAccount() || {};
+
+  /**
+   * Append ?BusinessID= only when there actually is one.
+   *
+   * Interpolating a null straight into a template literal produces the string
+   * "BusinessID=null", which every destination page then reads as a real id and
+   * sends to the API — the reason /seller/animals?BusinessID=null reported
+   * "Unable to load animals" rather than simply prompting for a business.
+   */
+  const biz = (path, extra = '') => {
+    const parts = [];
+    if (extra) parts.push(extra);
+    if (BusinessID != null && BusinessID !== '') parts.push(`BusinessID=${BusinessID}`);
+    return parts.length ? `${path}?${parts.join('&')}` : path;
+  };
   const peopleId = typeof window !== 'undefined' ? localStorage.getItem('people_id') || '' : '';
   const [features, setFeatures] = useState(null);
   const location = useLocation();
@@ -313,6 +328,43 @@ export default function AccountSidebar({ onNavigate }) {
         {Expanded !== false ? <CollapseIcon /> : <ExpandIcon />}
       </button>
 
+      {/* Dashboard — pinned above the account picker so the first thing in the
+          sidebar is the way back to the workspace. It sits outside <nav> now, so
+          it carries the horizontal padding <nav> used to supply. */}
+      <div className="px-2 pt-2 shrink-0">
+            <div className="mb-1">
+              <div className={`flex items-center rounded-lg hover:bg-white/50 transition-all ${Expanded === false ? 'justify-center' : ''}`}>
+                <Link
+                  to={BusinessID ? biz('/account', `PeopleID=${peopleId}`) : '/account'}
+                  onClick={onNavigate}
+                  title={Expanded === false ? t('account_sidebar.sec_dashboard', 'Dashboard') : undefined}
+                  className={`flex items-center py-2 text-gray-700 text-sm flex-1 min-w-0 no-underline ${(Expanded !== false) ? 'gap-3 px-3' : 'justify-center'}`}
+                >
+                  <span className="w-4 h-4 shrink-0 flex items-center justify-center">{ICONS.dashboard}</span>
+                  {(Expanded !== false) && <span className="grow text-left whitespace-nowrap">{t('account_sidebar.sec_dashboard', 'Dashboard')}</span>}
+                </Link>
+                {(Expanded !== false) && (
+                  <button
+                    onClick={() => toggleSection('Account')}
+                    className="pr-3 py-2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      {isAccountOpen ? <path d="M3 10l5-5 5 5" /> : <path d="M3 6l5 5 5-5" />}
+                    </svg>
+                  </button>
+                )}
+              </div>
+              {isAccountOpen && Expanded !== false && (
+                <div className="flex flex-col gap-0.5 mt-0.5">
+                  <NavChild to={biz('/account/profile')} label={t('account_sidebar.edit_profile', 'Edit Profile')} />
+                  <NavChild to={biz('/account/team')} label={t('account_sidebar.team_members', 'Team Members')} />
+                  <NavChild to={biz('/account/change-type')} label={t('account_sidebar.change_account_type', 'Change Account Type')} />
+                  <NavChild to={biz('/account/delete')} label={t('account_sidebar.delete_account', 'Delete Account')} />
+                </div>
+              )}
+            </div>
+      </div>
+
       {/* Accounts dropdown — always visible */}
       <div className="px-2 pt-2 pb-2 border-b border-gray-300/50 shrink-0">
         <NavSection
@@ -351,50 +403,17 @@ export default function AccountSidebar({ onNavigate }) {
 
           <nav className="flex flex-col gap-1 p-2 grow overflow-y-auto">
 
-            {/* Dashboard */}
-            <div className="mb-1">
-              <div className={`flex items-center rounded-lg hover:bg-white/50 transition-all ${Expanded === false ? 'justify-center' : ''}`}>
-                <Link
-                  to={BusinessID ? `/account?PeopleID=${peopleId}&BusinessID=${BusinessID}` : '/account'}
-                  onClick={onNavigate}
-                  title={Expanded === false ? t('account_sidebar.sec_dashboard', 'Dashboard') : undefined}
-                  className={`flex items-center py-2 text-gray-700 text-sm flex-1 min-w-0 no-underline ${(Expanded !== false) ? 'gap-3 px-3' : 'justify-center'}`}
-                >
-                  <span className="w-4 h-4 shrink-0 flex items-center justify-center">{ICONS.dashboard}</span>
-                  {(Expanded !== false) && <span className="grow text-left whitespace-nowrap">{t('account_sidebar.sec_dashboard', 'Dashboard')}</span>}
-                </Link>
-                {(Expanded !== false) && (
-                  <button
-                    onClick={() => toggleSection('Account')}
-                    className="pr-3 py-2 text-gray-400 hover:text-gray-600 transition-colors"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      {isAccountOpen ? <path d="M3 10l5-5 5 5" /> : <path d="M3 6l5 5 5-5" />}
-                    </svg>
-                  </button>
-                )}
-              </div>
-              {isAccountOpen && Expanded !== false && (
-                <div className="flex flex-col gap-0.5 mt-0.5">
-                  <NavChild to={`/account/profile?BusinessID=${BusinessID}`} label={t('account_sidebar.edit_profile', 'Edit Profile')} />
-                  <NavChild to={`/account/team?BusinessID=${BusinessID}`} label={t('account_sidebar.team_members', 'Team Members')} />
-                  <NavChild to={`/account/change-type?BusinessID=${BusinessID}`} label={t('account_sidebar.change_account_type', 'Change Account Type')} />
-                  <NavChild to={`/account/delete?BusinessID=${BusinessID}`} label={t('account_sidebar.delete_account', 'Delete Account')} />
-                </div>
-              )}
-            </div>
-
         {/* ── Grouped feature navigation ── */}
         <NavGroup icon={ICONS.farmOps} label="Farm Operations" expanded={Expanded !== false} isOpen={OpenSections?.['g_farmops'] || false} onToggle={() => toggleSection('g_farmops')}>
           <NavSection icon={ICONS.livestock} label={t('account_sidebar.sec_livestock', 'Livestock')} expanded={Expanded !== false}
             isOpen={OpenSections?.Livestock || false} onToggle={() => toggleSection('Livestock')}>
-            <NavChild to={`/animals?BusinessID=${BusinessID}`} label={t('account_sidebar.animals_list', 'Animals List')} />
-            <NavChild to={`/animals/add?BusinessID=${BusinessID}`} label={t('account_sidebar.add', 'Add')} />
-            <NavChild to={`/animals/delete?BusinessID=${BusinessID}`} label={t('account_sidebar.delete', 'Delete')} />
-            <NavChild to={`/animals/transfer?BusinessID=${BusinessID}`} label={t('account_sidebar.transfer', 'Transfer')} />
-            <NavChild to={`/animals/packages?BusinessID=${BusinessID}`} label={t('account_sidebar.packages', 'Packages')} />
-            <NavChild to={`/animals/stats?BusinessID=${BusinessID}`} label={t('account_sidebar.statistics', 'Statistics')} />
-            <NavChild to={`/herd-health?BusinessID=${BusinessID}`} label="Herd Health" />
+            <NavChild to={biz('/animals')} label={t('account_sidebar.animals_list', 'Animals List')} />
+            <NavChild to={biz('/animals/add')} label={t('account_sidebar.add', 'Add')} />
+            <NavChild to={biz('/animals/delete')} label={t('account_sidebar.delete', 'Delete')} />
+            <NavChild to={biz('/animals/transfer')} label={t('account_sidebar.transfer', 'Transfer')} />
+            <NavChild to={biz('/animals/packages')} label={t('account_sidebar.packages', 'Packages')} />
+            <NavChild to={biz('/animals/stats')} label={t('account_sidebar.statistics', 'Statistics')} />
+            <NavChild to={biz('/herd-health')} label="Herd Health" />
           </NavSection>
         </NavGroup>
 
@@ -402,10 +421,10 @@ export default function AccountSidebar({ onNavigate }) {
         {on('blog') && (
           <NavSection icon={ICONS.blog} label={t('account_sidebar.sec_blog')} expanded={Expanded !== false}
             isOpen={OpenSections?.['Blog'] || false} onToggle={() => toggleSection('Blog')}>
-            <NavChild to={`/blog/manage?BusinessID=${BusinessID}`} label={t('account_sidebar.manage_blog')} />
-            <NavChild to={`/blog/manage?BusinessID=${BusinessID}&view=new`} label={t('account_sidebar.add_post')} />
-            <NavChild to={`/blog/manage?BusinessID=${BusinessID}&tab=categories`} label={t('account_sidebar.blog_categories')} />
-            <NavChild to={`/blog/authors/manage?BusinessID=${BusinessID}`} label={t('account_sidebar.authors')} />
+            <NavChild to={biz('/blog/manage')} label={t('account_sidebar.manage_blog')} />
+            <NavChild to={biz('/blog/manage', 'view=new')} label={t('account_sidebar.add_post')} />
+            <NavChild to={biz('/blog/manage', 'tab=categories')} label={t('account_sidebar.blog_categories')} />
+            <NavChild to={biz('/blog/authors/manage')} label={t('account_sidebar.authors')} />
           </NavSection>
         )}
 
@@ -421,8 +440,8 @@ export default function AccountSidebar({ onNavigate }) {
           <NavSection icon={ICONS.events} label={t('account_sidebar.sec_events')} expanded={Expanded !== false}
             isOpen={OpenSections?.Events || false} onToggle={() => toggleSection('Events')}>
             <NavChild to="/events" label={t('account_sidebar.browse_events')} />
-            <NavChild to={`/events/manage?BusinessID=${BusinessID}`} label={t('account_sidebar.my_events')} />
-            <NavChild to={`/events/add?BusinessID=${BusinessID}`} label={t('account_sidebar.add_event')} />
+            <NavChild to={biz('/events/manage')} label={t('account_sidebar.my_events')} />
+            <NavChild to={biz('/events/add')} label={t('account_sidebar.add_event')} />
             <NavChild to="/my-registrations" label={t('account_sidebar.my_registrations')} />
           </NavSection>
         )}
@@ -430,16 +449,16 @@ export default function AccountSidebar({ onNavigate }) {
         {on('testimonials') && (
           <NavSection icon={ICONS.testimonials} label={t('account_sidebar.sec_testimonials')} expanded={Expanded !== false}
             isOpen={OpenSections?.Testimonials || false} onToggle={() => toggleSection('Testimonials')}>
-            <NavChild to={`/testimonials/manage?BusinessID=${BusinessID}`} label={t('account_sidebar.manage_testimonials')} />
-            <NavChild to={`/testimonials/request?BusinessID=${BusinessID}`} label={t('account_sidebar.request_testimonials')} />
+            <NavChild to={biz('/testimonials/manage')} label={t('account_sidebar.manage_testimonials')} />
+            <NavChild to={biz('/testimonials/request')} label={t('account_sidebar.request_testimonials')} />
           </NavSection>
         )}
 
         {(on('chef_dashboard') || on('pairsley') || on('provenance')) && (
           <NavSection icon={ICONS.chef} label={t('account_sidebar.sec_chef')} expanded={Expanded !== false}
             isOpen={OpenSections?.['Chef Dashboard'] || false} onToggle={() => toggleSection('Chef Dashboard')}>
-            {on('chef_dashboard') && <NavChild to={`/chef?BusinessID=${BusinessID}`} label={t('account_sidebar.sec_chef')} />}
-            {on('pairsley')       && <NavChild to={`/platform/pairsley?BusinessID=${BusinessID}`} label={t('account_sidebar.pairsley_ai')} />}
+            {on('chef_dashboard') && <NavChild to={biz('/chef')} label={t('account_sidebar.sec_chef')} />}
+            {on('pairsley')       && <NavChild to={biz('/platform/pairsley')} label={t('account_sidebar.pairsley_ai')} />}
             {on('provenance')     && <NavChild to={`/provenance/${BusinessID}`} label={t('account_sidebar.provenance_card')} />}
           </NavSection>
         )}
@@ -447,8 +466,8 @@ export default function AccountSidebar({ onNavigate }) {
 {on('properties') && (
           <NavSection icon={ICONS.properties} label={t('account_sidebar.sec_properties')} expanded={Expanded !== false}
             isOpen={OpenSections?.Properties || false} onToggle={() => toggleSection('Properties')}>
-            <NavChild to={`/properties?BusinessID=${BusinessID}`} label={t('account_sidebar.list')} />
-            <NavChild to={`/properties/add?BusinessID=${BusinessID}`} label={t('account_sidebar.add')} />
+            <NavChild to={biz('/properties')} label={t('account_sidebar.list')} />
+            <NavChild to={biz('/properties/add')} label={t('account_sidebar.add')} />
           </NavSection>
         )}
 
@@ -459,7 +478,7 @@ export default function AccountSidebar({ onNavigate }) {
         {on('certifications') && (
           <NavSection icon={ICONS.certifications} label="Certifications" expanded={Expanded !== false}
             isOpen={OpenSections?.['Certifications'] || false} onToggle={() => toggleSection('Certifications')}>
-            <NavChild to={`/certifications?BusinessID=${BusinessID}`} label="My Certifications" />
+            <NavChild to={biz('/certifications')} label="My Certifications" />
           </NavSection>
         )}
 
@@ -467,7 +486,7 @@ export default function AccountSidebar({ onNavigate }) {
           <NavSection icon={ICONS.grants} label="Grants & Programs" expanded={Expanded !== false}
             isOpen={OpenSections?.['Grants & Programs'] || false} onToggle={() => toggleSection('Grants & Programs')}>
             <NavChild to="/grants" label="Browse Programs" />
-            <NavChild to={`/grants?tab=my-tracking&BusinessID=${BusinessID}`} label="My Tracker" />
+            <NavChild to={biz('/grants', 'tab=my-tracking')} label="My Tracker" />
           </NavSection>
         )}
 
@@ -493,15 +512,15 @@ export default function AccountSidebar({ onNavigate }) {
         {on('my_website') && (
           <NavSection icon={ICONS.website} label={t('account_sidebar.sec_website')} expanded={Expanded !== false}
             isOpen={OpenSections?.['My Website'] || false} onToggle={() => toggleSection('My Website')}>
-            <NavChild to={`/website/builder?BusinessID=${BusinessID}&view=lavendir`} label={t('account_sidebar.lavendir_ai')} />
+            <NavChild to={biz('/website/builder', 'view=lavendir')} label={t('account_sidebar.lavendir_ai')} />
             {!websiteSlug ? (
-              <NavChild to={`/website/builder?BusinessID=${BusinessID}`} label={t('account_sidebar.create_website')} />
+              <NavChild to={biz('/website/builder')} label={t('account_sidebar.create_website')} />
             ) : (
               <>
-                <NavChild to={`/website/builder?BusinessID=${BusinessID}&view=manage-pages`} label={t('account_sidebar.sec_dashboard', 'Dashboard')} />
-                <NavChild to={`/website/builder?BusinessID=${BusinessID}&view=design`} label={t('account_sidebar.design')} />
-                <NavChild to={`/website/builder?BusinessID=${BusinessID}&view=settings`} label={t('account_sidebar.website_settings')} />
-                <NavChild to={`/website/builder?BusinessID=${BusinessID}&view=delete`} label={t('account_sidebar.delete_website')} />
+                <NavChild to={biz('/website/builder', 'view=manage-pages')} label={t('account_sidebar.sec_dashboard', 'Dashboard')} />
+                <NavChild to={biz('/website/builder', 'view=design')} label={t('account_sidebar.design')} />
+                <NavChild to={biz('/website/builder', 'view=settings')} label={t('account_sidebar.website_settings')} />
+                <NavChild to={biz('/website/builder', 'view=delete')} label={t('account_sidebar.delete_website')} />
                 <a
                   href={`/sites/${websiteSlug}`}
                   target="_blank" rel="noopener noreferrer"
@@ -517,19 +536,19 @@ export default function AccountSidebar({ onNavigate }) {
         {on('accounting') && (
           <NavSection icon={ICONS.accounting} label={t('account_sidebar.sec_accounting')} expanded={Expanded !== false}
             isOpen={OpenSections?.['Accounting'] || false} onToggle={() => toggleSection('Accounting')}>
-            <NavChild to={`/accounting?BusinessID=${BusinessID}`} label={t('account_sidebar.sec_dashboard')} />
-            <NavChild to={`/accounting?BusinessID=${BusinessID}#invoices`} label={t('account_sidebar.invoices')} />
-            <NavChild to={`/accounting?BusinessID=${BusinessID}#customers`} label={t('account_sidebar.customers')} />
-            <NavChild to={`/accounting?BusinessID=${BusinessID}#vendors`} label={t('account_sidebar.vendors')} />
-            <NavChild to={`/accounting?BusinessID=${BusinessID}#reports`} label={t('account_sidebar.reports')} />
+            <NavChild to={biz('/accounting')} label={t('account_sidebar.sec_dashboard')} />
+            <NavChild to={`${biz('/accounting')}#invoices`} label={t('account_sidebar.invoices')} />
+            <NavChild to={`${biz('/accounting')}#customers`} label={t('account_sidebar.customers')} />
+            <NavChild to={`${biz('/accounting')}#vendors`} label={t('account_sidebar.vendors')} />
+            <NavChild to={`${biz('/accounting')}#reports`} label={t('account_sidebar.reports')} />
             {on('cash_flow_forecast') && (
-              <NavChild to={`/cash-flow?BusinessID=${BusinessID}`} label="Cash Flow Forecast" />
+              <NavChild to={biz('/cash-flow')} label="Cash Flow Forecast" />
             )}
             {on('report_center') && (
-              <NavChild to={`/reports?BusinessID=${BusinessID}`} label="Reports & Export" />
+              <NavChild to={biz('/reports')} label="Reports & Export" />
             )}
             {on('farm_pl') && (
-              <NavChild to={`/farm-pl?BusinessID=${BusinessID}`} label="Farm P&L Dashboard" />
+              <NavChild to={biz('/farm-pl')} label="Farm P&L Dashboard" />
             )}
           </NavSection>
         )}
@@ -537,10 +556,10 @@ export default function AccountSidebar({ onNavigate }) {
         {on('document_vault') && (
           <NavSection icon={ICONS.documentVault} label="Document Vault" expanded={Expanded !== false}
             isOpen={OpenSections?.['Document Vault'] || false} onToggle={() => toggleSection('Document Vault')}>
-            <NavChild to={`/documents?BusinessID=${BusinessID}`} label="All Documents" />
-            <NavChild to={`/documents?BusinessID=${BusinessID}&category=Certifications`} label="Certifications" />
-            <NavChild to={`/documents?BusinessID=${BusinessID}&category=Contracts`} label="Contracts" />
-            <NavChild to={`/documents?BusinessID=${BusinessID}&category=Compliance`} label="Compliance" />
+            <NavChild to={biz('/documents')} label="All Documents" />
+            <NavChild to={biz('/documents', 'category=Certifications')} label="Certifications" />
+            <NavChild to={biz('/documents', 'category=Contracts')} label="Contracts" />
+            <NavChild to={biz('/documents', 'category=Compliance')} label="Compliance" />
           </NavSection>
         )}
 
@@ -548,9 +567,9 @@ export default function AccountSidebar({ onNavigate }) {
         {on('meetings') && (
           <NavSection icon={ICONS.meetings} label="Meetings" expanded={Expanded !== false}
             isOpen={OpenSections?.['Meetings'] || false} onToggle={() => toggleSection('Meetings')}>
-            <NavChild to={`/meetings?BusinessID=${BusinessID}`} label="All Meetings" />
-            <NavChild to={`/meetings?BusinessID=${BusinessID}&status=draft`} label="Drafts" />
-            <NavChild to={`/meetings?BusinessID=${BusinessID}&status=minutes`} label="Minutes" />
+            <NavChild to={biz('/meetings')} label="All Meetings" />
+            <NavChild to={biz('/meetings', 'status=draft')} label="Drafts" />
+            <NavChild to={biz('/meetings', 'status=minutes')} label="Minutes" />
           </NavSection>
         )}
 
@@ -560,17 +579,17 @@ export default function AccountSidebar({ onNavigate }) {
         <NavGroup icon={ICONS.administration} label="Administration" expanded={Expanded !== false} isOpen={OpenSections?.['g_admin'] || false} onToggle={() => toggleSection('g_admin')}>
         <NavSection icon={ICONS.permissions} label="Roles & Permissions" expanded={Expanded !== false}
           isOpen={OpenSections?.['Permissions'] || false} onToggle={() => toggleSection('Permissions')}>
-          <NavChild to={`/permissions?BusinessID=${BusinessID}`} label="Roles" />
-          <NavChild to={`/permissions?BusinessID=${BusinessID}&tab=members`} label="Team Members" />
-          <NavChild to={`/permissions?BusinessID=${BusinessID}&tab=audit`} label="Audit Log" />
+          <NavChild to={biz('/permissions')} label="Roles" />
+          <NavChild to={biz('/permissions', 'tab=members')} label="Team Members" />
+          <NavChild to={biz('/permissions', 'tab=audit')} label="Audit Log" />
         </NavSection>
 
         <NavSection icon={ICONS.settings} label={t('account_sidebar.sec_settings')} expanded={Expanded !== false}
           isOpen={OpenSections?.['Account Settings'] || false} onToggle={() => toggleSection('Account Settings')}>
-          <NavChild to={`/account/change-type?BusinessID=${BusinessID}`} label={t('account_sidebar.change_account_type')} />
-          <NavChild to={`/account/profile?BusinessID=${BusinessID}`} label={t('account_sidebar.account_profile')} />
-          <NavChild to={`/account/subscription?BusinessID=${BusinessID}`} label={t('account_sidebar.subscription')} />
-          <NavChild to={`/account/delete?BusinessID=${BusinessID}`} label={t('account_sidebar.delete_account')} />
+          <NavChild to={biz('/account/change-type')} label={t('account_sidebar.change_account_type')} />
+          <NavChild to={biz('/account/profile')} label={t('account_sidebar.account_profile')} />
+          <NavChild to={biz('/account/subscription')} label={t('account_sidebar.subscription')} />
+          <NavChild to={biz('/account/delete')} label={t('account_sidebar.delete_account')} />
         </NavSection>
 
         </NavGroup>

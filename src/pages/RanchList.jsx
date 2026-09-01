@@ -5,7 +5,6 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
-import LivestockHeroTabs from '../components/LivestockHeroTabs';
 import SaveButton from '../components/SaveButton';
 import GuestAccessPrompt, { GUEST_LIST_PREVIEW } from '../components/GuestAccessPrompt';
 import { isLoggedIn } from '../lib/auth';
@@ -615,7 +614,6 @@ export default function RanchList() {
         }}
       />
       <Header />
-      <LivestockHeroTabs />
 
       <div className="max-w-[1300px] mx-auto px-4 pt-3">
         <Breadcrumbs items={[

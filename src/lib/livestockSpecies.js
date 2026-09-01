@@ -12,6 +12,9 @@
 export const forSalePath = (slug) => `/marketplaces/livestock/${slug}`;
 export const studPath = (slug) => `/marketplaces/livestock/studs/${slug}`;
 export const ranchPath = (slug) => `/marketplaces/livestock/ranches/${slug}`;
+// Knowledgebase species pages. Slugs are the same set the marketplace uses, so
+// FOR_SALE_SPECIES drives this menu too rather than a second list that could drift.
+export const knowledgebasePath = (slug) => `/livestock/${slug}`;
 
 /** Every species with a "for sale" listing page (29). */
 export const FOR_SALE_SPECIES = [

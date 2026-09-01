@@ -24,7 +24,7 @@ const CATEGORY_IMAGES = {
 };
 
 const GREEN_CATS = new Set(['AgTech', 'Livestock', 'Markets']);
-const HERO_FALLBACK = '/images/NewsHeroWheat.png';
+const HERO_FALLBACK = '/images/NewsHeroWheat.webp';
 
 /** Snapshot rows — same futures symbols as Commodity Prices page */
 const SNAPSHOT_COMMODITIES = [
@@ -34,8 +34,10 @@ const SNAPSHOT_COMMODITIES = [
 ];
 
 const API =
+  // Shared Oatmeal AI news service. It serves full articles to everyone, and
+  // unlike a direct Firestore read it also fetches a missing article body from
+  // the publisher on first view, so LOA gets the same text as the other sites.
   import.meta.env.VITE_NEWS_API_URL ||
-  import.meta.env.VITE_LIVESTOCK_API_URL ||
   'https://oatmeal-ai.com';
 
 function stripHtml(html) {
@@ -373,9 +375,12 @@ const NewsFeed = () => {
     return article?.placeholderImage || CATEGORY_IMAGES[article?.category] || CATEGORY_IMAGES.General;
   };
 
+  // The hero is the newest article in the feed — the same one it links to.
+  // Static copy is only a fallback for before the feed loads or if it is empty.
   const heroTitle =
-    'Global Wheat Reservoirs Reach Decade High as Sustainable Tilling Expands';
+    featured?.title?.trim() || 'Agricultural news, gathered in one feed';
   const heroDesc =
+    featured?.description?.trim() ||
     'Live updates from USDA, Farm Journal, Brownfield Ag, AGDAILY and more — markets, weather, policy, and AgTech in one feed.';
   const heroSource = featured
     ? `Source: ${featured.source || 'USDA'}${featured.pubDate ? ` • ${formatRelative(featured.pubDate)}` : ''}`
@@ -388,7 +393,7 @@ const NewsFeed = () => {
         description="Stay current with agricultural news covering markets, weather, policy, AgTech, and livestock. Curated daily for farmers, ranchers, and food producers."
         keywords="farm news, agricultural news, commodity markets, farm policy, AgTech news, livestock news, weather alerts, crop markets"
         canonical="https://livestockofamerica.com/news"
-        image="/images/NewsHeroWheat.png"
+        image="/images/NewsHeroWheat.webp"
         imageAlt="Livestock of America Newsroom"
         jsonLd={[
           {

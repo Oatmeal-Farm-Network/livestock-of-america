@@ -80,13 +80,13 @@ export default function DirectoryList() {
         title="Farm & Food Business Directory | Find Local Farms & Producers"
         description="Find farms, food hubs, farmers markets, restaurants, processors, artisan producers, and more in our comprehensive farm and food business directory."
         keywords="farm directory, food business directory, local farms, farmers markets, food hubs, restaurants, artisan producers, agricultural businesses, farm listings"
-        canonical="https://oatmealfarmnetwork.com/directory"
+        canonical="https://livestockofamerica.com/directory"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
           name: 'Farm & Food Business Directory',
           description: 'Comprehensive directory of farms, food producers, markets, and agricultural businesses.',
-          url: 'https://oatmealfarmnetwork.com/directory',
+          url: 'https://livestockofamerica.com/directory',
         }}
       />
       <Header />
@@ -98,7 +98,7 @@ export default function DirectoryList() {
         ]} />
 
         <KnowledgebaseLandingHero
-          image="/images/KBHeroDirectory.png"
+          image="/images/KBHeroDirectory.webp"
           alt="The Food System Directory"
           title="The Food System Directory"
           description="Find what you're looking for across 29 categories — from farms and food hubs to restaurants, fiber mills, and more. Search and connect with local farms, food businesses, and organizations in your area."

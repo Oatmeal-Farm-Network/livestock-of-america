@@ -298,8 +298,21 @@ export default function LivestockDB() {
           description="Research livestock breeds, traits, and farming notes."
           noIndex
         />
+        {/* Renders for guests only — signed in, AuthShell supplies the nav and
+            this returns null. Without it this branch had no header at all. */}
+        <Header />
 
-        <div className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-6 md:py-8">
+        {/* Breadcrumbs sit directly under the header on every page but Home. */}
+        <div className="mx-auto w-full px-4 sm:px-6" style={{ maxWidth: '1200px' }}>
+          <Breadcrumbs
+            items={[
+              { label: 'Home', to: '/' },
+              { label: 'Livestock Database' },
+            ]}
+          />
+        </div>
+
+        <div className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 pb-6 md:pb-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
             <div>
               <p className="m-0 mb-1 text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: OLIVE }}>
@@ -370,6 +383,9 @@ export default function LivestockDB() {
 
           {speciesGrid}
         </div>
+
+        {/* Guests only, same as the header above. */}
+        <Footer />
       </div>
     );
   }
@@ -404,7 +420,7 @@ export default function LivestockDB() {
       <section className="relative overflow-hidden">
         <div className="relative min-h-[280px] md:min-h-[380px] flex items-end">
           <img
-            src="/images/KBHeroLivestock.png"
+            src="/images/KBHeroLivestock.webp"
             alt="Online Livestock Knowledgebase"
             className="absolute inset-0 w-full h-full object-cover"
             loading="eager"

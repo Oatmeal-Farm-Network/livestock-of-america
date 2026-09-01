@@ -8,6 +8,7 @@ import {
   forSalePath,
   studPath,
   speciesLinks,
+  knowledgebasePath,
 } from '../lib/livestockSpecies';
 import { directoryLinks } from '../lib/directoryCategories';
 
@@ -23,7 +24,7 @@ const LORA = "'Lora', 'Times New Roman', serif";
  * swaps the target once signed in.
  */
 const NAV = [
-  { label: 'Home', fallbackKey: 'phase1.nav.home', to: '/', authTo: '/account' },
+  { label: 'Home', fallbackKey: 'phase1.nav.home', to: '/' },
   {
     label: 'Livestock for Sale',
     fallbackKey: 'phase1.nav.for_sale',
@@ -52,7 +53,13 @@ const NAV = [
       { label: 'Blog', to: '/blog' },
     ],
   },
-  { label: 'Knowledgebase', fallbackKey: 'phase1.nav.knowledgebase', to: '/livestock' },
+  {
+    label: 'Knowledgebase',
+    fallbackKey: 'phase1.nav.knowledgebase',
+    // Same 29 species as the marketplace — too tall for one column.
+    columns: 3,
+    species: 'knowledgebase',
+  },
   { label: 'Events', fallbackKey: 'phase1.nav.events', to: '/events' },
   {
     label: 'About',
@@ -243,6 +250,15 @@ export default function Header({ force = false }) {
         if (item.species === 'studs') {
           return { ...item, children: speciesLinks(STUD_SPECIES, studPath, t) };
         }
+        if (item.species === 'knowledgebase') {
+          return {
+            ...item,
+            children: [
+              { label: t('phase1.nav.all_knowledgebase', 'All Livestock Species'), to: '/livestock' },
+              ...speciesLinks(FOR_SALE_SPECIES, knowledgebasePath, t),
+            ],
+          };
+        }
         if (item.categories === 'directory') {
           return {
             ...item,
@@ -305,9 +321,19 @@ export default function Header({ force = false }) {
               {t('nav.log_out', 'Log Out')}
             </button>
           ) : (
-            <Link to="/login" style={linkStyle}>
-              {t('nav.login', 'Login')}
-            </Link>
+            <>
+              {/* Signup gets a filled treatment so it reads as the primary action. */}
+              <Link
+                to="/signup"
+                style={{ ...linkStyle, padding: '0.4rem 0.9rem' }}
+                className="rounded-md bg-white/15 hover:bg-white/25 transition-colors"
+              >
+                {t('auth.sign_up', 'Sign Up')}
+              </Link>
+              <Link to="/login" style={linkStyle}>
+                {t('nav.login', 'Login')}
+              </Link>
+            </>
           )}
         </div>
 
@@ -352,9 +378,19 @@ export default function Header({ force = false }) {
               {t('nav.log_out', 'Log Out')}
             </button>
           ) : (
-            <Link to="/login" onClick={() => setOpen(false)} style={linkStyle}>
-              {t('nav.login', 'Login')}
-            </Link>
+            <>
+              <Link
+                to="/signup"
+                onClick={() => setOpen(false)}
+                style={{ ...linkStyle, padding: '0.5rem 0.9rem' }}
+                className="rounded-md bg-white/15 text-center"
+              >
+                {t('auth.sign_up', 'Sign Up')}
+              </Link>
+              <Link to="/login" onClick={() => setOpen(false)} style={linkStyle}>
+                {t('nav.login', 'Login')}
+              </Link>
+            </>
           )}
         </div>
       )}

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
-import { openSaigeChat } from '../components/SaigeWidget';
 import { isLoggedIn } from '../lib/auth';
 
 const CREAM = '#f7f2e8';
@@ -28,21 +27,20 @@ const PILLARS = [
     body: 'Research breeds, origins, and husbandry notes across dozens of livestock species — built for producers, not tourists.',
     to: '/livestock',
     cta: 'Explore breeds',
-    img: '/images/KBHeroLivestock.png',
+    img: '/images/KBHeroLivestock.webp',
   },
   {
-    title: 'Saige AI',
-    body: 'Ask practical livestock questions and get answers grounded in farm context — powered by Oatmeal AI.',
-    to: null,
-    cta: 'Ask Saige',
-    img: '/images/SaigeBanner.webp',
-    saige: true,
+    title: 'Directory',
+    body: 'Find farms, ranches, food hubs, fiber mills, processors, and more across 29 categories of the food system.',
+    to: '/directory',
+    cta: 'Browse directory',
+    // Same banner the /directory landing page uses for its hero.
+    img: '/images/KBHeroDirectory.webp',
   },
 ];
 
 export default function About() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const guest = !isLoggedIn();
 
   return (
@@ -63,9 +61,21 @@ export default function About() {
       />
       <Header />
 
+      {/* Breadcrumbs sit directly under the header on every page but Home. */}
+      <div className="mx-auto w-full px-5" style={{ maxWidth: '1100px' }}>
+        <Breadcrumbs
+              items={[
+                { label: t('phase1.nav.home', 'Home'), to: '/' },
+                { label: t('phase1.about.title', 'About') },
+              ]}
+            />
+      </div>
+
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="relative min-h-[260px] md:min-h-[340px] flex items-end">
+      <section className="relative">
+        {/* Centred hero band — the image, its gradient and the copy all sit
+            inside this 1400px column rather than bleeding to the viewport. */}
+        <div className="relative min-h-[260px] md:min-h-[340px] flex items-end overflow-hidden mx-auto w-full max-w-[1400px]">
           <img
             src="/images/AboutUs.webp"
             alt=""
@@ -81,7 +91,7 @@ export default function About() {
                 'linear-gradient(105deg, rgba(44,36,28,0.82) 0%, rgba(44,36,28,0.5) 55%, rgba(44,36,28,0.28) 100%)',
             }}
           />
-          <div className="relative z-10 w-full max-w-[1100px] mx-auto px-5 pb-10 pt-16">
+          <div className="relative z-10 w-full mx-auto px-5 pb-10 pt-16">
             <p
               className="m-0 mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/85"
               style={{ fontFamily: LORA }}
@@ -108,15 +118,6 @@ export default function About() {
       </section>
 
       <div className="mx-auto px-5 flex-1 w-full" style={{ maxWidth: '1100px' }}>
-        <div className="pt-4">
-          <Breadcrumbs
-            items={[
-              { label: t('phase1.nav.home', 'Home'), to: '/' },
-              { label: t('phase1.about.title', 'About') },
-            ]}
-          />
-        </div>
-
         {/* Intro */}
         <section className="py-10 md:py-12">
           <div className="flex flex-col md:flex-row md:items-start gap-8 md:gap-12">
@@ -133,11 +134,11 @@ export default function About() {
                   color: INK,
                 }}
               >
-                Built for the people who keep America stocked and fed
+                Built for the people who keep America fed
               </h2>
               <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: INK }}>
-                <strong>Livestock of America by Oatmeal AI</strong> is a dedicated platform for the
-                livestock industry. We help ranches showcase animals online, reach serious buyers,
+                <strong>Livestock of America</strong> is a dedicated platform for the
+                livestock industry. We help ranches showcase animals online, reach buyers,
                 and research breeds with confidence — all in one place.
               </p>
               <p className="m-0 mb-4 text-base leading-relaxed" style={{ color: MUTED }}>
@@ -145,22 +146,8 @@ export default function About() {
                 every type. Whether you are listing a herd, looking for stud genetics, or learning
                 a new breed before you buy, this is where livestock professionals meet.
               </p>
-              <p className="m-0 text-base leading-relaxed" style={{ color: MUTED }}>
-                Oatmeal AI powers the intelligence behind the experience — including Saige, our
-                livestock assistant — so ranchers get practical answers grounded in farm and breed
-                context, not generic chat.
-              </p>
             </div>
-            <div className="shrink-0 md:w-[280px]">
-              <img
-                src="/images/loa-header-logo.png"
-                alt="Livestock of America"
-                className="w-full h-auto"
-              />
-              <p className="m-0 mt-3 text-center text-sm italic" style={{ color: MUTED, fontFamily: LORA }}>
-                Livestock of America by Oatmeal AI
-              </p>
-            </div>
+           
           </div>
         </section>
       </div>
@@ -168,11 +155,8 @@ export default function About() {
       {/* Pillars */}
       <section style={{ backgroundColor: '#efe9df' }}>
         <div className="max-w-[1100px] mx-auto px-5 py-12 md:py-14">
-          <p className="m-0 mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: OLIVE }}>
-            What you get
-          </p>
           <h2
-            className="m-0 mb-8 max-w-xl"
+            className="m-0 mb-12 max-w-xl"
             style={{
               fontFamily: LORA,
               fontWeight: 700,
@@ -180,7 +164,7 @@ export default function About() {
               color: INK,
             }}
           >
-            Marketplace, knowledge, and AI in one livestock home
+            Marketplace and knowledge
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0">
             {PILLARS.map((pillar, i) => (
@@ -205,30 +189,13 @@ export default function About() {
                 <p className="m-0 mb-4 text-sm leading-relaxed" style={{ color: MUTED }}>
                   {pillar.body}
                 </p>
-                {pillar.saige ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (guest) {
-                        navigate('/login', { state: { from: { pathname: '/about' } } });
-                        return;
-                      }
-                      openSaigeChat();
-                    }}
-                    className="text-sm font-semibold border-0 bg-transparent p-0 cursor-pointer hover:underline"
-                    style={{ color: OLIVE }}
-                  >
-                    {pillar.cta} →
-                  </button>
-                ) : (
-                  <Link
-                    to={pillar.to}
-                    className="text-sm font-semibold no-underline hover:underline"
-                    style={{ color: OLIVE }}
-                  >
-                    {pillar.cta} →
-                  </Link>
-                )}
+                <Link
+                  to={pillar.to}
+                  className="text-sm font-semibold no-underline hover:underline"
+                  style={{ color: OLIVE }}
+                >
+                  {pillar.cta} →
+                </Link>
               </div>
             ))}
           </div>

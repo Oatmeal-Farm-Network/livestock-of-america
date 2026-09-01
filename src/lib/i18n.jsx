@@ -24,7 +24,9 @@ export function I18nProvider({ children }) {
         let vars = maybeVars;
         if (fallbackOrVars && typeof fallbackOrVars === 'object' && !Array.isArray(fallbackOrVars)) {
           vars = fallbackOrVars;
-          fallback = undefined;
+          // react-i18next passes the fallback as options.defaultValue. Honour it
+          // so components ported from OFN don't render their raw key.
+          fallback = fallbackOrVars.defaultValue;
         }
         const raw = found != null ? found : (fallback != null ? fallback : key);
         return format(raw, vars);
