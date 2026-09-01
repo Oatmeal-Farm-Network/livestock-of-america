@@ -60,7 +60,9 @@ const NAV = [
     columns: 3,
     species: 'knowledgebase',
   },
-  { label: 'Events', fallbackKey: 'phase1.nav.events', to: '/events' },
+  // Events is hidden for now, matching the workspace sidebar. Restore this
+  // entry to bring it back; the /events route itself is untouched.
+  // { label: 'Events', fallbackKey: 'phase1.nav.events', to: '/events' },
   {
     label: 'About',
     fallbackKey: 'phase1.nav.about',

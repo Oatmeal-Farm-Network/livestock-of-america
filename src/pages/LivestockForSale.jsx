@@ -18,6 +18,12 @@ const INK = '#2c2c2c';
 const MUTED = '#6b6b6b';
 const LORA = "'Lora', 'Times New Roman', serif";
 
+// Events are hidden for now, matching the header and the workspace sidebar.
+// This badge also pointed at /events/:id, which has no route — it fell through
+// to the catch-all and bounced the visitor to the homepage. Flip to true when
+// events come back, and add that route.
+const SHOW_EVENT_BADGE = false;
+
 const ANCESTRY_OPTIONS = [
   'Any', 'Full Peruvian', 'Partial Peruvian',
   'Full Chilean', 'Partial Chilean',
@@ -253,7 +259,7 @@ function AnimalCard({ animal, type }) {
               {animal.seller || 'N/A'}
             </p>
           </div>
-          {ev && (
+          {SHOW_EVENT_BADGE && ev && (
             <Link
               to={`/events/${ev.EventID}`}
               className="inline-flex self-start mb-3 rounded-full px-3 py-1 text-xs font-semibold no-underline"

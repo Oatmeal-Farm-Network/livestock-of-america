@@ -304,8 +304,25 @@ export default function AccountSidebar({ onNavigate }) {
       .catch(() => setFeatures({}));
   }, [BusinessID]);
 
-  const on = (_key) => true;
-  const anyOn = (..._keys) => true;
+  // Features hidden from the workspace nav for now. The sections are left in
+  // place and simply not rendered, so bringing one back means deleting its key
+  // here rather than restoring markup. Routes still resolve if a link is typed
+  // or bookmarked — this hides the way in, it does not disable the feature.
+  //
+  // pairsley and provenance ride along with chef_dashboard: they are children
+  // of the Chef Dashboard section, which would otherwise keep rendering under
+  // that name with its namesake link missing.
+  const HIDDEN_FEATURES = new Set([
+    'forums',
+    'events',
+    'testimonials',
+    'chef_dashboard',
+    'pairsley',
+    'provenance',
+    'properties',
+  ]);
+  const on = (key) => !HIDDEN_FEATURES.has(key);
+  const anyOn = (...keys) => keys.some((k) => !HIDDEN_FEATURES.has(k));
   
   useEffect(() => {
     if (location.pathname.startsWith('/website/')) {
