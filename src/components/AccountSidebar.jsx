@@ -46,8 +46,19 @@ function remapTo(to, label) {
 }
 
 let _sidebarNavigate = null;
-const t = (key, fallback) =>
-  (typeof fallback === 'string' && fallback) || String(key).split('.').pop().replace(/_/g, ' ');
+// Labels come from the fallback argument. When one is missing, derive something
+// presentable from the key rather than showing it raw: drop the sec_ prefix that
+// marks a section key and title-case the rest, so a forgotten label reads
+// 'Blog' rather than 'sec blog'.
+const t = (key, fallback) => {
+  if (typeof fallback === 'string' && fallback) return fallback;
+  return String(key)
+    .split('.')
+    .pop()
+    .replace(/^sec_/, '')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (ch) => ch.toUpperCase());
+};
 
 
 // ─── Minimal SVG icons ────────────────────────────────────────────────────────
@@ -418,12 +429,12 @@ export default function AccountSidebar({ onNavigate }) {
 
         <NavGroup icon={ICONS.community} label="Community" expanded={Expanded !== false} isOpen={OpenSections?.['g_community'] || false} onToggle={() => toggleSection('g_community')}>
         {on('blog') && (
-          <NavSection icon={ICONS.blog} label={t('account_sidebar.sec_blog')} expanded={Expanded !== false}
+          <NavSection icon={ICONS.blog} label={t('account_sidebar.sec_blog', 'Blog')} expanded={Expanded !== false}
             isOpen={OpenSections?.['Blog'] || false} onToggle={() => toggleSection('Blog')}>
-            <NavChild to={biz('/blog/manage')} label={t('account_sidebar.manage_blog')} />
-            <NavChild to={biz('/blog/manage', 'view=new')} label={t('account_sidebar.add_post')} />
-            <NavChild to={biz('/blog/manage', 'tab=categories')} label={t('account_sidebar.blog_categories')} />
-            <NavChild to={biz('/blog/authors/manage')} label={t('account_sidebar.authors')} />
+            <NavChild to={biz('/blog/manage')} label={t('account_sidebar.manage_blog', 'Manage Blog')} />
+            <NavChild to={biz('/blog/manage', 'view=new')} label={t('account_sidebar.add_post', 'Add Post')} />
+            <NavChild to={biz('/blog/manage', 'tab=categories')} label={t('account_sidebar.blog_categories', 'Categories')} />
+            <NavChild to={biz('/blog/authors/manage')} label={t('account_sidebar.authors', 'Authors')} />
           </NavSection>
         )}
 
@@ -436,37 +447,37 @@ export default function AccountSidebar({ onNavigate }) {
         )}
 
         {on('events') && (
-          <NavSection icon={ICONS.events} label={t('account_sidebar.sec_events')} expanded={Expanded !== false}
+          <NavSection icon={ICONS.events} label={t('account_sidebar.sec_events', 'Events')} expanded={Expanded !== false}
             isOpen={OpenSections?.Events || false} onToggle={() => toggleSection('Events')}>
-            <NavChild to="/events" label={t('account_sidebar.browse_events')} />
-            <NavChild to={biz('/events/manage')} label={t('account_sidebar.my_events')} />
-            <NavChild to={biz('/events/add')} label={t('account_sidebar.add_event')} />
-            <NavChild to="/my-registrations" label={t('account_sidebar.my_registrations')} />
+            <NavChild to="/events" label={t('account_sidebar.browse_events', 'Browse Events')} />
+            <NavChild to={biz('/events/manage')} label={t('account_sidebar.my_events', 'My Events')} />
+            <NavChild to={biz('/events/add')} label={t('account_sidebar.add_event', 'Add Event')} />
+            <NavChild to="/my-registrations" label={t('account_sidebar.my_registrations', 'My Registrations')} />
           </NavSection>
         )}
 
         {on('testimonials') && (
-          <NavSection icon={ICONS.testimonials} label={t('account_sidebar.sec_testimonials')} expanded={Expanded !== false}
+          <NavSection icon={ICONS.testimonials} label={t('account_sidebar.sec_testimonials', 'Testimonials')} expanded={Expanded !== false}
             isOpen={OpenSections?.Testimonials || false} onToggle={() => toggleSection('Testimonials')}>
-            <NavChild to={biz('/testimonials/manage')} label={t('account_sidebar.manage_testimonials')} />
-            <NavChild to={biz('/testimonials/request')} label={t('account_sidebar.request_testimonials')} />
+            <NavChild to={biz('/testimonials/manage')} label={t('account_sidebar.manage_testimonials', 'Manage Testimonials')} />
+            <NavChild to={biz('/testimonials/request')} label={t('account_sidebar.request_testimonials', 'Request Testimonials')} />
           </NavSection>
         )}
 
         {(on('chef_dashboard') || on('pairsley') || on('provenance')) && (
-          <NavSection icon={ICONS.chef} label={t('account_sidebar.sec_chef')} expanded={Expanded !== false}
+          <NavSection icon={ICONS.chef} label={t('account_sidebar.sec_chef', 'Chef Dashboard')} expanded={Expanded !== false}
             isOpen={OpenSections?.['Chef Dashboard'] || false} onToggle={() => toggleSection('Chef Dashboard')}>
-            {on('chef_dashboard') && <NavChild to={biz('/chef')} label={t('account_sidebar.sec_chef')} />}
-            {on('pairsley')       && <NavChild to={biz('/platform/pairsley')} label={t('account_sidebar.pairsley_ai')} />}
-            {on('provenance')     && <NavChild to={`/provenance/${BusinessID}`} label={t('account_sidebar.provenance_card')} />}
+            {on('chef_dashboard') && <NavChild to={biz('/chef')} label={t('account_sidebar.sec_chef', 'Chef Dashboard')} />}
+            {on('pairsley')       && <NavChild to={biz('/platform/pairsley')} label={t('account_sidebar.pairsley_ai', 'Pairsley AI')} />}
+            {on('provenance')     && <NavChild to={`/provenance/${BusinessID}`} label={t('account_sidebar.provenance_card', 'Provenance Card')} />}
           </NavSection>
         )}
 
 {on('properties') && (
-          <NavSection icon={ICONS.properties} label={t('account_sidebar.sec_properties')} expanded={Expanded !== false}
+          <NavSection icon={ICONS.properties} label={t('account_sidebar.sec_properties', 'Properties')} expanded={Expanded !== false}
             isOpen={OpenSections?.Properties || false} onToggle={() => toggleSection('Properties')}>
-            <NavChild to={biz('/properties')} label={t('account_sidebar.list')} />
-            <NavChild to={biz('/properties/add')} label={t('account_sidebar.add')} />
+            <NavChild to={biz('/properties')} label={t('account_sidebar.list', 'List')} />
+            <NavChild to={biz('/properties/add')} label={t('account_sidebar.add', 'Add')} />
           </NavSection>
         )}
 
@@ -509,23 +520,23 @@ export default function AccountSidebar({ onNavigate }) {
         {anyOn('accounting','cash_flow_forecast','document_vault','farm_pl','meetings','my_website','report_center') && (
         <NavGroup icon={ICONS.businessMgmt} label="Business Mgmt" expanded={Expanded !== false} isOpen={OpenSections?.['g_business'] || false} onToggle={() => toggleSection('g_business')}>
         {on('my_website') && (
-          <NavSection icon={ICONS.website} label={t('account_sidebar.sec_website')} expanded={Expanded !== false}
+          <NavSection icon={ICONS.website} label={t('account_sidebar.sec_website', 'My Website')} expanded={Expanded !== false}
             isOpen={OpenSections?.['My Website'] || false} onToggle={() => toggleSection('My Website')}>
-            <NavChild to={biz('/website/builder', 'view=lavendir')} label={t('account_sidebar.lavendir_ai')} />
+            <NavChild to={biz('/website/builder', 'view=lavendir')} label={t('account_sidebar.lavendir_ai', 'Lavendir AI')} />
             {!websiteSlug ? (
-              <NavChild to={biz('/website/builder')} label={t('account_sidebar.create_website')} />
+              <NavChild to={biz('/website/builder')} label={t('account_sidebar.create_website', 'Create Website')} />
             ) : (
               <>
                 <NavChild to={biz('/website/builder', 'view=manage-pages')} label={t('account_sidebar.sec_dashboard', 'Dashboard')} />
-                <NavChild to={biz('/website/builder', 'view=design')} label={t('account_sidebar.design')} />
-                <NavChild to={biz('/website/builder', 'view=settings')} label={t('account_sidebar.website_settings')} />
-                <NavChild to={biz('/website/builder', 'view=delete')} label={t('account_sidebar.delete_website')} />
+                <NavChild to={biz('/website/builder', 'view=design')} label={t('account_sidebar.design', 'Design')} />
+                <NavChild to={biz('/website/builder', 'view=settings')} label={t('account_sidebar.website_settings', 'Website Settings')} />
+                <NavChild to={biz('/website/builder', 'view=delete')} label={t('account_sidebar.delete_website', 'Delete Website')} />
                 <a
                   href={`/sites/${websiteSlug}`}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center px-3 py-1.5 ml-4 rounded-lg hover:bg-white/50 text-gray-600 text-xs transition-all"
                 >
-                  {t('account_sidebar.view_live')}
+                  {t('account_sidebar.view_live', 'View Live')}
                 </a>
               </>
             )}
@@ -533,13 +544,13 @@ export default function AccountSidebar({ onNavigate }) {
         )}
 
         {on('accounting') && (
-          <NavSection icon={ICONS.accounting} label={t('account_sidebar.sec_accounting')} expanded={Expanded !== false}
+          <NavSection icon={ICONS.accounting} label={t('account_sidebar.sec_accounting', 'Accounting')} expanded={Expanded !== false}
             isOpen={OpenSections?.['Accounting'] || false} onToggle={() => toggleSection('Accounting')}>
-            <NavChild to={biz('/accounting')} label={t('account_sidebar.sec_dashboard')} />
-            <NavChild to={`${biz('/accounting')}#invoices`} label={t('account_sidebar.invoices')} />
-            <NavChild to={`${biz('/accounting')}#customers`} label={t('account_sidebar.customers')} />
-            <NavChild to={`${biz('/accounting')}#vendors`} label={t('account_sidebar.vendors')} />
-            <NavChild to={`${biz('/accounting')}#reports`} label={t('account_sidebar.reports')} />
+            <NavChild to={biz('/accounting')} label={t('account_sidebar.sec_dashboard', 'Dashboard')} />
+            <NavChild to={`${biz('/accounting')}#invoices`} label={t('account_sidebar.invoices', 'Invoices')} />
+            <NavChild to={`${biz('/accounting')}#customers`} label={t('account_sidebar.customers', 'Customers')} />
+            <NavChild to={`${biz('/accounting')}#vendors`} label={t('account_sidebar.vendors', 'Vendors')} />
+            <NavChild to={`${biz('/accounting')}#reports`} label={t('account_sidebar.reports', 'Reports')} />
             {on('cash_flow_forecast') && (
               <NavChild to={biz('/cash-flow')} label="Cash Flow Forecast" />
             )}
@@ -583,12 +594,12 @@ export default function AccountSidebar({ onNavigate }) {
           <NavChild to={biz('/permissions', 'tab=audit')} label="Audit Log" />
         </NavSection>
 
-        <NavSection icon={ICONS.settings} label={t('account_sidebar.sec_settings')} expanded={Expanded !== false}
+        <NavSection icon={ICONS.settings} label={t('account_sidebar.sec_settings', 'Settings')} expanded={Expanded !== false}
           isOpen={OpenSections?.['Account Settings'] || false} onToggle={() => toggleSection('Account Settings')}>
-          <NavChild to={biz('/account/change-type')} label={t('account_sidebar.change_account_type')} />
-          <NavChild to={biz('/account/profile')} label={t('account_sidebar.account_profile')} />
-          <NavChild to={biz('/account/subscription')} label={t('account_sidebar.subscription')} />
-          <NavChild to={biz('/account/delete')} label={t('account_sidebar.delete_account')} />
+          <NavChild to={biz('/account/change-type')} label={t('account_sidebar.change_account_type', 'Change Account Type')} />
+          <NavChild to={biz('/account/profile')} label={t('account_sidebar.account_profile', 'Account Profile')} />
+          <NavChild to={biz('/account/subscription')} label={t('account_sidebar.subscription', 'Subscription')} />
+          <NavChild to={biz('/account/delete')} label={t('account_sidebar.delete_account', 'Delete Account')} />
         </NavSection>
 
         </NavGroup>
