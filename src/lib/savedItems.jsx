@@ -19,7 +19,9 @@ export function SavedItemsProvider({ children }) {
       return;
     }
     try {
-      const res = await fetch(endpoints.marketplaceSavedIds(), {
+      // /saved returns the hydrated items and the id lists in one payload, so
+      // the Saved tab and every SaveButton share a single request.
+      const res = await fetch(endpoints.marketplaceSaved(), {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);

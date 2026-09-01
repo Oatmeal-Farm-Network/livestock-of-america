@@ -60,8 +60,9 @@ export const endpoints = {
     apiUrl(`/api/marketplace/animal/${id}/progeny`),
   homepageListings: () => apiUrl("/api/marketplace/homepage-listings"),
   homepageFeatured: () => apiUrl("/api/marketplace/homepage-featured"),
+  // One endpoint serves both the Saved tab and every SaveButton: it returns the
+  // hydrated items plus the animal/stud/ranch id lists used for checked state.
   marketplaceSaved: () => apiUrl("/api/marketplace/saved"),
-  marketplaceSavedIds: () => apiUrl("/api/marketplace/saved/ids"),
 
   // Ranches — app/routers/ranches.py
   ranchesList: (slug: string) => apiUrl(`/api/ranches/list/${slug}`),
