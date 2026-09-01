@@ -3,9 +3,10 @@
 // env var and the token accessor differ. The LOA backend already serves the
 // same /api/rbac and /api/audit routes this calls.
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSearchParams } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import AccountLayout from '../components/AccountLayout';
 import { getToken } from '../lib/auth';
+import { useAccount } from '../lib/AccountContext';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
@@ -543,7 +544,28 @@ const TABS = ['Roles', 'Members', 'Audit Log'];
 
 export default function Permissions() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const BusinessID = parseInt(searchParams.get('BusinessID') || '0');
+  const { BusinessID: selectedBusinessID } = useAccount() || {};
+
+  // In OFN this page was only ever reached from a sidebar link that carried
+  // BusinessID, so reading the query string alone was enough. On LOA it is also
+  // reachable without one — a bookmark, a refresh after the param is dropped, or
+  // any navigation that does not go through the sidebar — and the page then
+  // claimed no business was selected while the workspace plainly had one.
+  // Fall back to the business already held in the account context.
+  const urlBusinessID = parseInt(searchParams.get('BusinessID') || '0', 10) || 0;
+  const BusinessID = urlBusinessID || Number(selectedBusinessID) || 0;
+
+  // Write the resolved id back into the URL so a refresh or a shared link lands
+  // on the same business, and so AccountContext — which follows the URL — stays
+  // in step instead of being silently disagreed with.
+  useEffect(() => {
+    if (!urlBusinessID && BusinessID) {
+      const next = new URLSearchParams(searchParams);
+      next.set('BusinessID', String(BusinessID));
+      setSearchParams(next, { replace: true });
+    }
+  }, [urlBusinessID, BusinessID]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const tabParam = searchParams.get('tab');
   const activeTab = tabParam === 'members' ? 'Members' : tabParam === 'audit' ? 'Audit Log' : 'Roles';
 
@@ -558,7 +580,14 @@ export default function Permissions() {
   if (!BusinessID) {
     return (
       <AccountLayout>
-        <div className="p-8 text-center text-gray-400">No business selected.</div>
+        <div className="p-8 text-center text-gray-500">
+          <p className="m-0 mb-2 font-semibold">No business selected</p>
+          <p className="m-0 text-sm text-gray-400">
+            Roles, team members and the audit log belong to one business. Choose an
+            account from <Link to="/account" className="text-blue-600 no-underline">Accounts</Link>,
+            then reopen this page.
+          </p>
+        </div>
       </AccountLayout>
     );
   }
