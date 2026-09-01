@@ -9,6 +9,23 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react(), tailwindcss()],
+    build: {
+      // Lighthouse flags first-party bundles with no source maps. These are
+      // emitted as separate .map files that no visitor downloads — only
+      // devtools fetch them — so they cost deploy size, not load time.
+      sourcemap: true,
+      rollupOptions: {
+        output: {
+          // React and the router change only when a dependency is upgraded,
+          // while app code changes every deploy. Splitting them means a
+          // routine deploy no longer invalidates the framework bytes, which
+          // now carry a one-year immutable cache.
+          manualChunks: {
+            "react-vendor": ["react", "react-dom", "react-router"],
+          },
+        },
+      },
+    },
     server: {
       port: 5173,
       host: true,

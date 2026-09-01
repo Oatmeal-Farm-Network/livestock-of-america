@@ -1,0 +1,32 @@
+# Livestock of America
+
+> A marketplace and knowledge base for American livestock: animals and studs
+> offered for sale by ranch, a breed knowledge base spanning every farmed
+> species, a directory of ranches and agricultural businesses, and herd health
+> tooling for producers. Operated by Oatmeal AI.
+
+Livestock of America is a single-page React application. Every URL below
+returns the same HTML shell and is rendered client side, so fetching a page
+without executing JavaScript yields no article text.
+
+## Marketplace
+
+- [Livestock marketplace](https://livestockofamerica.com/marketplaces/livestock): animals for sale and males offered at stud, filterable by species, breed, state and price
+- [Ranch and business directory](https://livestockofamerica.com/directory): ranch profiles and agricultural businesses with location and contact details
+
+## Knowledge base
+
+- [Breeds of livestock](https://livestockofamerica.com/livestock): breed profiles by species, with history, characteristics and images
+- [Knowledge bases](https://livestockofamerica.com/knowledgebases): the livestock, plant and ingredient knowledge bases
+
+## About
+
+- [About](https://livestockofamerica.com/about): what the site is and who runs it
+- [About Oatmeal AI](https://livestockofamerica.com/about/oatmeal-ai): the company behind the site
+- [Contact](https://livestockofamerica.com/contact-us): how to get in touch
+
+## Optional
+
+- [News](https://livestockofamerica.com/news): agricultural news feed
+- [Blog](https://livestockofamerica.com/blog): long-form posts
+- [Over the fence](https://livestockofamerica.com/over-the-fence): community section
