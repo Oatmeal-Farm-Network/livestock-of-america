@@ -1,0 +1,15 @@
+# Livestock of America — https://livestockofamerica.com
+
+User-agent: *
+Allow: /
+
+# Signed-in areas: no crawlable content, and every URL renders the same shell
+# to a logged-out crawler.
+Disallow: /account
+Disallow: /accounts/new
+Disallow: /dashboard
+Disallow: /herd-health
+Disallow: /seller
+Disallow: /forgot-password
+Disallow: /login
+Disallow: /signup

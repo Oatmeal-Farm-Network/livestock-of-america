@@ -158,7 +158,10 @@ export default function BlogList() {
 
   useEffect(() => {
     setLoading(true);
-    const params = new URLSearchParams({ limit: '50' });
+    // Livestock of America covers North America, so the public blog shows only
+    // posts from businesses in the USA, Canada, Mexico or Greenland. Filtered
+    // server-side so the limit counts posts that will actually be displayed.
+    const params = new URLSearchParams({ limit: '50', north_america: 'true' });
     if (activeCategory) params.set('category_name', activeCategory);
     fetch(`${API_URL}/api/blog/posts?${params}`)
       .then((r) => (r.ok ? r.json() : []))

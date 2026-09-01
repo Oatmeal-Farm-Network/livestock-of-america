@@ -303,8 +303,7 @@ export default function AccountSidebar({ onNavigate }) {
     if (location.pathname.startsWith('/seller') || location.pathname.startsWith('/herd-health') || location.pathname.includes('/animals')) {
       setOpenSections?.(prev => ({
         ...prev,
-        g_farmops: true,
-        Livestock: true,
+        g_livestock: true,
       }));
     }
   }, [location.pathname, setOpenSections]);
@@ -404,17 +403,17 @@ export default function AccountSidebar({ onNavigate }) {
           <nav className="flex flex-col gap-1 p-2 grow overflow-y-auto">
 
         {/* ── Grouped feature navigation ── */}
-        <NavGroup icon={ICONS.farmOps} label="Farm Operations" expanded={Expanded !== false} isOpen={OpenSections?.['g_farmops'] || false} onToggle={() => toggleSection('g_farmops')}>
-          <NavSection icon={ICONS.livestock} label={t('account_sidebar.sec_livestock', 'Livestock')} expanded={Expanded !== false}
-            isOpen={OpenSections?.Livestock || false} onToggle={() => toggleSection('Livestock')}>
-            <NavChild to={biz('/animals')} label={t('account_sidebar.animals_list', 'Animals List')} />
-            <NavChild to={biz('/animals/add')} label={t('account_sidebar.add', 'Add')} />
-            <NavChild to={biz('/animals/delete')} label={t('account_sidebar.delete', 'Delete')} />
-            <NavChild to={biz('/animals/transfer')} label={t('account_sidebar.transfer', 'Transfer')} />
-            <NavChild to={biz('/animals/packages')} label={t('account_sidebar.packages', 'Packages')} />
-            <NavChild to={biz('/animals/stats')} label={t('account_sidebar.statistics', 'Statistics')} />
-            <NavChild to={biz('/herd-health')} label="Herd Health" />
-          </NavSection>
+        {/* Livestock sits at the top level rather than under a Farm Operations
+            group. That group only ever held this one section, so it cost a
+            click and a level of nesting to reach the animals list. */}
+        <NavGroup icon={ICONS.livestock} label={t('account_sidebar.sec_livestock', 'Livestock')} expanded={Expanded !== false} isOpen={OpenSections?.['g_livestock'] || false} onToggle={() => toggleSection('g_livestock')}>
+          <NavChild to={biz('/animals')} label={t('account_sidebar.animals_list', 'Animals List')} />
+          <NavChild to={biz('/animals/add')} label={t('account_sidebar.add', 'Add')} />
+          <NavChild to={biz('/animals/delete')} label={t('account_sidebar.delete', 'Delete')} />
+          <NavChild to={biz('/animals/transfer')} label={t('account_sidebar.transfer', 'Transfer')} />
+          <NavChild to={biz('/animals/packages')} label={t('account_sidebar.packages', 'Packages')} />
+          <NavChild to={biz('/animals/stats')} label={t('account_sidebar.statistics', 'Statistics')} />
+          <NavChild to={biz('/herd-health')} label="Herd Health" />
         </NavGroup>
 
         <NavGroup icon={ICONS.community} label="Community" expanded={Expanded !== false} isOpen={OpenSections?.['g_community'] || false} onToggle={() => toggleSection('g_community')}>
