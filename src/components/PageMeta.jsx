@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 
-const SITE_NAME = 'Livestock of America by Oatmeal AI';
+const SITE_NAME = 'Livestock Of America';
 const SITE_SHORT = 'Livestock of America';
 const DEFAULT_IMG = 'https://livestockofamerica.com/images/loa-header-logo.webp';
 const BASE_URL = 'https://livestockofamerica.com';
 const JSONLD_MARKER = 'data-pagemeta-jsonld';
 
-/** Ensure document titles mention Livestock of America by Oatmeal AI. */
+/** Ensure document titles mention Livestock Of America. */
 function brandTitle(title) {
   if (!title) return SITE_NAME;
   if (title.includes('Oatmeal AI')) return title;

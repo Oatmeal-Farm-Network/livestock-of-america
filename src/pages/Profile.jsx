@@ -210,7 +210,7 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: CREAM }}>
-      <PageMeta title="Profile | Livestock of America by Oatmeal AI" noIndex />
+      <PageMeta title="Profile | Livestock Of America" noIndex />
       <Header />
 
       <div className="flex-1 w-full max-w-[900px] mx-auto px-4 md:px-6 py-6 md:py-8">

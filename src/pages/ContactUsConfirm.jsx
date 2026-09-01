@@ -29,7 +29,7 @@ export default function ContactUsConfirm() {
     <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>
       <PageMeta
         title="Thank You | Livestock of America"
-        description="Thanks for contacting Livestock of America by Oatmeal AI. We'll be in touch soon."
+        description="Thanks for contacting Livestock Of America. We'll be in touch soon."
         noIndex
       />
       <Header />

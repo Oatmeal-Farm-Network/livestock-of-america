@@ -294,7 +294,7 @@ export default function Header({ force = false }) {
           <img
             src="/images/loa-header-logo.png"
             className="h-12 md:h-14 w-auto object-contain"
-            alt="Livestock of America by Oatmeal AI"
+            alt="Livestock Of America"
             width="200"
             height="56"
           />

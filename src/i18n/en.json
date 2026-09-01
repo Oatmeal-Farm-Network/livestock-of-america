@@ -19,8 +19,8 @@
   },
   "livestock_mkt": {
     "title": "Connecting Ranches Across The United States",
-    "intro1": "Livestock of America by Oatmeal AI is a one-of-a-kind livestock marketplace, helping ranches showcase their animals online. We support all livestock breeders, regardless of breed or type.",
-    "intro2": "From the rugged Pacific coast to the historic shores of Plymouth, Livestock of America by Oatmeal AI connects the breeders of animals who live off the land. These men and women keep our country fed, and we are proud to help them succeed.",
+    "intro1": "Livestock Of America is a one-of-a-kind livestock marketplace, helping ranches showcase their animals online. We support all livestock breeders, regardless of breed or type.",
+    "intro2": "From the rugged Pacific coast to the historic shores of Plymouth, Livestock Of America connects the breeders of animals who live off the land. These men and women keep our country fed, and we are proud to help them succeed.",
     "join_now": "Join Now",
     "search_placeholder": "Search livestock by animal, breed, or keyword…",
     "all_locations": "All Locations",
@@ -181,35 +181,35 @@
       "meta_title": "Livestock Knowledgebase | Plants, Livestock Breeds & Ingredients"
     },
     "events": {
-      "meta_title": "Events | Livestock of America by Oatmeal AI",
-      "meta_description": "Livestock of America by Oatmeal AI events — coming soon.",
-      "eyebrow": "Livestock of America by Oatmeal AI",
+      "meta_title": "Events | Livestock Of America",
+      "meta_description": "Livestock Of America events — coming soon.",
+      "eyebrow": "Livestock Of America",
       "title": "Coming Soon",
       "body": "We are preparing livestock industry events, shows, and gatherings. Check back soon.",
       "back_home": "Back to Home"
     },
     "about": {
-      "meta_title": "About Livestock of America by Oatmeal AI",
-      "meta_description": "Livestock of America by Oatmeal AI connects ranchers, buyers, and livestock professionals through a dedicated marketplace, knowledgebases, news, and AI-powered tools.",
-      "title": "About Livestock of America by Oatmeal AI",
+      "meta_title": "About Livestock Of America",
+      "meta_description": "Livestock Of America connects ranchers, buyers, and livestock professionals through a dedicated marketplace, knowledgebases, news, and AI-powered tools.",
+      "title": "About Livestock Of America",
       "tagline": "Connecting ranchers, breeders, and buyers across the United States.",
-      "body1": "Livestock of America by Oatmeal AI is a dedicated platform for the livestock industry. We help ranches showcase animals online, connect with serious buyers, and share breed knowledge through a comprehensive livestock knowledgebase.",
-      "body2": "From cattle and sheep to alpacas and bison, Livestock of America by Oatmeal AI supports breeders of every type — helping men and women who live off the land reach new markets and grow their operations.",
+      "body1": "Livestock Of America is a dedicated platform for the livestock industry. We help ranches showcase animals online, connect with serious buyers, and share breed knowledge through a comprehensive livestock knowledgebase.",
+      "body2": "From cattle and sheep to alpacas and bison, Livestock Of America supports breeders of every type — helping men and women who live off the land reach new markets and grow their operations.",
       "h2_focus": "Built for Livestock Professionals",
-      "focus_body": "Whether you are listing stud animals, marketing a herd, or researching breeds, Livestock of America by Oatmeal AI gives you the tools to connect with the people who matter — buyers, ranchers, and industry partners nationwide.",
+      "focus_body": "Whether you are listing stud animals, marketing a herd, or researching breeds, Livestock Of America gives you the tools to connect with the people who matter — buyers, ranchers, and industry partners nationwide.",
       "h2_ecosystem": "Marketplace, Knowledgebase & Directory",
-      "ecosystem_body": "Livestock of America by Oatmeal AI brings together three essential resources for the livestock community:",
+      "ecosystem_body": "Livestock Of America brings together three essential resources for the livestock community:",
       "li_marketplace": "Livestock Marketplace: Showcase and sell animals to a nationwide audience of serious buyers.",
       "li_knowledgebase": "Livestock Knowledgebase: Explore breeds, species profiles, and husbandry information in one place.",
       "li_directory": "Industry Directory: Find ranches, veterinarians, associations, and livestock service providers.",
       "h2_ready": "Ready to Get Started?",
-      "ready_body1": "Join Livestock of America by Oatmeal AI to list animals, manage your ranch profile, and connect with buyers across the country.",
+      "ready_body1": "Join Livestock Of America to list animals, manage your ranch profile, and connect with buyers across the country.",
       "ready_body2": "Create a free account today and become part of America's livestock community.",
       "link_marketplace": "Browse the Livestock Marketplace",
       "link_knowledgebase": "Explore the Livestock Knowledgebase",
       "link_directory": "Browse the Directory",
       "h2_ai": "AI That Works for Agriculture",
-      "ai_body": "Livestock of America by Oatmeal AI brings practical AI into the livestock and farm workflow — helping you answer questions faster, explore knowledgebases more easily, and make better decisions about animals, breeds, and operations."
+      "ai_body": "Livestock Of America brings practical AI into the livestock and farm workflow — helping you answer questions faster, explore knowledgebases more easily, and make better decisions about animals, breeds, and operations."
     }
   },
   "nav": {
@@ -260,7 +260,7 @@
     "no_account": "Don't have an account?",
     "login_failed": "Login failed ({{status}}). Please try again.",
     "create_account": "Create Account",
-    "join_network": "Join Livestock of America by Oatmeal AI",
+    "join_network": "Join Livestock Of America",
     "registration_closed_title": "Registration is Currently Closed",
     "registration_closed_body": "New account creation is not available at this time. Please check back later.",
     "field_first_name": "First Name",
@@ -300,8 +300,8 @@
     "link_directory": "Browse the Directory"
   },
   "contact": {
-    "title": "Contact Livestock of America by Oatmeal AI",
-    "subtitle": "Have questions about Livestock of America by Oatmeal AI or our AI advisors? Complete the form below and our team will get back to you shortly.",
+    "title": "Contact Livestock Of America",
+    "subtitle": "Have questions about Livestock Of America or our AI advisors? Complete the form below and our team will get back to you shortly.",
     "field_org": "Organization / Business Name",
     "org_optional": "(Optional)",
     "org_placeholder": "e.g. Sunny Valley Farm",

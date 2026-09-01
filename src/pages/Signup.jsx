@@ -158,14 +158,14 @@ export default function Signup() {
             <div className="bg-[#819360] px-8 py-8 text-center">
               <img
                 src="/images/loa-header-logo.png"
-                alt="Livestock of America by Oatmeal AI"
+                alt="Livestock Of America"
                 className="h-12 mx-auto mb-4 w-auto"
               />
               <h1 className="text-white text-2xl font-bold m-0" style={{ fontFamily: "'Lora', serif" }}>
                 {t('auth.create_account', 'Create Account')}
               </h1>
               <p className="text-white/80 text-sm mt-1">
-                {t('auth.join_network', 'Join Livestock of America by Oatmeal AI')}
+                {t('auth.join_network', 'Join Livestock Of America')}
               </p>
             </div>
 

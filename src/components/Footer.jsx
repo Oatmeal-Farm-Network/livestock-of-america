@@ -32,11 +32,11 @@ export default function Footer() {
           <div>
             <img
               src="/images/loa-header-logo.png"
-              alt="Livestock of America by Oatmeal AI"
+              alt="Livestock Of America"
               className="h-12 w-auto mb-3 rounded"
             />
             <p className="m-0 mb-2 text-sm font-semibold text-white" style={{ fontFamily: "'Lora', 'Times New Roman', serif" }}>
-              Livestock of America by Oatmeal AI
+              Livestock Of America
             </p>
             <p className="max-w-sm text-white/70 leading-relaxed m-0">
               {t(
@@ -62,7 +62,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-white/10 mt-8 pt-4 text-white/50 text-xs">
-          © {year} Livestock of America by Oatmeal AI. All rights reserved.
+          © {year} Livestock Of America. All rights reserved.
         </div>
       </div>
     </footer>

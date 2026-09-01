@@ -9,7 +9,7 @@ export default function FeatureComingSoon() {
   return (
     <ComingSoon
       title={feature}
-      description={`${feature} is coming soon to Livestock of America by Oatmeal AI. Explore the livestock marketplace and knowledgebase in the meantime.`}
+      description={`${feature} is coming soon to Livestock Of America. Explore the livestock marketplace and knowledgebase in the meantime.`}
     />
   );
 }

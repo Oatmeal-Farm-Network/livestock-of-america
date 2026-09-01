@@ -179,7 +179,7 @@ export default function App() {
           element={
             <ComingSoon
               title="Over The Fence DM"
-              description="Over The Fence direct messaging is coming soon to Livestock of America by Oatmeal AI."
+              description="Over The Fence direct messaging is coming soon to Livestock Of America."
             />
           }
         />

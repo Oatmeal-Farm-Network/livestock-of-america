@@ -166,7 +166,7 @@ export default function Dashboard() {
     <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>
       <PageMeta
         title="Dashboard | Livestock of America"
-        description="Your Livestock of America by Oatmeal AI dashboard — manage your ranch accounts and livestock tools."
+        description="Your Livestock Of America dashboard — manage your ranch accounts and livestock tools."
         noIndex
       />
       <Header />
@@ -258,7 +258,7 @@ export default function Dashboard() {
               {t('dashboard.no_accounts')}
             </h2>
             <p className="text-sm mb-6 max-w-md mx-auto" style={{ color: MUTED }}>
-              Create your first ranch or business account to list animals and manage your Livestock of America by Oatmeal AI presence.
+              Create your first ranch or business account to list animals and manage your Livestock Of America presence.
             </p>
             <Link
               to={`/accounts/new?PeopleID=${peopleId}`}

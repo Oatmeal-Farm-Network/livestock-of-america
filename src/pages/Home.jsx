@@ -311,14 +311,14 @@ export default function Home() {
   return (
     <div className="min-h-screen font-sans flex flex-col relative">
       <PageMeta
-        title="Livestock of America by Oatmeal AI | Connecting Ranches Across the United States"
+        title="Livestock Of America | Connecting Ranches Across the United States"
         description="Featured livestock for sale and championship stud breeding services from ranchers and breeders across America."
         keywords="livestock of america, oatmeal ai, livestock marketplace, livestock for sale, stud services, ranchers, breeders"
         canonical="https://livestockofamerica.com/"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'WebSite',
-          name: 'Livestock of America by Oatmeal AI',
+          name: 'Livestock Of America',
           url: 'https://livestockofamerica.com/',
           description: 'Connecting ranchers, buyers, and livestock professionals across the United States.',
         }}

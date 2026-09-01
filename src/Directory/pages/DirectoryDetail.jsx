@@ -397,14 +397,14 @@ const DirectoryDetail = function () {
         <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
             <PageMeta
                 title={`${pageTitle} Directory | Farm & Food Business Listings`}
-                description={`Find ${pageTitle.toLowerCase()} businesses near you. Browse verified listings with contact information, location, and details on Livestock of America by Oatmeal AI.`}
+                description={`Find ${pageTitle.toLowerCase()} businesses near you. Browse verified listings with contact information, location, and details on Livestock Of America.`}
                 keywords={`${pageTitle}, ${pageTitle.toLowerCase()} directory, local ${pageTitle.toLowerCase()}, farm directory, food business listings`}
                 canonical={`https://livestockofamerica.com/directory/${directoryType}`}
                 jsonLd={{
                     '@context': 'https://schema.org',
                     '@type': 'CollectionPage',
                     name: `${pageTitle} Directory`,
-                    description: `Directory of ${pageTitle.toLowerCase()} on Livestock of America by Oatmeal AI.`,
+                    description: `Directory of ${pageTitle.toLowerCase()} on Livestock Of America.`,
                     url: `https://livestockofamerica.com/directory/${directoryType}`,
                 }}
             />

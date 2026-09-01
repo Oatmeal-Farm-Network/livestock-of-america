@@ -46,17 +46,17 @@ export default function About() {
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: CREAM }}>
       <PageMeta
-        title="About Livestock of America by Oatmeal AI"
-        description="Livestock of America by Oatmeal AI connects ranchers, breeders, and buyers through a dedicated livestock marketplace, breed knowledgebase, and AI tools built for the barn."
+        title="About Livestock Of America"
+        description="Livestock Of America connects ranchers, breeders, and buyers through a dedicated livestock marketplace, breed knowledgebase, and AI tools built for the barn."
         keywords="about livestock of america, oatmeal ai, livestock marketplace, ranch directory, livestock knowledgebase, saige ai"
         canonical="https://livestockofamerica.com/about"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'AboutPage',
-          name: 'About Livestock of America by Oatmeal AI',
+          name: 'About Livestock Of America',
           url: 'https://livestockofamerica.com/about',
           description:
-            'Livestock of America by Oatmeal AI connects ranchers, breeders, and buyers through a dedicated livestock marketplace, breed knowledgebase, and AI tools.',
+            'Livestock Of America connects ranchers, breeders, and buyers through a dedicated livestock marketplace, breed knowledgebase, and AI tools.',
         }}
       />
       <Header />
@@ -107,8 +107,7 @@ export default function About() {
                 lineHeight: 1.15,
               }}
             >
-              Livestock of America
-              <span className="block text-base md:text-lg font-normal mt-1 text-white/90">by Oatmeal AI</span>
+              Livestock Of America
             </h1>
             <p className="m-0 text-base md:text-lg text-white/90 max-w-xl leading-relaxed" style={{ fontFamily: LORA }}>
               Connecting ranchers, breeders, and buyers coast to coast.

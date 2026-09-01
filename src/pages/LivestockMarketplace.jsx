@@ -748,17 +748,17 @@ export default function LivestockMarketplace() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: CREAM }}>
       <PageMeta
-        title="Livestock of America by Oatmeal AI | Livestock Marketplace"
-        description="Browse livestock for sale across the United States. Connect with ranchers, breeders, and buyers on Livestock of America by Oatmeal AI."
+        title="Livestock Of America | Livestock Marketplace"
+        description="Browse livestock for sale across the United States. Connect with ranchers, breeders, and buyers on Livestock Of America."
         keywords="livestock marketplace, farm animals for sale, cattle for sale, sheep for sale, buy livestock"
         canonical="https://livestockofamerica.com/animals"
         jsonLd={[
           {
             '@context': 'https://schema.org',
             '@type': 'CollectionPage',
-            name: 'Livestock of America by Oatmeal AI Marketplace',
+            name: 'Livestock Of America Marketplace',
             url: 'https://livestockofamerica.com/animals',
-            description: 'Livestock of America by Oatmeal AI marketplace — buy and sell farm animals directly from ranchers and breeders.',
+            description: 'Livestock Of America marketplace — buy and sell farm animals directly from ranchers and breeders.',
           },
           listings.length > 0 ? {
             '@context': 'https://schema.org',
