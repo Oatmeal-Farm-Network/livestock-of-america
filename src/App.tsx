@@ -1,58 +1,70 @@
+import { lazy, Suspense } from "react";
 import { Navigate, Outlet, Route, Routes } from "react-router";
+
+// Only what the first paint needs is imported eagerly: the chrome, the auth
+// helpers, and the landing page. Every other route is a dynamic import, so a
+// visitor downloads the herd-health suite or the seller tools only if they
+// actually navigate there. Statically importing all 34 routes put the whole
+// app in one 677 kB chunk that had to parse before anything rendered.
 import Home from "./pages/Home";
-import LivestockMarketplace from "./pages/LivestockMarketplace";
-import LivestockForSale from "./pages/LivestockForSale";
-import RanchList from "./pages/RanchList";
-import RanchProfile from "./pages/RanchProfile";
-import LivestockAnimalDetail from "./pages/LivestockAnimalDetail";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import ForgotPassword from "./pages/ForgotPassword";
-import About from "./pages/About";
-import AboutOatmealAI from "./pages/AboutOatmealAI";
-import ContactUs from "./pages/ContactUs";
-import ContactUsConfirm from "./pages/ContactUsConfirm";
-import ComingSoon from "./pages/ComingSoon";
-import FeatureComingSoon from "./pages/FeatureComingSoon";
-import LivestockDB from "./pages/LivestockDB";
-import LivestockSpecies from "./pages/LivestockSpecies";
-import LivestockBreed from "./pages/LivestockBreed";
-import LivestockAbout from "./pages/LivestockAbout";
-import Dashboard from "./pages/Dashboard";
-import NewsFeedPage from "./pages/NewsFeedPage";
-import NewsArticlePage from "./pages/NewsArticlePage";
-import DirectoryList from "./Directory/pages/DirectoryList";
-import DirectoryDetail from "./Directory/pages/DirectoryDetail";
-import BlogList from "./pages/BlogList";
-import BlogDetail from "./pages/BlogDetail";
 import RequireAuth from "./components/RequireAuth";
-import AnimalsHome from "./pages/seller/AnimalsHome";
-import AnimalAdd from "./pages/seller/AnimalAdd";
-import AnimalEdit from "./pages/seller/AnimalEdit";
-import HerdHealthDashboard from "./pages/herd-health/HerdHealthDashboard";
-import HerdHealthEvents, {
-  HerdHealthVaccinations,
-  HerdHealthTreatments,
-  HerdHealthQuarantine,
-  HerdHealthMedications,
-  HerdHealthVetVisits,
-  HerdHealthWeights,
-  HerdHealthParasites,
-  HerdHealthMortality,
-  HerdHealthLabResults,
-  HerdHealthBiosecurity,
-  HerdHealthVetContacts,
-  HerdHealthReproduction,
-} from "./pages/herd-health/HerdHealthModules";
 import AuthShell from "./components/AuthShell";
 import { isLoggedIn } from "./lib/auth";
 import { SavedItemsProvider } from "./lib/savedItems";
-import Profile from "./pages/Profile";
-import AccountNew from "./pages/AccountNew";
-import AccountProfile from "./pages/AccountProfile";
-import AccountAssociations from "./pages/AccountAssociations";
-import AccountTeamMembers from "./pages/AccountTeamMembers";
-import Phase1EventsComingSoon from "./pages/Phase1EventsComingSoon";
+
+const LivestockMarketplace = lazy(() => import("./pages/LivestockMarketplace"));
+const LivestockForSale = lazy(() => import("./pages/LivestockForSale"));
+const RanchList = lazy(() => import("./pages/RanchList"));
+const RanchProfile = lazy(() => import("./pages/RanchProfile"));
+const LivestockAnimalDetail = lazy(() => import("./pages/LivestockAnimalDetail"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const About = lazy(() => import("./pages/About"));
+const AboutOatmealAI = lazy(() => import("./pages/AboutOatmealAI"));
+const ContactUs = lazy(() => import("./pages/ContactUs"));
+const ContactUsConfirm = lazy(() => import("./pages/ContactUsConfirm"));
+const ComingSoon = lazy(() => import("./pages/ComingSoon"));
+const FeatureComingSoon = lazy(() => import("./pages/FeatureComingSoon"));
+const LivestockDB = lazy(() => import("./pages/LivestockDB"));
+const LivestockSpecies = lazy(() => import("./pages/LivestockSpecies"));
+const LivestockBreed = lazy(() => import("./pages/LivestockBreed"));
+const LivestockAbout = lazy(() => import("./pages/LivestockAbout"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const NewsFeedPage = lazy(() => import("./pages/NewsFeedPage"));
+const NewsArticlePage = lazy(() => import("./pages/NewsArticlePage"));
+const DirectoryList = lazy(() => import("./Directory/pages/DirectoryList"));
+const DirectoryDetail = lazy(() => import("./Directory/pages/DirectoryDetail"));
+const BlogList = lazy(() => import("./pages/BlogList"));
+const BlogDetail = lazy(() => import("./pages/BlogDetail"));
+const AnimalsHome = lazy(() => import("./pages/seller/AnimalsHome"));
+const AnimalAdd = lazy(() => import("./pages/seller/AnimalAdd"));
+const AnimalEdit = lazy(() => import("./pages/seller/AnimalEdit"));
+const HerdHealthDashboard = lazy(() => import("./pages/herd-health/HerdHealthDashboard"));
+const Profile = lazy(() => import("./pages/Profile"));
+const AccountNew = lazy(() => import("./pages/AccountNew"));
+const AccountProfile = lazy(() => import("./pages/AccountProfile"));
+const AccountAssociations = lazy(() => import("./pages/AccountAssociations"));
+const AccountTeamMembers = lazy(() => import("./pages/AccountTeamMembers"));
+const Phase1EventsComingSoon = lazy(() => import("./pages/Phase1EventsComingSoon"));
+
+// HerdHealthModules exports one default plus twelve named components. lazy()
+// only understands a default export, so each is unwrapped here; they all
+// resolve to the same dynamic import and therefore share a single chunk.
+const HERD_HEALTH = () => import("./pages/herd-health/HerdHealthModules");
+const HerdHealthEvents = lazy(HERD_HEALTH);
+const HerdHealthVaccinations = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthVaccinations })));
+const HerdHealthTreatments = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthTreatments })));
+const HerdHealthQuarantine = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthQuarantine })));
+const HerdHealthMedications = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthMedications })));
+const HerdHealthVetVisits = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthVetVisits })));
+const HerdHealthWeights = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthWeights })));
+const HerdHealthParasites = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthParasites })));
+const HerdHealthMortality = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthMortality })));
+const HerdHealthLabResults = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthLabResults })));
+const HerdHealthBiosecurity = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthBiosecurity })));
+const HerdHealthVetContacts = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthVetContacts })));
+const HerdHealthReproduction = lazy(() => HERD_HEALTH().then((m) => ({ default: m.HerdHealthReproduction })));
 
 /** Guests see the marketing homepage; signed-in users land on the dashboard. */
 /** Contact Us is guest-only; signed-in users use the workspace instead. */
@@ -81,9 +93,16 @@ function AppChrome() {
   return outlet;
 }
 
+/** Holds the viewport while a route chunk arrives. Full height and the page
+ *  background, so a lazy navigation does not flash white or shift layout. */
+function RouteFallback() {
+  return <div style={{ minHeight: "100vh", backgroundColor: "#faf7f2" }} />;
+}
+
 export default function App() {
   return (
     <SavedItemsProvider>
+    <Suspense fallback={<RouteFallback />}>
     <Routes>
       {/* Auth pages stay outside the logged-in shell */}
       <Route path="/login" element={<Login />} />
@@ -366,6 +385,7 @@ export default function App() {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
+    </Suspense>
     </SavedItemsProvider>
   );
 }
