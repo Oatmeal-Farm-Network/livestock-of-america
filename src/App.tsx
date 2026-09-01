@@ -47,6 +47,7 @@ const AccountProfile = lazy(() => import("./pages/AccountProfile"));
 const AccountAssociations = lazy(() => import("./pages/AccountAssociations"));
 const AccountTeamMembers = lazy(() => import("./pages/AccountTeamMembers"));
 const Phase1EventsComingSoon = lazy(() => import("./pages/Phase1EventsComingSoon"));
+const Permissions = lazy(() => import("./pages/Permissions"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -362,6 +363,16 @@ export default function App() {
           element={
             <RequireAuth>
               <AccountTeamMembers />
+            </RequireAuth>
+          }
+        />
+        {/* Roles, Team Members and Audit Log are three tabs of one page, which
+            is what the sidebar's ?tab= links select. */}
+        <Route
+          path="/permissions"
+          element={
+            <RequireAuth>
+              <Permissions />
             </RequireAuth>
           }
         />

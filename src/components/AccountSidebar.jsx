@@ -13,6 +13,7 @@ const LOA_LIVE = [
   /^\/account\/profile/,
   /^\/account\/users/,
   /^\/account\/associations/,
+  /^\/permissions(\/|$|\?)/,
   /^\/accounts\//,
   /^\/seller\//,
   /^\/herd-health/,
