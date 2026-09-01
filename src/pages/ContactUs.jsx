@@ -218,7 +218,7 @@ export default function ContactUs() {
         <section className="relative overflow-hidden rounded-2xl min-h-[220px] md:min-h-[280px] flex items-end mb-8">
           <img
             src="/images/ContactHeroFarm.png"
-            alt=""
+            alt="An American family farm at sunrise"
             className="absolute inset-0 w-full h-full object-cover"
             loading="eager"
           />

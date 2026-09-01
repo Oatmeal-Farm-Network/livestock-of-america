@@ -146,7 +146,7 @@ export default function DirectoryList() {
                       {b.ProfileImage ? (
                         <img
                           src={b.ProfileImage}
-                          alt=""
+                          alt={`${b.BusinessName} logo`}
                           loading="lazy"
                           className="w-full h-full object-contain"
                           onError={(e) => { e.currentTarget.style.display = 'none'; }}

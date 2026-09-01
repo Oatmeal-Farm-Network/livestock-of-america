@@ -37,7 +37,7 @@ function hasAncestor(node) {
 }
 
 // ── Photo gallery ─────────────────────────────────────────────────────────────
-function PhotoGallery({ photos }) {
+function PhotoGallery({ photos, animalName }) {
   const { t } = useTranslation();
   const realPhotos = (photos || []).filter((url) => resolveListingPhoto(url));
   const [active, setActive] = useState(0);
@@ -75,7 +75,11 @@ function PhotoGallery({ photos }) {
         <img
           key={active}
           src={realPhotos[active]}
-          alt="Animal photo"
+          alt={
+            realPhotos.length > 1
+              ? `${animalName || 'Animal'} — photo ${active + 1} of ${realPhotos.length}`
+              : `${animalName || 'Animal'}`
+          }
           style={{ maxWidth: '100%', maxHeight: '560px', width: 'auto', height: 'auto', objectFit: 'contain', display: 'block' }}
           onError={handleMainError}
         />
@@ -92,7 +96,7 @@ function PhotoGallery({ photos }) {
             >
               <img
                 src={url}
-                alt={`Photo ${i + 1}`}
+                alt={`Show photo ${i + 1} of ${animalName || 'this animal'}`}
                 style={{ width: '100%', height: '100%', objectFit: 'contain', backgroundColor: '#f0ede6' }}
                 onError={() => markFailed(i)}
               />
@@ -629,7 +633,7 @@ function LivestockAnimalDetailContent({ animal }) {
         {/* ── Right column: photos ── */}
         <div className="space-y-6">
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
-            <PhotoGallery photos={photos} />
+            <PhotoGallery photos={photos} animalName={animal.full_name} />
             {animal.video_url && (
               <div className="mt-3">
                 <a href={animal.video_url} target="_blank" rel="noopener noreferrer" className="text-xs font-bold" style={{ color: OLIVE }}>

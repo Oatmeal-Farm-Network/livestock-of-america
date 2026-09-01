@@ -540,7 +540,7 @@ const NewsFeed = () => {
                       <img
                         className="news-card__img"
                         src={getArticleImage(a)}
-                        alt=""
+                        alt={a.title}
                         loading={i < 4 ? 'eager' : 'lazy'}
                         onError={(e) => {
                           const fallback = CATEGORY_IMAGES[a.category] || CATEGORY_IMAGES.General;

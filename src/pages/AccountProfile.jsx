@@ -25,6 +25,9 @@ const WEB_FONTS = [
 ];
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+// esc leaves quotes alone, which is fine for text nodes but would let a value
+// break out of a double-quoted attribute, so alt text gets this instead.
+const escAttr = s => esc(String(s || '')).replace(/"/g, '&quot;').trim();
 
 const pasteAsPlainText = e => {
   e.preventDefault();
@@ -50,6 +53,7 @@ function RichTextEditor({ value, onChange }) {
   const [htmlMode,      setHtmlMode]      = useState(false);
   const [imgPanel,      setImgPanel]      = useState(false);
   const [imgUrl,        setImgUrl]        = useState('');
+  const [imgAlt,        setImgAlt]        = useState('');
   const [imgAlign,      setImgAlign]      = useState('center');
   const [draggingOver,  setDraggingOver]  = useState(false);
   const [panelDragging, setPanelDragging] = useState(false);
@@ -233,7 +237,7 @@ function RichTextEditor({ value, onChange }) {
       const res = await fetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
       if (!res.ok) throw new Error();
       const { url } = await res.json();
-      document.execCommand('insertHTML', false, `<figure style="text-align:center;margin:1em 0;"><img src="${url}" style="max-width:100%;border-radius:4px;" /></figure>`);
+      document.execCommand('insertHTML', false, `<figure style="text-align:center;margin:1em 0;"><img src="${url}" alt="${escAttr(imgAlt)}" style="max-width:100%;border-radius:4px;" /></figure>`);
       onChange(editorRef.current?.innerHTML || '');
     } catch {} finally { setUploading(false); }
   };
@@ -241,7 +245,7 @@ function RichTextEditor({ value, onChange }) {
   const openImgPanel = () => {
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0) savedRangeRef.current = sel.getRangeAt(0).cloneRange();
-    setImgUrl(''); setImgAlign('center'); setImgPanel(p => !p);
+    setImgUrl(''); setImgAlt(''); setImgAlign('center'); setImgPanel(p => !p);
   };
 
   const insertImage = () => {
@@ -251,10 +255,10 @@ function RichTextEditor({ value, onChange }) {
     const sel = window.getSelection();
     if (savedRangeRef.current) { sel.removeAllRanges(); sel.addRange(savedRangeRef.current); }
     if (imgAlign === 'center') {
-      document.execCommand('insertHTML', false, `<figure style="text-align:center;margin:1em 0;clear:both;"><img src="${url}" style="max-width:100%;border-radius:4px;" /></figure>`);
+      document.execCommand('insertHTML', false, `<figure style="text-align:center;margin:1em 0;clear:both;"><img src="${url}" alt="${escAttr(imgAlt)}" style="max-width:100%;border-radius:4px;" /></figure>`);
     } else {
       const cssText = imgAlign === 'left' ? 'float:left;margin:0 1em 0.5em 0;max-width:45%;border-radius:4px;' : 'float:right;margin:0 0 0.5em 1em;max-width:45%;border-radius:4px;';
-      const img = document.createElement('img'); img.src = url; img.style.cssText = cssText;
+      const img = document.createElement('img'); img.src = url; img.alt = imgAlt.trim(); img.style.cssText = cssText;
       const range = sel && sel.rangeCount > 0 ? sel.getRangeAt(0) : null;
       let refBlock = null;
       if (range) { let node = range.commonAncestorContainer; if (node.nodeType === Node.TEXT_NODE) node = node.parentElement; if (node === editorRef.current) refBlock = editorRef.current.children[range.startOffset] || null; else { while (node && node.parentElement !== editorRef.current) node = node.parentElement; if (node && node !== editorRef.current) refBlock = node; } }
@@ -314,6 +318,14 @@ function RichTextEditor({ value, onChange }) {
             <button onClick={() => fileInputRef.current?.click()} style={{ padding: '4px 10px', border: '1px solid #d1d5db', borderRadius: 5, fontSize: 11, cursor: 'pointer', background: '#fff', color: '#374151', whiteSpace: 'nowrap' }}>Browse…</button>
             <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files[0]; if (f) handlePanelFile(f); e.target.value = ''; }} />
           </div>
+          {/* Alt text is what screen readers announce in place of the image.
+              Typed before Browse/Insert so it is carried by whichever path
+              actually inserts the image. Left blank for purely decorative
+              images, which is the correct markup for those. */}
+          <input value={imgAlt} onChange={e => setImgAlt(e.target.value)}
+            placeholder="Describe this image for screen readers (leave blank if decorative)…"
+            style={{ padding: '4px 8px', border: '1px solid #d1d5db', borderRadius: 5, fontSize: 12 }}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); insertImage(); } if (e.key === 'Escape') setImgPanel(false); }} />
           <div onDragOver={e => { e.preventDefault(); setPanelDragging(true); }} onDragLeave={() => setPanelDragging(false)}
             onDrop={e => { e.preventDefault(); setPanelDragging(false); handlePanelFile(e.dataTransfer.files[0]); }}
             onClick={() => fileInputRef.current?.click()}

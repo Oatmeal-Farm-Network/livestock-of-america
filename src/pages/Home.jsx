@@ -494,7 +494,7 @@ export default function Home() {
                 <div className="mb-4 overflow-hidden rounded-lg" style={{ height: 150, backgroundColor: '#ebe6dc' }}>
                   <img
                     src={item.img}
-                    alt=""
+                    alt={item.title}
                     loading="lazy"
                     className="w-full h-full object-cover"
                     onError={(e) => { e.currentTarget.src = '/images/HomepageLivestockDB.webp'; }}

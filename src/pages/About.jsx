@@ -78,7 +78,7 @@ export default function About() {
         <div className="relative min-h-[260px] md:min-h-[340px] flex items-end overflow-hidden mx-auto w-full max-w-[1400px]">
           <img
             src="/images/AboutUs.webp"
-            alt=""
+            alt="Cattle grazing on open American pasture"
             className="absolute inset-0 w-full h-full object-cover"
             onError={(e) => {
               e.currentTarget.src = '/images/home-hero-livestock.png';
@@ -175,7 +175,7 @@ export default function About() {
                 <div className="mb-4 overflow-hidden" style={{ height: 150, backgroundColor: '#ebe6dc' }}>
                   <img
                     src={pillar.img}
-                    alt=""
+                    alt={pillar.title}
                     className="w-full h-full object-cover"
                     loading="lazy"
                     onError={(e) => {

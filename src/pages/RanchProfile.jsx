@@ -266,7 +266,7 @@ function BlogTab({ posts }) {
             {cover && (
               <img
                 src={cover}
-                alt=""
+                alt={`Cover image for “${title}”`}
                 className="shrink-0 rounded object-cover"
                 style={{ width: 96, height: 96 }}
                 onError={(e) => { e.currentTarget.style.display = 'none'; }}

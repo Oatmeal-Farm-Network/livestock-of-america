@@ -187,7 +187,11 @@ const BusinessProfile = () => {
                 <Header />
                 <header className="header">
                     <div className="logo-container">
-                        <img src={DIRECTORY_TYPE_TO_IMAGE[directoryType] || photoNotAvailable} className="logo-image" />
+                        <img
+                            src={DIRECTORY_TYPE_TO_IMAGE[directoryType] || photoNotAvailable}
+                            alt={`${DIRECTORY_TYPE_TO_BUSINESS_TYPE[directoryType] || 'Business'} directory`}
+                            className="logo-image"
+                        />
                         <span className="logo-text">{DIRECTORY_TYPE_TO_BUSINESS_TYPE[directoryType] || 'Business'}</span>
                     </div>
                 </header>
