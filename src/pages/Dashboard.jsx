@@ -7,6 +7,7 @@ import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { useAccount } from '../lib/AccountContext';
 import { endpoints } from '../config/api';
+import { isHidden } from '../lib/hiddenFeatures';
 const CREAM = '#f7f2e8';
 const OLIVE = '#3d6b34';
 const RUST = '#8b3a2b';
@@ -40,7 +41,11 @@ const IcoDel = () => (
 function buildServiceLinks(businessId, features, t) {
   if (!features) return null;
   const links = [];
-  const on = (key) => features[key] === true;
+  // A feature must be enabled for the business and not on the hidden-for-now
+  // list. Without the second half, a business whose flags include events or
+  // testimonials would still get a dashboard tile for a section the sidebar
+  // no longer shows.
+  const on = (key) => features[key] === true && !isHidden(key);
 
   if (on('blog')) links.push({ label: t('dashboard.svc_blog'), to: `/blog/manage?BusinessID=${businessId}` });
   if (on('precision_ag')) links.push({ label: t('dashboard.svc_precision_ag'), to: `/precision-ag/fields?BusinessID=${businessId}` });

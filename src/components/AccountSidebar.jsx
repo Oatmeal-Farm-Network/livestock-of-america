@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
 import { useAccount } from '../lib/AccountContext';
 import { LIVESTOCK_API_URL } from '../config/api';
+import { isHidden } from '../lib/hiddenFeatures';
 
 const API_URL = LIVESTOCK_API_URL || '';
 
@@ -304,25 +305,10 @@ export default function AccountSidebar({ onNavigate }) {
       .catch(() => setFeatures({}));
   }, [BusinessID]);
 
-  // Features hidden from the workspace nav for now. The sections are left in
-  // place and simply not rendered, so bringing one back means deleting its key
-  // here rather than restoring markup. Routes still resolve if a link is typed
-  // or bookmarked — this hides the way in, it does not disable the feature.
-  //
-  // pairsley and provenance ride along with chef_dashboard: they are children
-  // of the Chef Dashboard section, which would otherwise keep rendering under
-  // that name with its namesake link missing.
-  const HIDDEN_FEATURES = new Set([
-    'forums',
-    'events',
-    'testimonials',
-    'chef_dashboard',
-    'pairsley',
-    'provenance',
-    'properties',
-  ]);
-  const on = (key) => !HIDDEN_FEATURES.has(key);
-  const anyOn = (...keys) => keys.some((k) => !HIDDEN_FEATURES.has(k));
+  // Sections are left in place and simply not rendered; see lib/hiddenFeatures
+  // for the list and how to bring one back.
+  const on = (key) => !isHidden(key);
+  const anyOn = (...keys) => keys.some((k) => !isHidden(k));
   
   useEffect(() => {
     if (location.pathname.startsWith('/website/')) {

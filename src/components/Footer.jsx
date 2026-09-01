@@ -19,7 +19,8 @@ export default function Footer() {
     { to: '/animals', label: t('phase1.nav.marketplace', 'Marketplace') },
     { to: '/livestock', label: t('phase1.nav.knowledgebase', 'Knowledgebase') },
     { to: '/news', label: t('phase1.nav.news', 'News Feed') },
-    { to: '/events', label: t('phase1.nav.events', 'Events') },
+    // Events hidden for now, matching the header and workspace sidebar.
+    // { to: '/events', label: t('phase1.nav.events', 'Events') },
     { to: '/about', label: t('phase1.nav.about', 'About') },
     { to: '/contact-us', label: t('phase1.nav.contact', 'Contact Us') },
     { to: '/login', label: t('nav.login', 'Login') },
