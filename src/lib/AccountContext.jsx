@@ -21,6 +21,10 @@ export function AccountProvider({ children }) {
   const [OpenSections, setOpenSections] = useState({});
   const [Expanded, setExpanded] = useState(true);
   const [businesses, setBusinesses] = useState([]);
+  // businesses starts as [], which is indistinguishable from "this user has
+  // none" until the fetch settles. Consumers that would otherwise render an
+  // empty state on first paint need to know the difference.
+  const [businessesLoaded, setBusinessesLoaded] = useState(false);
   const [websiteSlug, setWebsiteSlug] = useState(null);
   const location = useLocation();
 
@@ -46,7 +50,8 @@ export function AccountProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     const peopleId = localStorage.getItem('people_id');
-    if (!token || !peopleId) return;
+    // Nothing will ever arrive without credentials, so this counts as settled.
+    if (!token || !peopleId) { setBusinessesLoaded(true); return; }
     fetch(endpoints.myBusinesses(peopleId))
       .then(r => r.json())
       .then(data => {
@@ -61,7 +66,8 @@ export function AccountProvider({ children }) {
           if (id) LoadBusiness(id);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setBusinessesLoaded(true));
   }, []);
 
   // If the URL's BusinessID changes (e.g. user navigates to a different account's
@@ -111,6 +117,7 @@ const LoadBusiness = (ID, Force = false) => {
       setExpanded,
       businesses,
       setBusinesses,
+      businessesLoaded,
       websiteSlug,
       setWebsiteSlug,
     }}>

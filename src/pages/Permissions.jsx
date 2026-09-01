@@ -544,16 +544,24 @@ const TABS = ['Roles', 'Members', 'Audit Log'];
 
 export default function Permissions() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { BusinessID: selectedBusinessID } = useAccount() || {};
+  const { BusinessID: selectedBusinessID, businesses, businessesLoaded } = useAccount() || {};
 
-  // In OFN this page was only ever reached from a sidebar link that carried
-  // BusinessID, so reading the query string alone was enough. On LOA it is also
-  // reachable without one — a bookmark, a refresh after the param is dropped, or
-  // any navigation that does not go through the sidebar — and the page then
-  // claimed no business was selected while the workspace plainly had one.
-  // Fall back to the business already held in the account context.
+  // Resolving the business has to match what the workspace actually shows.
+  //
+  // AccountContext only adopts a business when the URL names one, so on any
+  // page load without ?BusinessID both Business and BusinessID are null. The
+  // sidebar header hides that: it falls back to businesses[0].BusinessName, so
+  // an account looks active while the context holds nothing. Reading the query
+  // string alone — or even the context alone — then reports no business against
+  // a workspace that is plainly showing one.
+  //
+  // So fall back the same way the header does, ending at the first business in
+  // the user's own list.
   const urlBusinessID = parseInt(searchParams.get('BusinessID') || '0', 10) || 0;
-  const BusinessID = urlBusinessID || Number(selectedBusinessID) || 0;
+  const firstOwned = Array.isArray(businesses) && businesses.length
+    ? (businesses[0].BusinessID ?? businesses[0].businessId ?? businesses[0].id)
+    : null;
+  const BusinessID = urlBusinessID || Number(selectedBusinessID) || Number(firstOwned) || 0;
 
   // Write the resolved id back into the URL so a refresh or a shared link lands
   // on the same business, and so AccountContext — which follows the URL — stays
@@ -575,6 +583,16 @@ export default function Permissions() {
     if (map[t]) next.set('tab', map[t]);
     else next.delete('tab');
     setSearchParams(next);
+  }
+
+  // The list arrives asynchronously, so an empty one means "not yet" until it
+  // settles. Without this the page flashes the empty state on every load.
+  if (!BusinessID && !businessesLoaded) {
+    return (
+      <AccountLayout>
+        <div className="p-8 text-center text-gray-400">Loading…</div>
+      </AccountLayout>
+    );
   }
 
   if (!BusinessID) {
