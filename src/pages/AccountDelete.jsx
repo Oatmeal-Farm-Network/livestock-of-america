@@ -3,19 +3,21 @@
 // var and the people-id accessor differ. The LOA backend already serves the
 // same endpoints this calls.
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PageMeta from '../components/PageMeta';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { useBusinessId } from '../lib/useBusinessId';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
 export default function AccountDelete() {
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
-  const businessId = searchParams.get('BusinessID');
+  // Falls back to the selected/displayed business; without this the page
+  // bounced to /dashboard whenever the URL had no BusinessID.
+  const { businessId, resolving } = useBusinessId();
   const navigate = useNavigate();
 
   const [business, setBusiness] = useState(null);
@@ -28,6 +30,7 @@ export default function AccountDelete() {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (!token) { navigate('/login'); return; }
+    if (resolving) return;
     if (!businessId) { navigate('/dashboard'); return; }
 
     fetch(`${API_URL}/api/businesses/profile/${businessId}`)

@@ -3,16 +3,18 @@
 // var and the people-id accessor differ. The LOA backend already serves the
 // same endpoints this calls.
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, Link } from 'react-router';
+import { Link } from 'react-router';
 import { useTranslation } from '../lib/i18n';
 import AccountLayout from '../components/AccountLayout';
 import { useAccount } from '../lib/AccountContext';
 import { getPeopleId } from '../lib/auth';
+import { useBusinessId } from '../lib/useBusinessId';
 
 export default function AccountChangeType() {
   const { t } = useTranslation();
-  const [SearchParams] = useSearchParams();
-  const BusinessID = SearchParams.get('BusinessID');
+  // Not SearchParams.get('BusinessID'): without the param LoadBusiness is a
+  // no-op, Business never arrives and the page sits on "Loading…" forever.
+  const { businessId: BusinessID, resolving } = useBusinessId();
   const PeopleID = getPeopleId();
   const { Business, LoadBusiness } = useAccount();
 
@@ -21,16 +23,28 @@ export default function AccountChangeType() {
   const [Success, setSuccess] = useState(false);
   const [Loading, setLoading] = useState(true);
 
+  const [LoadError, setLoadError] = useState('');
+
   useEffect(() => {
+    if (!BusinessID) return;
     LoadBusiness(BusinessID);
 
     fetch(`${import.meta.env.VITE_LIVESTOCK_API_URL}/auth/business-types`)
-      .then(Res => Res.json())
+      .then(Res => {
+        if (!Res.ok) throw new Error(`HTTP ${Res.status}`);
+        return Res.json();
+      })
       .then(Data => {
-        setBusinessTypes(Data);
+        setBusinessTypes(Array.isArray(Data) ? Data : []);
+        setLoading(false);
+      })
+      // Without this a failed request left Loading true and the page sat on
+      // the spinner with nothing to explain why.
+      .catch(() => {
+        setLoadError('Could not load the list of account types. Please try again.');
         setLoading(false);
       });
-  }, [BusinessID]);
+  }, [BusinessID]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (Business) setSelectedTypeID(Business.BusinessTypeID);
@@ -48,6 +62,14 @@ export default function AccountChangeType() {
   }
 };
 
+  if (LoadError) {
+    return <div className="p-8 text-red-700">{LoadError}</div>;
+  }
+  // Once the business list has settled and still yields nothing, say so rather
+  // than spinning forever.
+  if (!BusinessID && !resolving) {
+    return <div className="p-8 text-gray-500">No business selected.</div>;
+  }
   if (!Business || Loading) return <div className="p-8 text-gray-500">{t('change_type.loading')}</div>;
 
   return (

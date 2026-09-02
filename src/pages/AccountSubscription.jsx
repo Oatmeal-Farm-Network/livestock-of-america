@@ -9,6 +9,7 @@ import AccountLayout from '../components/AccountLayout';
 import PageMeta from '../components/PageMeta';
 import { useAccount } from '../lib/AccountContext';
 import { getPeopleId } from '../lib/auth';
+import { useBusinessId } from '../lib/useBusinessId';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
@@ -26,7 +27,9 @@ const money = (n, ccy = 'USD') =>
 export default function AccountSubscription() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const businessId = searchParams.get('BusinessID');
+  // Falls back to the selected/displayed business; without this the page
+  // bounced to /dashboard whenever the URL had no BusinessID.
+  const { businessId, resolving } = useBusinessId();
   const sessionId = searchParams.get('session_id');
   const cancelled = searchParams.get('cancelled');
   const navigate = useNavigate();
@@ -73,6 +76,7 @@ export default function AccountSubscription() {
 
   useEffect(() => {
     if (!token) { navigate('/login'); return; }
+    if (resolving) return;
     if (!businessId) { navigate('/dashboard'); return; }
     LoadBusiness(businessId);
     loadAll();
