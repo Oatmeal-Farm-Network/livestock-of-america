@@ -48,6 +48,9 @@ const AccountAssociations = lazy(() => import("./pages/AccountAssociations"));
 const AccountTeamMembers = lazy(() => import("./pages/AccountTeamMembers"));
 const Phase1EventsComingSoon = lazy(() => import("./pages/Phase1EventsComingSoon"));
 const Permissions = lazy(() => import("./pages/Permissions"));
+const AccountChangeType = lazy(() => import("./pages/AccountChangeType"));
+const AccountSubscription = lazy(() => import("./pages/AccountSubscription"));
+const AccountDelete = lazy(() => import("./pages/AccountDelete"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -373,6 +376,31 @@ export default function App() {
           element={
             <RequireAuth>
               <Permissions />
+            </RequireAuth>
+          }
+        />
+        {/* The three Settings destinations in the sidebar. */}
+        <Route
+          path="/account/change-type"
+          element={
+            <RequireAuth>
+              <AccountChangeType />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/account/subscription"
+          element={
+            <RequireAuth>
+              <AccountSubscription />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/account/delete"
+          element={
+            <RequireAuth>
+              <AccountDelete />
             </RequireAuth>
           }
         />
