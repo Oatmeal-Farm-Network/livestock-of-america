@@ -2,7 +2,7 @@
 // Confirm-and-delete an animal — /seller/animals/delete?BusinessID=&AnimalID=
 // Ported from OatmealFarmNetwork's AnimalDelete.jsx.
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -12,7 +12,6 @@ import { endpoints } from '../../config/api';
 import { getToken } from '../../lib/auth';
 
 const CREAM = '#f7f2e8';
-const OLIVE = '#3d6b34';
 const RUST = '#8b3a2b';
 const INK = '#2c2c2c';
 const MUTED = '#6b6b6b';
@@ -36,8 +35,10 @@ export default function AnimalDelete() {
   const animalsHref = `/seller/animals${BusinessID ? `?BusinessID=${BusinessID}` : ''}`;
 
   useEffect(() => {
+    // The sidebar's "Delete Animals" entry links here without an AnimalID.
+    // Send those to the list, where each row has its own Delete action.
     if (!AnimalID) {
-      setLoading(false);
+      navigate(animalsHref, { replace: true });
       return;
     }
     const authHeaders = token ? { Authorization: `Bearer ${token}` } : undefined;
@@ -86,23 +87,7 @@ export default function AnimalDelete() {
     setDeleting(false);
   };
 
-  if (!AnimalID) {
-    return (
-      <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>
-        <PageMeta title="Delete Animal" noIndex />
-        <Header />
-        <main className="grow w-full max-w-[700px] mx-auto px-4 md:px-6 py-10 text-center">
-          <p style={{ color: MUTED }}>
-            {t('animal_delete.not_found', "This animal couldn't be found.")}
-          </p>
-          <Link to={animalsHref} className="inline-block mt-4 font-semibold" style={{ color: OLIVE }}>
-            {t('seller_animals.title', 'My Animals')}
-          </Link>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  if (!AnimalID) return null;
 
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>

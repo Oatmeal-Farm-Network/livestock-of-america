@@ -37,9 +37,12 @@ function remapTo(to, label) {
   let next = to
     .replace(/^\/animals\/add/, '/seller/animals/add')
     .replace(/^\/animals\?(.*BusinessID=)/, '/seller/animals?$1')
-    .replace(/^\/animals\/delete.*/, '/coming-soon?feature=Delete%20Animals')
+    // Delete and Packages are ported and live; keep the query string so the
+    // page opens on the right business. Transfer and Statistics have no page in
+    // OFN either — they stay Coming Soon until someone builds them.
+    .replace(/^\/animals\/delete/, '/seller/animals/delete')
+    .replace(/^\/animals\/packages/, '/seller/animals/packages')
     .replace(/^\/animals\/transfer.*/, '/coming-soon?feature=Transfer%20Animals')
-    .replace(/^\/animals\/packages.*/, '/coming-soon?feature=Animal%20Packages')
     .replace(/^\/animals\/stats.*/, '/coming-soon?feature=Animal%20Statistics')
     .replace(/^\/animals\/?(\?|$)/, '/seller/animals$1')
     .replace(/^\/dashboard/, '/account')
