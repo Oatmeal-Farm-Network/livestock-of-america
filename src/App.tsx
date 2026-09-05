@@ -37,6 +37,9 @@ const DirectoryList = lazy(() => import("./Directory/pages/DirectoryList"));
 const DirectoryDetail = lazy(() => import("./Directory/pages/DirectoryDetail"));
 const BlogList = lazy(() => import("./pages/BlogList"));
 const BlogDetail = lazy(() => import("./pages/BlogDetail"));
+const BlogManage = lazy(() => import("./pages/blog/BlogManage"));
+const BlogAuthors = lazy(() => import("./pages/blog/BlogAuthors"));
+const BlogAuthorDetail = lazy(() => import("./pages/blog/BlogAuthorDetail"));
 const AnimalsHome = lazy(() => import("./pages/seller/AnimalsHome"));
 const AnimalAdd = lazy(() => import("./pages/seller/AnimalAdd"));
 const AnimalEdit = lazy(() => import("./pages/seller/AnimalEdit"));
@@ -175,6 +178,23 @@ export default function App() {
         <Route path="/contact-us" element={<ContactUsGuest />} />
         <Route path="/contact-us/confirm" element={<ContactUsConfirmGuest />} />
         <Route path="/blog" element={<BlogList />} />
+        <Route
+          path="/blog/manage"
+          element={
+            <RequireAuth>
+              <BlogManage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/blog/authors/manage"
+          element={
+            <RequireAuth>
+              <BlogAuthors />
+            </RequireAuth>
+          }
+        />
+        <Route path="/blog/authors/:authorId" element={<BlogAuthorDetail />} />
         <Route path="/blog/:postId" element={<BlogDetail />} />
         <Route
           path="/directory"
