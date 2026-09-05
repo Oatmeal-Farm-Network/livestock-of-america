@@ -85,6 +85,8 @@ export const endpoints = {
     apiUrl(`/api/animals/species/${speciesId}/categories`),
   animalPhotos: (id: number | string) =>
     apiUrl(`/api/animals/${id}/photos`),
+  animalTransfer: (id: number | string) =>
+    apiUrl(`/api/animals/${id}/transfer`),
 
   // Animal packages — app/routers/auth.py
   animalPackages: (businessId: number | string) =>

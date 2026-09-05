@@ -42,6 +42,8 @@ const AnimalAdd = lazy(() => import("./pages/seller/AnimalAdd"));
 const AnimalEdit = lazy(() => import("./pages/seller/AnimalEdit"));
 const AnimalDelete = lazy(() => import("./pages/seller/AnimalDelete"));
 const AnimalPackages = lazy(() => import("./pages/seller/AnimalPackages"));
+const AnimalTransfer = lazy(() => import("./pages/seller/AnimalTransfer"));
+const AnimalStats = lazy(() => import("./pages/seller/AnimalStats"));
 const HerdHealthDashboard = lazy(() => import("./pages/herd-health/HerdHealthDashboard"));
 const HerdHealthReports = lazy(() => import("./pages/herd-health/HerdHealthReports"));
 const Profile = lazy(() => import("./pages/Profile"));
@@ -239,6 +241,22 @@ export default function App() {
           element={
             <RequireAuth>
               <AnimalPackages />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/seller/animals/transfer"
+          element={
+            <RequireAuth>
+              <AnimalTransfer />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/seller/animals/stats"
+          element={
+            <RequireAuth>
+              <AnimalStats />
             </RequireAuth>
           }
         />
