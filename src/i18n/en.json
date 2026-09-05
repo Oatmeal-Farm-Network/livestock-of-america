@@ -1112,6 +1112,7 @@
   "animal_delete": {
     "animal_fallback": "the animal",
     "btn_cancel": "Cancel",
+    "btn_choose": "Delete…",
     "btn_delete": "Delete animal",
     "btn_deleting": "Deleting…",
     "cannot_undo": "This cannot be undone.",
@@ -1124,6 +1125,12 @@
     "no_description": "No description on file.",
     "not_found": "This animal couldn't be found.",
     "page_title": "Delete Animal",
+    "pick_empty": "This business has no animals on file.",
+    "pick_heading": "Delete an animal",
+    "pick_no_business": "Choose a business to see its animals.",
+    "pick_no_match": "No animals match that search.",
+    "pick_search": "Search your animals…",
+    "pick_subtitle": "Choose which animal to remove. You will get a confirmation step before anything is deleted.",
     "subtitle": "Removing an animal takes it off the marketplace for good.",
     "unnamed": "Unnamed animal",
     "warning_body": "This removes the animal, its photos and its listing history."

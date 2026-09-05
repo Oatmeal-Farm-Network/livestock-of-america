@@ -31,14 +31,31 @@ export default function AnimalDelete() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // With no AnimalID the page is a chooser: list the herd and let them pick.
+  const [herd, setHerd] = useState([]);
+  const [herdLoading, setHerdLoading] = useState(false);
+  const [herdQuery, setHerdQuery] = useState('');
+
   const token = getToken();
   const animalsHref = `/seller/animals${BusinessID ? `?BusinessID=${BusinessID}` : ''}`;
 
+  // No AnimalID — the sidebar's "Delete Animals" entry lands here. Load the
+  // herd so they can choose which animal to remove without leaving the page.
   useEffect(() => {
-    // The sidebar's "Delete Animals" entry links here without an AnimalID.
-    // Send those to the list, where each row has its own Delete action.
+    if (AnimalID || !BusinessID) return;
+    setHerdLoading(true);
+    fetch(endpoints.authAnimals(BusinessID), {
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+    })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d) => setHerd(Array.isArray(d) ? d : []))
+      .catch(() => setHerd([]))
+      .finally(() => setHerdLoading(false));
+  }, [AnimalID, BusinessID, token]);
+
+  useEffect(() => {
     if (!AnimalID) {
-      navigate(animalsHref, { replace: true });
+      setLoading(false);
       return;
     }
     const authHeaders = token ? { Authorization: `Bearer ${token}` } : undefined;
@@ -87,7 +104,108 @@ export default function AnimalDelete() {
     setDeleting(false);
   };
 
-  if (!AnimalID) return null;
+  // ── Chooser view: no animal selected yet ────────────────────────────────
+  if (!AnimalID) {
+    const q = herdQuery.trim().toLowerCase();
+    const shown = q
+      ? herd.filter(
+          (a) =>
+            (a.FullName || '').toLowerCase().includes(q) ||
+            (a.Category || '').toLowerCase().includes(q) ||
+            (a.SpeciesName || '').toLowerCase().includes(q),
+        )
+      : herd;
+
+    return (
+      <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>
+        <PageMeta title="Delete Animal | Livestock of America" noIndex />
+        <Header />
+        <main className="grow w-full max-w-[700px] mx-auto px-4 md:px-6 py-6 md:py-8">
+          <Breadcrumbs
+            items={[
+              { label: 'Home', to: '/' },
+              { label: 'Dashboard', to: '/account' },
+              { label: t('seller_animals.title', 'My Animals'), to: animalsHref },
+              { label: t('animal_delete.page_title', 'Delete Animal') },
+            ]}
+          />
+
+          <div className="bg-white rounded-2xl shadow-sm border border-black/5 p-5 md:p-6">
+            <h1 className="text-2xl font-bold mb-1" style={{ fontFamily: LORA, color: INK }}>
+              {t('animal_delete.pick_heading', 'Delete an animal')}
+            </h1>
+            <p className="text-sm mb-5" style={{ color: MUTED }}>
+              {t('animal_delete.pick_subtitle', 'Choose which animal to remove. You will get a confirmation step before anything is deleted.')}
+            </p>
+
+            {!BusinessID ? (
+              <p className="text-sm" style={{ color: MUTED }}>
+                {t('animal_delete.pick_no_business', 'Choose a business to see its animals.')}
+              </p>
+            ) : herdLoading ? (
+              <p className="text-sm" style={{ color: MUTED }}>
+                {t('animal_delete.loading', 'Loading…')}
+              </p>
+            ) : herd.length === 0 ? (
+              <p className="text-sm" style={{ color: MUTED }}>
+                {t('animal_delete.pick_empty', 'This business has no animals on file.')}
+              </p>
+            ) : (
+              <>
+                {herd.length > 8 && (
+                  <input
+                    type="text"
+                    value={herdQuery}
+                    onChange={(e) => setHerdQuery(e.target.value)}
+                    className="w-full px-3 py-2.5 border rounded-lg text-sm focus:outline-none mb-3"
+                    style={{ borderColor: 'rgba(0,0,0,0.15)' }}
+                    placeholder={t('animal_delete.pick_search', 'Search your animals…')}
+                  />
+                )}
+                <div className="rounded-lg overflow-hidden" style={{ border: '1px solid rgba(0,0,0,0.1)' }}>
+                  {shown.map((a) => (
+                    <div
+                      key={a.AnimalID}
+                      className="flex items-center justify-between gap-3 px-3 py-2.5"
+                      style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}
+                    >
+                      <div className="min-w-0">
+                        <div className="font-semibold text-sm truncate" style={{ color: INK }}>
+                          {a.FullName || t('animal_delete.unnamed', 'Unnamed animal')}
+                        </div>
+                        <div className="text-xs" style={{ color: MUTED }}>
+                          {[a.SpeciesName, a.Category].filter(Boolean).join(' · ') || '—'}
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate(
+                            `/seller/animals/delete?BusinessID=${BusinessID}&AnimalID=${a.AnimalID}`,
+                          )
+                        }
+                        className="px-3 py-1.5 rounded-lg text-xs font-bold text-white shrink-0"
+                        style={{ background: RUST }}
+                      >
+                        {t('animal_delete.btn_choose', 'Delete…')}
+                      </button>
+                    </div>
+                  ))}
+                  {shown.length === 0 && (
+                    <div className="px-3 py-3 text-sm" style={{ color: MUTED }}>
+                      {t('animal_delete.pick_no_match', 'No animals match that search.')}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen font-sans flex flex-col" style={{ background: CREAM }}>
