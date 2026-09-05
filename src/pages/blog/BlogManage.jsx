@@ -8,8 +8,23 @@ import { useSearchParams, Link } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import AccountLayout from '../../components/AccountLayout';
 import { useAccount } from '../../lib/AccountContext';
+import { getToken } from '../../lib/auth';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
+
+// Blog management calls carry the caller's token; the API checks it against
+// BusinessAccess for the business_id in the query string.
+const authFetch = (url, opts = {}) => {
+  const token = getToken();
+  return fetch(url, {
+    ...opts,
+    headers: {
+      ...(opts.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+};
+
 
 // ── Rich text editor (shared with website builder) ──────────────
 const WEB_FONTS = [
@@ -279,7 +294,7 @@ function BlogRichTextEditor({ value, onChange }) {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      const res = await fetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
+      const res = await authFetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
       if (!res.ok) throw new Error();
       const { url } = await res.json();
       setImgUrl(url);
@@ -310,7 +325,7 @@ function BlogRichTextEditor({ value, onChange }) {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      const res = await fetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
+      const res = await authFetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
       if (!res.ok) throw new Error('Upload failed');
       const { url } = await res.json();
       const html = `<figure style="text-align:center;margin:1em 0;"><img src="${url}" style="max-width:100%;border-radius:4px;" /></figure>`;
@@ -757,7 +772,7 @@ function PostEditor({ post, businessId, hasWebsite, globalCategories, customCate
 
   useEffect(() => {
     if (!businessId) return;
-    fetch(`${API_URL}/api/blog/authors?business_id=${businessId}`)
+    authFetch(`${API_URL}/api/blog/authors?business_id=${businessId}`)
       .then(r => r.ok ? r.json() : [])
       .then(data => setSavedAuthors(Array.isArray(data) ? data : []))
       .catch(() => {});
@@ -772,7 +787,7 @@ function PostEditor({ post, businessId, hasWebsite, globalCategories, customCate
     setAutoSaveStatus('saving');
     autoSaveTimer.current = setTimeout(async () => {
       try {
-        const res = await fetch(`${API_URL}/api/blog/manage/${blogId}?business_id=${businessId}`, {
+        const res = await authFetch(`${API_URL}/api/blog/manage/${blogId}?business_id=${businessId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(form),
@@ -794,7 +809,7 @@ function PostEditor({ post, businessId, hasWebsite, globalCategories, customCate
       const url = isEdit
         ? `${API_URL}/api/blog/manage/${postIdRef.current}?business_id=${businessId}`
         : `${API_URL}/api/blog/manage?business_id=${businessId}`;
-      const res = await fetch(url, {
+      const res = await authFetch(url, {
         method: isEdit ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -1023,7 +1038,7 @@ function CategoriesTab({ businessId, globalCategories, customCategories, onCusto
     setAdding(true);
     setError('');
     try {
-      const res = await fetch(`${API_URL}/api/blog/categories/custom?business_id=${businessId}`, {
+      const res = await authFetch(`${API_URL}/api/blog/categories/custom?business_id=${businessId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name }),
@@ -1044,7 +1059,7 @@ function CategoriesTab({ businessId, globalCategories, customCategories, onCusto
     if (!window.confirm(t('blog_manage.confirm_remove_cat', { name: cat.name }))) return;
     setDeleting(cat.id);
     try {
-      await fetch(`${API_URL}/api/blog/categories/custom/${cat.id}?business_id=${businessId}`,
+      await authFetch(`${API_URL}/api/blog/categories/custom/${cat.id}?business_id=${businessId}`,
         { method: 'DELETE' });
       onCustomCategoriesChange(customCategories.filter(c => c.id !== cat.id));
     } finally {
@@ -1155,8 +1170,8 @@ export default function BlogManage() {
 
   const loadCategories = async () => {
     const [g, c] = await Promise.all([
-      fetch(`${API_URL}/api/blog/categories/global`).then(r => r.json()).catch(() => []),
-      fetch(`${API_URL}/api/blog/categories/custom?business_id=${BusinessID}`).then(r => r.json()).catch(() => []),
+      authFetch(`${API_URL}/api/blog/categories/global`).then(r => r.json()).catch(() => []),
+      authFetch(`${API_URL}/api/blog/categories/custom?business_id=${BusinessID}`).then(r => r.json()).catch(() => []),
     ]);
     setGlobalCategories(Array.isArray(g) ? g : []);
     setCustomCategories(Array.isArray(c) ? c : []);
@@ -1164,7 +1179,7 @@ export default function BlogManage() {
 
   const load = () => {
     setLoading(true);
-    fetch(`${API_URL}/api/blog/manage?business_id=${BusinessID}`)
+    authFetch(`${API_URL}/api/blog/manage?business_id=${BusinessID}`)
       .then(r => r.ok ? r.json() : [])
       .then(data => setPosts(Array.isArray(data) ? data : []))
       .catch(() => setPosts([]))
@@ -1196,7 +1211,7 @@ export default function BlogManage() {
     if (!window.confirm(t('blog_manage.confirm_delete'))) return;
     setDeleting(blogId);
     try {
-      await fetch(`${API_URL}/api/blog/manage/${blogId}?business_id=${BusinessID}`, { method: 'DELETE' });
+      await authFetch(`${API_URL}/api/blog/manage/${blogId}?business_id=${BusinessID}`, { method: 'DELETE' });
       load();
     } finally { setDeleting(null); }
   };
@@ -1226,7 +1241,7 @@ export default function BlogManage() {
           ? new Date().toISOString().slice(0, 10)
           : (post.published_at || null),
       };
-      const res = await fetch(`${API_URL}/api/blog/manage/${post.blog_id}?business_id=${BusinessID}`, {
+      const res = await authFetch(`${API_URL}/api/blog/manage/${post.blog_id}?business_id=${BusinessID}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

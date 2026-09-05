@@ -7,8 +7,23 @@ import { useSearchParams, Link } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import AccountLayout from '../../components/AccountLayout';
 import { useAccount } from '../../lib/AccountContext';
+import { getToken } from '../../lib/auth';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
+
+// Blog management calls carry the caller's token; the API checks it against
+// BusinessAccess for the business_id in the query string.
+const authFetch = (url, opts = {}) => {
+  const token = getToken();
+  return fetch(url, {
+    ...opts,
+    headers: {
+      ...(opts.headers || {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+};
+
 
 // ── Rich text editor ─────────────────────────────────────────────
 const WEB_FONTS = [
@@ -201,7 +216,7 @@ function RichTextEditor({ value, onChange }) {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      const res = await fetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
+      const res = await authFetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
       if (!res.ok) throw new Error();
       const { url } = await res.json();
       setImgUrl(url);
@@ -231,7 +246,7 @@ function RichTextEditor({ value, onChange }) {
     try {
       const fd = new FormData();
       fd.append('file', file);
-      const res = await fetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
+      const res = await authFetch(`${API_URL}/api/blog/upload-image`, { method: 'POST', body: fd });
       if (!res.ok) throw new Error('Upload failed');
       const { url } = await res.json();
       const html = `<figure style="text-align:center;margin:1em 0;"><img src="${url}" style="max-width:100%;border-radius:4px;" /></figure>`;
@@ -556,7 +571,7 @@ function AuthorEditor({ author, businessId, onSave, onCancel }) {
       const url = isEdit
         ? `${API_URL}/api/blog/authors/${author.author_id}?business_id=${businessId}`
         : `${API_URL}/api/blog/authors?business_id=${businessId}`;
-      const res = await fetch(url, {
+      const res = await authFetch(url, {
         method: isEdit ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -648,7 +663,7 @@ export default function BlogAuthors() {
 
   const load = () => {
     setLoading(true);
-    fetch(`${API_URL}/api/blog/authors?business_id=${BusinessID}`)
+    authFetch(`${API_URL}/api/blog/authors?business_id=${BusinessID}`)
       .then(r => r.ok ? r.json() : [])
       .then(data => setAuthors(Array.isArray(data) ? data : []))
       .catch(() => setAuthors([]))
@@ -661,7 +676,7 @@ export default function BlogAuthors() {
     if (!window.confirm(t('blog_authors.confirm_delete', { name }))) return;
     setDeleting(authorId);
     try {
-      await fetch(`${API_URL}/api/blog/authors/${authorId}?business_id=${BusinessID}`, { method: 'DELETE' });
+      await authFetch(`${API_URL}/api/blog/authors/${authorId}?business_id=${BusinessID}`, { method: 'DELETE' });
       load();
     } finally { setDeleting(null); }
   };
