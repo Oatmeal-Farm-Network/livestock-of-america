@@ -40,7 +40,10 @@ const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const AnimalsHome = lazy(() => import("./pages/seller/AnimalsHome"));
 const AnimalAdd = lazy(() => import("./pages/seller/AnimalAdd"));
 const AnimalEdit = lazy(() => import("./pages/seller/AnimalEdit"));
+const AnimalDelete = lazy(() => import("./pages/seller/AnimalDelete"));
+const AnimalPackages = lazy(() => import("./pages/seller/AnimalPackages"));
 const HerdHealthDashboard = lazy(() => import("./pages/herd-health/HerdHealthDashboard"));
+const HerdHealthReports = lazy(() => import("./pages/herd-health/HerdHealthReports"));
 const Profile = lazy(() => import("./pages/Profile"));
 const AccountNew = lazy(() => import("./pages/AccountNew"));
 const AccountProfile = lazy(() => import("./pages/AccountProfile"));
@@ -223,6 +226,22 @@ export default function App() {
             </RequireAuth>
           }
         />
+        <Route
+          path="/seller/animals/delete"
+          element={
+            <RequireAuth>
+              <AnimalDelete />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/seller/animals/packages"
+          element={
+            <RequireAuth>
+              <AnimalPackages />
+            </RequireAuth>
+          }
+        />
 
         <Route
           path="/herd-health"
@@ -237,6 +256,14 @@ export default function App() {
           element={
             <RequireAuth>
               <HerdHealthDashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/herd-health/reports"
+          element={
+            <RequireAuth>
+              <HerdHealthReports />
             </RequireAuth>
           }
         />

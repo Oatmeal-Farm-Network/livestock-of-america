@@ -83,6 +83,14 @@ export const endpoints = {
     apiUrl(`/api/animals/${id}/update-basics`),
   animalCategories: (speciesId: number | string) =>
     apiUrl(`/api/animals/species/${speciesId}/categories`),
+  animalPhotos: (id: number | string) =>
+    apiUrl(`/api/animals/${id}/photos`),
+
+  // Animal packages — app/routers/auth.py
+  animalPackages: (businessId: number | string) =>
+    apiUrl(`/auth/packages?BusinessID=${businessId}`),
+  animalPackageSave: () => apiUrl("/auth/packages/save"),
+  animalPackageDelete: () => apiUrl("/auth/packages/delete"),
 
   // Herd health — app/routers/herd_health.py
   herdHealthDashboard: (businessId: number | string) =>

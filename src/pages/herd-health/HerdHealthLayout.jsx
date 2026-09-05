@@ -21,6 +21,7 @@ const NAV_GROUPS = [
     label: 'Overview',
     items: [
       { key: 'dashboard', labelKey: 'herd_health.nav_dashboard', label: 'Dashboard', path: '/herd-health' },
+      { key: 'reports', labelKey: 'herd_health.nav_reports', label: 'Reports', path: '/herd-health/reports' },
     ],
   },
   {

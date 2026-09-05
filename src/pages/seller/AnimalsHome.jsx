@@ -617,6 +617,18 @@ export default function AnimalsHome() {
                                       >
                                         Edit
                                       </button>
+                                      <button
+                                        type="button"
+                                        className="text-xs underline bg-transparent border-0 cursor-pointer"
+                                        style={{ color: '#8b3a2b' }}
+                                        onClick={() =>
+                                          navigate(
+                                            `/seller/animals/delete?BusinessID=${BusinessID}&AnimalID=${animal.AnimalID}`,
+                                          )
+                                        }
+                                      >
+                                        Delete
+                                      </button>
                                     </div>
                                   </td>
                                 </tr>
