@@ -101,6 +101,20 @@ const ServicesAdd = lazy(() => import("./pages/ofn/ServicesAdd"));
 const ServicesEdit = lazy(() => import("./pages/ofn/ServicesEdit"));
 const ServiceDetail = lazy(() => import("./pages/ofn/ServiceDetail"));
 const ServicesSuggestCategory = lazy(() => import("./pages/ofn/ServicesSuggestCategory"));
+const SellerListings = lazy(() => import("./pages/ofn/SellerListings"));
+const SellerOrders = lazy(() => import("./pages/ofn/SellerOrders"));
+const SellerStripeConnect = lazy(() => import("./pages/ofn/SellerStripeConnect"));
+const JobBoard = lazy(() => import("./pages/ofn/JobBoard"));
+const LandLeasing = lazy(() => import("./pages/ofn/LandLeasing"));
+const ESGDashboard = lazy(() => import("./pages/ofn/ESGDashboard"));
+const FarmKPIDashboard = lazy(() => import("./pages/ofn/FarmKPIDashboard"));
+const FarmSafety = lazy(() => import("./pages/ofn/FarmSafety"));
+const ComplianceAudit = lazy(() => import("./pages/ofn/ComplianceAudit"));
+const DocumentVault = lazy(() => import("./pages/ofn/DocumentVault"));
+const FarmInfrastructure = lazy(() => import("./pages/ofn/FarmInfrastructure"));
+const FarmerSettlement = lazy(() => import("./pages/ofn/FarmerSettlement"));
+const DeliveryRoutes = lazy(() => import("./pages/ofn/DeliveryRoutes"));
+const HRDashboard = lazy(() => import("./pages/ofn/HRDashboard"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -596,6 +610,22 @@ export default function App() {
         <Route path="/services/edit" element={<ServicesEdit />} />
         <Route path="/services/public/:servicesId" element={<ServiceDetail />} />
         <Route path="/services/suggest-category" element={<ServicesSuggestCategory />} />
+
+        {/* Seller tooling, jobs, land and the farm-operations dashboards. */}
+        <Route path="/seller/listings" element={<SellerListings />} />
+        <Route path="/seller/orders" element={<SellerOrders />} />
+        <Route path="/account/stripe-connect" element={<RequireAuth><SellerStripeConnect /></RequireAuth>} />
+        <Route path="/jobs" element={<JobBoard />} />
+        <Route path="/land" element={<LandLeasing />} />
+        <Route path="/esg-dashboard" element={<ESGDashboard />} />
+        <Route path="/farm-kpi" element={<RequireAuth><FarmKPIDashboard /></RequireAuth>} />
+        <Route path="/farm-safety" element={<RequireAuth><FarmSafety /></RequireAuth>} />
+        <Route path="/compliance" element={<RequireAuth><ComplianceAudit /></RequireAuth>} />
+        <Route path="/documents" element={<RequireAuth><DocumentVault /></RequireAuth>} />
+        <Route path="/farm-infrastructure" element={<RequireAuth><FarmInfrastructure /></RequireAuth>} />
+        <Route path="/farmer-settlement" element={<RequireAuth><FarmerSettlement /></RequireAuth>} />
+        <Route path="/delivery-routes" element={<RequireAuth><DeliveryRoutes /></RequireAuth>} />
+        <Route path="/hr" element={<RequireAuth><HRDashboard /></RequireAuth>} />
         <Route path="/services" element={<ServicesHome />} />
         <Route
           path="/account/profile"
