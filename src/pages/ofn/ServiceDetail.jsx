@@ -55,8 +55,8 @@ export default function ServiceDetail() {
     ? svc.ServiceDescription.replace(/<[^>]+>/g, '').slice(0, 155)
     : (svc.ServicesDescription
       ? svc.ServicesDescription.replace(/<[^>]+>/g, '').slice(0, 155)
-      : `${svc.ServiceTitle}${location ? ` in ${location}` : ''}${svc.ServicesCategory ? ` — ${svc.ServicesCategory}` : ''}. Find agricultural services on Oatmeal Farm Network.`);
-  const svcCanonical = `https://oatmealfarmnetwork.com/services/public/${servicesId}`;
+      : `${svc.ServiceTitle}${location ? ` in ${location}` : ''}${svc.ServicesCategory ? ` — ${svc.ServicesCategory}` : ''}. Find agricultural services on Livestock Of America.`);
+  const svcCanonical = `https://livestockofamerica.com/services/public/${servicesId}`;
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
@@ -99,9 +99,9 @@ export default function ServiceDetail() {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://oatmealfarmnetwork.com' },
-              { '@type': 'ListItem', position: 2, name: 'Services Directory', item: 'https://oatmealfarmnetwork.com/services/directory' },
-              ...(svc.ServicesCategory ? [{ '@type': 'ListItem', position: 3, name: svc.ServicesCategory, item: `https://oatmealfarmnetwork.com/services/directory/${svc.ServiceCategoryID}` }, { '@type': 'ListItem', position: 4, name: svc.ServiceTitle, item: svcCanonical }] : [{ '@type': 'ListItem', position: 3, name: svc.ServiceTitle, item: svcCanonical }]),
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://livestockofamerica.com' },
+              { '@type': 'ListItem', position: 2, name: 'Services Directory', item: 'https://livestockofamerica.com/services/directory' },
+              ...(svc.ServicesCategory ? [{ '@type': 'ListItem', position: 3, name: svc.ServicesCategory, item: `https://livestockofamerica.com/services/directory/${svc.ServiceCategoryID}` }, { '@type': 'ListItem', position: 4, name: svc.ServiceTitle, item: svcCanonical }] : [{ '@type': 'ListItem', position: 3, name: svc.ServiceTitle, item: svcCanonical }]),
             ],
           },
         ]}

@@ -46,6 +46,14 @@ const NAV = [
     categories: 'directory',
   },
   {
+    label: 'Services',
+    fallbackKey: 'phase1.nav.services',
+    // A plain link, not a dropdown: the 21 service categories live in the
+    // database, and the other category dropdowns here are static lists. Adding
+    // a fetch to the header would cost a request on every page load.
+    to: '/services/directory',
+  },
+  {
     label: 'Newsfeed',
     fallbackKey: 'phase1.nav.news',
     children: [

@@ -630,6 +630,10 @@ export default function App() {
         <Route path="/marketplace/products/:id" element={<ProductDetail />} />
         <Route path="/products" element={<RequireAuth><ProductsInventory /></RequireAuth>} />
         <Route path="/products/add" element={<RequireAuth><ProductEdit /></RequireAuth>} />
+        {/* The bare path had no route, so it fell through the catch-all to the
+            home page - even though the sitemap advertises it and the page is
+            written to work with no category. */}
+        <Route path="/services/directory" element={<ServicesDirectory />} />
         <Route path="/services/directory/:categoryId" element={<ServicesDirectory />} />
         <Route path="/services/add" element={<ServicesAdd />} />
         <Route path="/services/edit" element={<ServicesEdit />} />

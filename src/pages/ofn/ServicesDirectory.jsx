@@ -141,14 +141,14 @@ export default function ServicesDirectory() {
       <PageMeta
         title={catName ? `${catName} Services | Agricultural Services Directory` : 'Agricultural Services Directory | Find Farm Services'}
         description={catName
-          ? `Find ${catName.toLowerCase()} services from farmers, ranchers, and agricultural professionals on Oatmeal Farm Network.`
+          ? `Find ${catName.toLowerCase()} services from farmers, ranchers, and agricultural professionals on Livestock Of America.`
           : 'Find agricultural services including veterinary care, farm consulting, equipment rental, shearing, farriery, and more. Browse service providers near you.'}
         keywords={catName
           ? `${catName}, ${catName} services, farm services, agricultural ${catName.toLowerCase()}, service providers`
           : 'agricultural services, farm services, veterinary, farriery, shearing, farm consulting, equipment rental, livestock services'}
         canonical={categoryId
-          ? `https://oatmealfarmnetwork.com/services/directory/${categoryId}`
-          : 'https://oatmealfarmnetwork.com/services/directory'}
+          ? `https://livestockofamerica.com/services/directory/${categoryId}`
+          : 'https://livestockofamerica.com/services/directory'}
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -156,28 +156,28 @@ export default function ServicesDirectory() {
             name: catName ? `${catName} Services` : 'Agricultural Services Directory',
             description: 'Browse farm and agricultural services by category.',
             url: categoryId
-              ? `https://oatmealfarmnetwork.com/services/directory/${categoryId}`
-              : 'https://oatmealfarmnetwork.com/services/directory',
+              ? `https://livestockofamerica.com/services/directory/${categoryId}`
+              : 'https://livestockofamerica.com/services/directory',
           },
           !categoryId && categories.length > 0 ? {
             '@context': 'https://schema.org',
             '@type': 'ItemList',
-            url: 'https://oatmealfarmnetwork.com/services/directory',
+            url: 'https://livestockofamerica.com/services/directory',
             itemListElement: categories.slice(0, 20).map((c, i) => ({
               '@type': 'ListItem',
               position: i + 1,
-              url: `https://oatmealfarmnetwork.com/services/directory/${c.ServiceCategoryID}`,
+              url: `https://livestockofamerica.com/services/directory/${c.ServiceCategoryID}`,
               name: c.ServicesCategory,
             })),
           } : null,
           categoryId && services.length > 0 ? {
             '@context': 'https://schema.org',
             '@type': 'ItemList',
-            url: `https://oatmealfarmnetwork.com/services/directory/${categoryId}`,
+            url: `https://livestockofamerica.com/services/directory/${categoryId}`,
             itemListElement: services.slice(0, 10).map((s, i) => ({
               '@type': 'ListItem',
               position: i + 1,
-              url: `https://oatmealfarmnetwork.com/services/public/${s.ServicesID}`,
+              url: `https://livestockofamerica.com/services/public/${s.ServicesID}`,
               name: s.ServiceTitle,
             })),
           } : null,
