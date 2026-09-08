@@ -113,6 +113,7 @@ export const endpoints = {
 
   // Auth — livestock service (A1)
   login: () => apiUrl("/auth/login"),
+  impersonate: () => apiUrl("/auth/impersonate"),
   signup: () => apiUrl("/auth/signup"),
   forgotPassword: () => apiUrl("/auth/forgot-password"),
   me: () => apiUrl("/auth/me"),

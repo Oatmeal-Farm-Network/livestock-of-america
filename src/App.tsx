@@ -20,6 +20,7 @@ const LivestockAnimalDetail = lazy(() => import("./pages/LivestockAnimalDetail")
 const Login = lazy(() => import("./pages/Login"));
 const Signup = lazy(() => import("./pages/Signup"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const Impersonate = lazy(() => import("./pages/Impersonate"));
 const About = lazy(() => import("./pages/About"));
 const AboutOatmealAI = lazy(() => import("./pages/AboutOatmealAI"));
 const ContactUs = lazy(() => import("./pages/ContactUs"));
@@ -120,6 +121,9 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      {/* The one-time token in the URL is the credential, so this sits
+          outside RequireAuth and outside the logged-in shell. */}
+      <Route path="/impersonate" element={<Impersonate />} />
 
       <Route element={<AppChrome />}>
         {/* The home page is reachable by everyone. Signed-in visitors used to be
