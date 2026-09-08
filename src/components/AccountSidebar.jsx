@@ -19,6 +19,7 @@ const LOA_LIVE = [
   /^\/permissions(\/|$|\?)/,
   /^\/cart(\/|$|\?)/,
   /^\/orders(\/|$|\?)/,
+  /^\/farm\/standing-orders/,
   /^\/accounts\//,
   /^\/seller\//,
   /^\/herd-health/,

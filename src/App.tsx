@@ -63,6 +63,8 @@ const AccountDelete = lazy(() => import("./pages/AccountDelete"));
 const UnifiedCart = lazy(() => import("./pages/UnifiedCart"));
 const MarketplaceOrders = lazy(() => import("./pages/MarketplaceOrders"));
 const OrderDetail = lazy(() => import("./pages/OrderDetail"));
+const LivestockAnimalProgeny = lazy(() => import("./pages/LivestockAnimalProgeny"));
+const FarmStandingOrders = lazy(() => import("./pages/FarmStandingOrders"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -498,6 +500,21 @@ export default function App() {
           element={
             <RequireAuth>
               <OrderDetail />
+            </RequireAuth>
+          }
+        />
+        {/* LivestockAnimalDetail already links here; without the route the
+            catch-all was bouncing "View Progeny" to the homepage. Public, like
+            the animal page it is reached from. */}
+        <Route
+          path="/marketplaces/livestock/animal/:id/progeny"
+          element={<LivestockAnimalProgeny />}
+        />
+        <Route
+          path="/farm/standing-orders"
+          element={
+            <RequireAuth>
+              <FarmStandingOrders />
             </RequireAuth>
           }
         />
