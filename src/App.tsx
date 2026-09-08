@@ -115,6 +115,23 @@ const FarmInfrastructure = lazy(() => import("./pages/ofn/FarmInfrastructure"));
 const FarmerSettlement = lazy(() => import("./pages/ofn/FarmerSettlement"));
 const DeliveryRoutes = lazy(() => import("./pages/ofn/DeliveryRoutes"));
 const HRDashboard = lazy(() => import("./pages/ofn/HRDashboard"));
+const OrgProfile = lazy(() => import("./pages/ofn/OrgProfile"));
+const BuyerCRM = lazy(() => import("./pages/ofn/BuyerCRM"));
+const AppDownload = lazy(() => import("./pages/ofn/AppDownload"));
+const AudioSettings = lazy(() => import("./pages/ofn/AudioSettings"));
+const JudgePortal = lazy(() => import("./pages/ofn/JudgePortal"));
+const SpeakerPortal = lazy(() => import("./pages/ofn/SpeakerPortal"));
+const IngredientKnowledgebase = lazy(() => import("./pages/ofn/IngredientKnowledgebase"));
+const IngredientVarieties = lazy(() => import("./pages/ofn/IngredientVarieties"));
+const SupplierDirectory = lazy(() => import("./pages/ofn/SupplierDirectory"));
+const SupplierScorecard = lazy(() => import("./pages/ofn/SupplierScorecard"));
+const PriceList = lazy(() => import("./pages/ofn/PriceList"));
+const ScaleTickets = lazy(() => import("./pages/ofn/ScaleTickets"));
+const WeatherDashboard = lazy(() => import("./pages/ofn/WeatherDashboard"));
+const ForBusinessPage = lazy(() => import("./pages/ofn/ForBusinessPage"));
+const AboutAgSupport = lazy(() => import("./pages/ofn/AboutAgSupport"));
+const AboutAIAgents = lazy(() => import("./pages/ofn/AboutAIAgents"));
+const Accounts = lazy(() => import("./pages/ofn/Accounts"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -626,6 +643,29 @@ export default function App() {
         <Route path="/farmer-settlement" element={<RequireAuth><FarmerSettlement /></RequireAuth>} />
         <Route path="/delivery-routes" element={<RequireAuth><DeliveryRoutes /></RequireAuth>} />
         <Route path="/hr" element={<RequireAuth><HRDashboard /></RequireAuth>} />
+
+        {/* Org profile, CRM, portals, knowledgebase and misc tooling. */}
+        <Route path="/profile" element={<OrgProfile />} />
+        <Route path="/marketplaces/livestock/ranch/:businessId" element={<OrgProfile />} />
+        <Route path="/buyer-crm" element={<RequireAuth><BuyerCRM /></RequireAuth>} />
+        <Route path="/app" element={<AppDownload />} />
+        <Route path="/download" element={<AppDownload />} />
+        <Route path="/account/audio-settings" element={<AudioSettings />} />
+        <Route path="/judge/:accessCode" element={<JudgePortal />} />
+        <Route path="/speaker/:accessCode" element={<SpeakerPortal />} />
+        <Route path="/ingredient-knowledgebase" element={<IngredientKnowledgebase />} />
+        <Route path="/ingredient-knowledgebase/:category/varieties/:ingredientId" element={<IngredientVarieties />} />
+        <Route path="/suppliers" element={<SupplierDirectory />} />
+        <Route path="/supplier-scorecard" element={<RequireAuth><SupplierScorecard /></RequireAuth>} />
+        <Route path="/price-list" element={<RequireAuth><PriceList /></RequireAuth>} />
+        <Route path="/scale-tickets" element={<RequireAuth><ScaleTickets /></RequireAuth>} />
+        <Route path="/weather" element={<RequireAuth><WeatherDashboard /></RequireAuth>} />
+        <Route path="/for-farms" element={<ForBusinessPage type="farms" />} />
+        <Route path="/for-ranches" element={<ForBusinessPage type="ranches" />} />
+        <Route path="/for-artisan-producers" element={<ForBusinessPage type="artisan-producers" />} />
+        <Route path="/agriculture-support" element={<AboutAgSupport />} />
+        <Route path="/ai-agents" element={<AboutAIAgents />} />
+        <Route path="/accounts" element={<Accounts />} />
         <Route path="/services" element={<ServicesHome />} />
         <Route
           path="/account/profile"
