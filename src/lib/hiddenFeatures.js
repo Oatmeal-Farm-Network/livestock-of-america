@@ -16,7 +16,6 @@
 export const HIDDEN_FEATURES = new Set([
   // Community sections
   'forums',
-  'events',
   'testimonials',
   'chef_dashboard',
   'pairsley',

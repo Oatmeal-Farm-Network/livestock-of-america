@@ -38,6 +38,7 @@ const LOA_LIVE = [
   /^\/farmer-settlement(\/|$|\?)/,
   /^\/delivery-routes(\/|$|\?)/,
   /^\/hr(\/|$|\?)/,
+  /^\/my-registrations(\/|$|\?)/,
   /^\/accounts(\/|$|\?)/,
   /^\/agriculture-support(\/|$|\?)/,
   /^\/ai-agents(\/|$|\?)/,

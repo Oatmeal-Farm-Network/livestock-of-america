@@ -132,6 +132,10 @@ const ForBusinessPage = lazy(() => import("./pages/ofn/ForBusinessPage"));
 const AboutAgSupport = lazy(() => import("./pages/ofn/AboutAgSupport"));
 const AboutAIAgents = lazy(() => import("./pages/ofn/AboutAIAgents"));
 const Accounts = lazy(() => import("./pages/ofn/Accounts"));
+const EventsList = lazy(() => import("./pages/ofn/EventsList"));
+const EventsManage = lazy(() => import("./pages/ofn/EventsManage"));
+const EventAdd = lazy(() => import("./pages/ofn/EventAdd"));
+const MyRegistrations = lazy(() => import("./pages/ofn/MyRegistrations"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -248,7 +252,11 @@ export default function App() {
         <Route path="/app/news" element={<Navigate to="/news" replace />} />
         <Route path="/app/news/:id" element={<NewsArticlePage />} />
 
-        <Route path="/events" element={<Phase1EventsComingSoon />} />
+        {/* Real events list, replacing the coming-soon placeholder. */}
+        <Route path="/events" element={<EventsList />} />
+        <Route path="/events/manage" element={<RequireAuth><EventsManage /></RequireAuth>} />
+        <Route path="/events/add" element={<RequireAuth><EventAdd /></RequireAuth>} />
+        <Route path="/my-registrations" element={<RequireAuth><MyRegistrations /></RequireAuth>} />
         <Route path="/about" element={<About />} />
         <Route path="/about/oatmeal-ai" element={<AboutOatmealAI />} />
         <Route path="/contact-us" element={<ContactUsGuest />} />
