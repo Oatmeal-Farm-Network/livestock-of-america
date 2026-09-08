@@ -28,6 +28,9 @@ export default function ServicesHome() {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
+    // The render gates below return before AccountLayout mounts, so its own
+    // redirect never runs for a signed-out visitor. Send them to login here.
+    if (!localStorage.getItem('access_token')) { navigate('/login'); return; }
     if (resolving) return;
     if (!BusinessID) { setLoading(false); return; }
     LoadBusiness(BusinessID);
