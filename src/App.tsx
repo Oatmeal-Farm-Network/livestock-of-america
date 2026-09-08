@@ -92,6 +92,15 @@ const FoodWantedBoard = lazy(() => import("./pages/ofn/FoodWantedBoard"));
 const FoodWantedAdDetail = lazy(() => import("./pages/ofn/FoodWantedAdDetail"));
 const MyFoodWantedAds = lazy(() => import("./pages/ofn/MyFoodWantedAds"));
 const RealEstateMarketplace = lazy(() => import("./pages/ofn/RealEstateMarketplace"));
+const ProductsMarketplace = lazy(() => import("./pages/ofn/ProductsMarketplace"));
+const ProductDetail = lazy(() => import("./pages/ofn/ProductDetail"));
+const ProductsInventory = lazy(() => import("./pages/ofn/ProductsInventory"));
+const ProductEdit = lazy(() => import("./pages/ofn/ProductEdit"));
+const ServicesDirectory = lazy(() => import("./pages/ofn/ServicesDirectory"));
+const ServicesAdd = lazy(() => import("./pages/ofn/ServicesAdd"));
+const ServicesEdit = lazy(() => import("./pages/ofn/ServicesEdit"));
+const ServiceDetail = lazy(() => import("./pages/ofn/ServiceDetail"));
+const ServicesSuggestCategory = lazy(() => import("./pages/ofn/ServicesSuggestCategory"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -576,6 +585,17 @@ export default function App() {
         <Route path="/marketplaces/food-wanted/:adId" element={<FoodWantedAdDetail />} />
         <Route path="/food-wanted/my-ads" element={<RequireAuth><MyFoodWantedAds /></RequireAuth>} />
         <Route path="/marketplaces/real-estate" element={<RealEstateMarketplace />} />
+
+        {/* Products storefront and services directory, ported from OFN. */}
+        <Route path="/marketplace/products" element={<ProductsMarketplace />} />
+        <Route path="/marketplace/products/:id" element={<ProductDetail />} />
+        <Route path="/products" element={<RequireAuth><ProductsInventory /></RequireAuth>} />
+        <Route path="/products/add" element={<RequireAuth><ProductEdit /></RequireAuth>} />
+        <Route path="/services/directory/:categoryId" element={<ServicesDirectory />} />
+        <Route path="/services/add" element={<ServicesAdd />} />
+        <Route path="/services/edit" element={<ServicesEdit />} />
+        <Route path="/services/public/:servicesId" element={<ServiceDetail />} />
+        <Route path="/services/suggest-category" element={<ServicesSuggestCategory />} />
         <Route path="/services" element={<ServicesHome />} />
         <Route
           path="/account/profile"
