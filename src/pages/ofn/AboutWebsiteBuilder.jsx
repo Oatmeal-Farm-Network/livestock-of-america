@@ -35,9 +35,9 @@ export default function AboutWebsiteBuilder() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Website Builder | Oatmeal Farm Network"
+        title="Website Builder | Livestock Of America"
         description="Launch a professional farm website in an afternoon with farm-aware drag-and-drop widgets, custom domains, and built-in AI help from Lavendir."
-        canonical="https://oatmealfarmnetwork.com/platform/website-builder"
+        canonical="https://livestockofamerica.com/platform/website-builder"
       />
       <Header />
 

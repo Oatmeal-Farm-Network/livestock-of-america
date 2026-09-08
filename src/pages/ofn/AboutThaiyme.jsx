@@ -137,11 +137,10 @@ export default function AboutThaiyme() {
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
         title="Thaiyme | Business Operations AI for OFN"
-        description="Thaiyme is the Oatmeal Farm Network business-operations AI — accounting assistant, event organizer analyst, sponsorship tracker, lead retrieval, and precision-ag field advisor."
-        keywords="business operations AI, accounting AI assistant, event management software, sponsorship tracking, lead retrieval AI, Thaiyme AI, Oatmeal Farm Network, farm business software"
-        canonical="https://oatmealfarmnetwork.com/platform/thaiyme"
-        image="https://oatmealfarmnetwork.com/images/ThaiymeBanner.webp"
-        imageAlt="Thaiyme Business Operations AI — Oatmeal Farm Network"
+        description="Thaiyme is the Livestock Of America business-operations AI — accounting assistant, event organizer analyst, sponsorship tracker, lead retrieval, and precision-ag field advisor."
+        keywords="business operations AI, accounting AI assistant, event management software, sponsorship tracking, lead retrieval AI, Thaiyme AI, Livestock Of America, farm business software"
+        canonical="https://livestockofamerica.com/platform/thaiyme"
+        imageAlt="Thaiyme Business Operations AI — Livestock Of America"
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -149,19 +148,18 @@ export default function AboutThaiyme() {
             'name': 'Thaiyme',
             'applicationCategory': 'BusinessApplication',
             'operatingSystem': 'Web',
-            'url': 'https://oatmealfarmnetwork.com/platform/thaiyme',
+            'url': 'https://livestockofamerica.com/platform/thaiyme',
             'description': 'AI business-operations consultant — accounting analysis, event management, sponsorship tracking, lead retrieval, and field reporting.',
             'featureList': ['Accounting analysis', 'Event management', 'Sponsorship tracking', 'Lead retrieval', 'Floor plan management', 'Field reports'],
             'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-            'provider': { '@type': 'Organization', 'name': 'Oatmeal Farm Network', 'url': 'https://oatmealfarmnetwork.com' },
+            'provider': { '@type': 'Organization', 'name': 'Livestock Of America', 'url': 'https://livestockofamerica.com' },
           },
           {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             'itemListElement': [
-              { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://oatmealfarmnetwork.com' },
-              { '@type': 'ListItem', 'position': 2, 'name': 'Services', 'item': 'https://oatmealfarmnetwork.com/platform' },
-              { '@type': 'ListItem', 'position': 3, 'name': 'Thaiyme', 'item': 'https://oatmealfarmnetwork.com/platform/thaiyme' },
+              { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://livestockofamerica.com' },
+              { '@type': 'ListItem', 'position': 2, 'name': 'Thaiyme', 'item': 'https://livestockofamerica.com/platform/thaiyme' },
             ],
           },
           {

@@ -104,9 +104,9 @@ export default function AboutPairsley() {
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
         title="Pairsley | AI Agent for Restaurants & Professional Kitchens"
-        description="Pairsley is the Oatmeal Farm Network AI agent for restaurateurs, chefs, and professional kitchens — sourcing, seasonal menus, costing, and vendor relationships."
-        keywords="restaurant AI assistant, chef AI tool, farm to table sourcing, menu costing software, local food sourcing app, Pairsley AI, Oatmeal Farm Network, restaurant technology"
-        canonical="https://oatmealfarmnetwork.com/platform/pairsley"
+        description="Pairsley is the Livestock Of America AI agent for restaurateurs, chefs, and professional kitchens — sourcing, seasonal menus, costing, and vendor relationships."
+        keywords="restaurant AI assistant, chef AI tool, farm to table sourcing, menu costing software, local food sourcing app, Pairsley AI, Livestock Of America, restaurant technology"
+        canonical="https://livestockofamerica.com/platform/pairsley"
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -114,19 +114,18 @@ export default function AboutPairsley() {
             'name': 'Pairsley',
             'applicationCategory': 'BusinessApplication',
             'operatingSystem': 'Web',
-            'url': 'https://oatmealfarmnetwork.com/platform/pairsley',
+            'url': 'https://livestockofamerica.com/platform/pairsley',
             'description': 'AI consultant for chefs and restaurant operators — local sourcing, menu costing, specials writing, and farm connections.',
             'featureList': ['Local farm sourcing', 'Menu costing', 'Specials writing', 'Vendor management', 'Seasonal produce lookup'],
             'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-            'provider': { '@type': 'Organization', 'name': 'Oatmeal Farm Network', 'url': 'https://oatmealfarmnetwork.com' },
+            'provider': { '@type': 'Organization', 'name': 'Livestock Of America', 'url': 'https://livestockofamerica.com' },
           },
           {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             'itemListElement': [
-              { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://oatmealfarmnetwork.com' },
-              { '@type': 'ListItem', 'position': 2, 'name': 'Services', 'item': 'https://oatmealfarmnetwork.com/platform' },
-              { '@type': 'ListItem', 'position': 3, 'name': 'Pairsley', 'item': 'https://oatmealfarmnetwork.com/platform/pairsley' },
+              { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://livestockofamerica.com' },
+              { '@type': 'ListItem', 'position': 2, 'name': 'Pairsley', 'item': 'https://livestockofamerica.com/platform/pairsley' },
             ],
           },
           {

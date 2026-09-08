@@ -77,7 +77,7 @@ export default function SupplierDirectory() {
 
   return (
     <div style={{ backgroundColor: '#f7f2e8', minHeight: '100vh' }}>
-      <PageMeta title="Input & Supplier Directory — Oatmeal Farm Network" description="Find seeds, feed, fertilizer, equipment dealers, and other agricultural suppliers." />
+      <PageMeta title="Input & Supplier Directory — Livestock Of America" description="Find seeds, feed, fertilizer, equipment dealers, and other agricultural suppliers." />
       <Header />
       <div style={{ background: 'linear-gradient(90deg,rgba(255,255,255,0.93) 0%,rgba(255,255,255,0) 100%)', borderBottom: '1px solid #e5e7eb' }}>
         <div className="max-w-5xl mx-auto px-6 py-10">

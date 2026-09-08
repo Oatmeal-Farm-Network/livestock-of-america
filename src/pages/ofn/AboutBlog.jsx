@@ -29,9 +29,9 @@ export default function AboutBlog() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Farm Blog Platform | Oatmeal Farm Network"
+        title="Farm Blog Platform | Livestock Of America"
         description="Publish farm stories, recipes, and seasonal updates on OFN's blog platform — appear on your own website and the OFN directory with built-in SEO and author profiles."
-        canonical="https://oatmealfarmnetwork.com/platform/blog"
+        canonical="https://livestockofamerica.com/platform/blog"
       />
       <Header />
 

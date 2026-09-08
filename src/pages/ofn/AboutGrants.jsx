@@ -29,9 +29,9 @@ export default function AboutGrants() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Grants & Programs | Oatmeal Farm Network"
+        title="Grants & Programs | Livestock Of America"
         description="Discover USDA, NRCS, state, and private agricultural grants and programs on OFN — with deadline tracking, eligibility filters, and Saige AI assistance."
-        canonical="https://oatmealfarmnetwork.com/platform/grants"
+        canonical="https://livestockofamerica.com/platform/grants"
       />
       <Header />
 

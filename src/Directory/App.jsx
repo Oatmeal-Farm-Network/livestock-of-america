@@ -33,7 +33,7 @@ export default function App() {
       <section className="py-6 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl font-bold mt-3 mb-4 text-gray-900">
-            Connect, Grow, Thrive: The Oatmeal Farm Network
+            Connect, Grow, Thrive: The Livestock Of America
           </h1>
           <p className="mt-3 text-gray-800 text-lg leading-relaxed">
             We're your comprehensive resource connecting the entire food system...

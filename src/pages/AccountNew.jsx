@@ -583,8 +583,8 @@ export default function AccountNew() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <PageMeta
-        title="Add an Account | Oatmeal Farm Network"
-        description="Create a new farm, ranch, or business account on Oatmeal Farm Network."
+        title="Add an Account | Livestock Of America"
+        description="Create a new farm, ranch, or business account on Livestock Of America."
         noIndex
       />
       <Header />

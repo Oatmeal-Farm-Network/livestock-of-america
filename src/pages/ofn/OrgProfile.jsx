@@ -725,13 +725,13 @@ export default function OrgProfile() {
     return val.startsWith('http') ? val : `${s.base}${val}`;
   };
 
-  const metaDesc = (ranch.description || ranch.home_text || `${ranch.business_name}${location ? ' in ' + location : ''} — a ranch or farm on Oatmeal Farm Network.`)
+  const metaDesc = (ranch.description || ranch.home_text || `${ranch.business_name}${location ? ' in ' + location : ''} — a ranch or farm on Livestock Of America.`)
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
     .slice(0, 200);
   const metaImage = ranch.header_image || ranch.logo || undefined;
-  const metaCanonical = businessId ? `https://oatmealfarmnetwork.com/marketplaces/livestock/ranch/${businessId}` : undefined;
+  const metaCanonical = businessId ? `https://livestockofamerica.com/marketplaces/livestock/ranch/${businessId}` : undefined;
   const orgJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',

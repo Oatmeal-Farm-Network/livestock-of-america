@@ -31,9 +31,9 @@ export default function AboutLivestockHerdHealth() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Livestock & Herd Health | Oatmeal Farm Network"
+        title="Livestock & Herd Health | Livestock Of America"
         description="Complete livestock management on OFN — herd roster, health events, vaccinations, reproduction tracking, weight records, and vet history for every animal."
-        canonical="https://oatmealfarmnetwork.com/platform/livestock-herd-health"
+        canonical="https://livestockofamerica.com/platform/livestock-herd-health"
       />
       <Header />
 

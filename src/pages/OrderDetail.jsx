@@ -79,7 +79,7 @@ export default function OrderDetail() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
       <PageMeta
-        title={`Order #${order.order_id || orderId} | Oatmeal Farm Network`}
+        title={`Order #${order.order_id || orderId} | Livestock Of America`}
         description={t('order_detail.meta_description')}
         noIndex
       />

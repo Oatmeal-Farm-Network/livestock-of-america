@@ -83,7 +83,7 @@ export default function JobBoard() {
 
   return (
     <div style={{ backgroundColor: '#f7f2e8', minHeight: '100vh' }}>
-      <PageMeta title="Farm Job Board — Oatmeal Farm Network" description="Find seasonal, part-time, and full-time farm jobs across the network." />
+      <PageMeta title="Farm Job Board — Livestock Of America" description="Find seasonal, part-time, and full-time farm jobs across the network." />
       <Header />
       <div style={{ background: 'linear-gradient(90deg,rgba(255,255,255,0.93) 0%,rgba(255,255,255,0) 100%)', borderBottom: '1px solid #e5e7eb' }}>
         <div className="max-w-5xl mx-auto px-6 py-10 flex flex-wrap items-end justify-between gap-4">

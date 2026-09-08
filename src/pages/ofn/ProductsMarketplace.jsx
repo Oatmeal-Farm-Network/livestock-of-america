@@ -181,14 +181,14 @@ export default function ProductsMarketplace() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <PageMeta
         title="Farm Products Marketplace | Shop Local Farm Goods"
-        description="Shop farm-fresh products including produce, meat, dairy, fiber, and value-added goods. Buy directly from local farmers and small food businesses on Oatmeal Farm Network."
+        description="Shop farm-fresh products including produce, meat, dairy, fiber, and value-added goods. Buy directly from local farmers and small food businesses on Livestock Of America."
         keywords="farm products, farm marketplace, shop local farms, farm goods, handcrafted products, farm direct"
-        canonical="https://oatmealfarmnetwork.com/marketplace/products"
+        canonical="https://livestockofamerica.com/marketplace/products"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
           name: 'Farm Products Marketplace',
-          url: 'https://oatmealfarmnetwork.com/marketplace/products',
+          url: 'https://livestockofamerica.com/marketplace/products',
           description: 'Farm-fresh products and handcrafted goods from local farmers.'
         }}
       />

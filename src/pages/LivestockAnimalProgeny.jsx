@@ -73,7 +73,7 @@ export default function LivestockAnimalProgeny() {
         title={t('livestock_progeny.meta_title', { name: parent_name })}
         description={t('livestock_progeny.meta_desc', { name: parent_name })}
         keywords={t('livestock_progeny.meta_keywords', { name: parent_name })}
-        canonical={`https://oatmealfarmnetwork.com/marketplaces/livestock/animal/${parent_id}/progeny`}
+        canonical={`https://livestockofamerica.com/marketplaces/livestock/animal/${parent_id}/progeny`}
       />
       <Header />
 

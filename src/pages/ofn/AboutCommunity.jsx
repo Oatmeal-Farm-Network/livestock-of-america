@@ -29,9 +29,9 @@ export default function AboutCommunity() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Forums, Community & Over-the-Fence DM | Oatmeal Farm Network"
+        title="Forums, Community & Over-the-Fence DM | Livestock Of America"
         description="Connect with farmers, ranchers, and food producers on OFN — discussion forums, direct messaging, community following, and agricultural knowledge sharing."
-        canonical="https://oatmealfarmnetwork.com/platform/community"
+        canonical="https://livestockofamerica.com/platform/community"
       />
       <Header />
 

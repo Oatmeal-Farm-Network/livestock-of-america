@@ -742,12 +742,12 @@ export default function EventsList() {
         title="Farm Events & Agricultural Workshops"
         description="Discover upcoming farm events, agricultural workshops, farm tours, and food industry conferences near you."
         keywords="farm events, agricultural workshops, farm tours, farmers market events, livestock shows"
-        canonical="https://oatmealfarmnetwork.com/events"
+        canonical="https://livestockofamerica.com/events"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
           name: 'Farm Events & Agricultural Workshops',
-          url: 'https://oatmealfarmnetwork.com/events',
+          url: 'https://livestockofamerica.com/events',
         }}
       />
       <Header />

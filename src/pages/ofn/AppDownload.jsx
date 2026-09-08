@@ -102,8 +102,8 @@ export default function AppDownload() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: CREAM, fontFamily: 'Inter, system-ui, sans-serif' }}>
       <PageMeta
-        title="Get the App | Oatmeal Farm Network"
-        description="Install the Oatmeal Farm Network app on your phone or computer — no app store needed. Add it to your home screen in a couple of taps."
+        title="Get the App | Livestock Of America"
+        description="Install the Livestock Of America app on your phone or computer — no app store needed. Add it to your home screen in a couple of taps."
       />
       <Header />
 
@@ -116,7 +116,7 @@ export default function AppDownload() {
                 No app store required
               </div>
               <h1 style={{ fontSize: 'clamp(30px, 5vw, 46px)', fontWeight: 800, lineHeight: 1.1, margin: 0 }}>
-                Get the Oatmeal Farm Network app
+                Get the Livestock Of America app
               </h1>
               <p style={{ fontSize: 18, lineHeight: 1.6, marginTop: 16, color: 'rgba(255,255,255,0.9)', maxWidth: 520 }}>
                 Install it straight from the web — it lives on your home screen, opens
@@ -161,10 +161,10 @@ export default function AppDownload() {
                 padding: 10, boxShadow: '0 24px 60px rgba(0,0,0,0.35)',
               }}>
                 <div style={{ width: '100%', height: '100%', borderRadius: 26, background: CREAM, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: 20, textAlign: 'center' }}>
-                  <img src="/images/OFNFavico.png" alt="Oatmeal Farm Network icon"
+                  <img src="/images/OFNFavico.png" alt="Livestock Of America icon"
                     style={{ width: 84, height: 84, borderRadius: 20, boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}
                     onError={(e) => { e.target.style.display = 'none'; }} />
-                  <div style={{ fontWeight: 800, color: GREEN, fontSize: 18 }}>Oatmeal Farm Network</div>
+                  <div style={{ fontWeight: 800, color: GREEN, fontSize: 18 }}>Livestock Of America</div>
                   <div style={{ fontSize: 12, color: '#6b7280' }}>Tap to open · works offline</div>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function AppDownload() {
                 <span></span> iPhone &amp; iPad {ios && <span style={{ fontSize: 12, background: '#dcfce7', color: GREEN, padding: '2px 8px', borderRadius: 999 }}>your device</span>}
               </div>
               <StepList steps={[
-                'Open oatmealfarmnetwork.com in Safari.',
+                'Open livestockofamerica.com in Safari.',
                 'Tap the Share button (the square with an up-arrow).',
                 'Scroll down and tap “Add to Home Screen”.',
                 'Tap “Add” — the OFN icon appears on your home screen.',
@@ -201,7 +201,7 @@ export default function AppDownload() {
                 <span>🤖</span> Android {android && <span style={{ fontSize: 12, background: '#dcfce7', color: GREEN, padding: '2px 8px', borderRadius: 999 }}>your device</span>}
               </div>
               <StepList steps={[
-                'Open oatmealfarmnetwork.com in Chrome.',
+                'Open livestockofamerica.com in Chrome.',
                 deferred ? 'Tap the “Install the app” button above.' : 'Tap the ⋮ menu (top-right).',
                 deferred ? 'Confirm “Install” in the pop-up.' : 'Tap “Install app” / “Add to Home screen”.',
                 'The OFN icon appears in your app drawer.',
@@ -214,7 +214,7 @@ export default function AppDownload() {
                 <span>💻</span> Computer {desktop && <span style={{ fontSize: 12, background: '#dcfce7', color: GREEN, padding: '2px 8px', borderRadius: 999 }}>your device</span>}
               </div>
               <StepList steps={[
-                'Open oatmealfarmnetwork.com in Chrome or Edge.',
+                'Open livestockofamerica.com in Chrome or Edge.',
                 deferred ? 'Click the “Install the app” button above.' : 'Click the install icon (⊕) in the address bar.',
                 'Confirm “Install”.',
                 'OFN opens in its own window and pins to your taskbar/dock.',

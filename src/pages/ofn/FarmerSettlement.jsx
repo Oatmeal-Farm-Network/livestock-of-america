@@ -171,7 +171,7 @@ export default function FarmerSettlement() {
 
   return (
     <div className="min-h-screen font-sans">
-      <PageMeta title="Farmer Settlement | Oatmeal Farm Network" description="Calculate and manage farmer payment settlements." noIndex />
+      <PageMeta title="Farmer Settlement | Livestock Of America" description="Calculate and manage farmer payment settlements." noIndex />
       <Header />
       <div className="container mx-auto px-4 py-8" style={{ maxWidth: 1300 }}>
         <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Farmer Settlement' }]} />

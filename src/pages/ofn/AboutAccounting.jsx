@@ -29,9 +29,9 @@ export default function AboutAccounting() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Farm Accounting | Oatmeal Farm Network"
+        title="Farm Accounting | Livestock Of America"
         description="Track farm income and expenses, generate financial reports, and get Thaiyme AI accounting assistance — all inside your OFN account dashboard."
-        canonical="https://oatmealfarmnetwork.com/platform/accounting"
+        canonical="https://livestockofamerica.com/platform/accounting"
       />
       <Header />
 

@@ -29,9 +29,9 @@ export default function AboutLivestockMarketplace() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Livestock Marketplace | Oatmeal Farm Network"
-        description="Buy, sell, and connect on the Oatmeal Farm Network livestock marketplace — cattle, sheep, goats, pigs, poultry, and more. Breed-specific listings with ranch profiles."
-        canonical="https://oatmealfarmnetwork.com/platform/livestock-marketplace"
+        title="Livestock Marketplace | Livestock Of America"
+        description="Buy, sell, and connect on the Livestock Of America livestock marketplace — cattle, sheep, goats, pigs, poultry, and more. Breed-specific listings with ranch profiles."
+        canonical="https://livestockofamerica.com/platform/livestock-marketplace"
       />
       <Header />
 

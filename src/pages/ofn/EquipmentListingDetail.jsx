@@ -121,7 +121,7 @@ export default function EquipmentListingDetail() {
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
         title={`${listing.Title} | Equipment Marketplace`}
-        description={listing.Description?.slice(0, 155) || 'Farm equipment listing on Oatmeal Farm Network.'}
+        description={listing.Description?.slice(0, 155) || 'Farm equipment listing on Livestock Of America.'}
       />
       <Header />
 

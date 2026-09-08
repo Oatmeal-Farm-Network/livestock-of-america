@@ -158,9 +158,9 @@ export default function AboutMarketplaces() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Marketplaces | Buy, Sell & Trade Farm Products | Oatmeal Farm Network"
+        title="Marketplaces | Buy, Sell & Trade Farm Products | Livestock Of America"
         description="Five marketplaces in one platform — Farm 2 Table for chefs, Products for consumers, Livestock for ranchers, Equipment for farms, and Real Estate for buyers and sellers."
-        canonical="https://oatmealfarmnetwork.com/platform/marketplaces"
+        canonical="https://livestockofamerica.com/platform/marketplaces"
       />
       <Header />
 

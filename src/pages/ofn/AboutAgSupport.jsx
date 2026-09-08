@@ -90,9 +90,9 @@ export default function AboutAgSupport() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Agriculture Support | Oatmeal Farm Network"
+        title="Agriculture Support | Livestock Of America"
         description="Turnkey event registration and custom association websites — built for farms, ranches, livestock shows, fiber festivals, breed associations, and every corner of the ag world."
-        canonical="https://oatmealfarmnetwork.com/agriculture-support"
+        canonical="https://livestockofamerica.com/agriculture-support"
       />
       <Header />
 

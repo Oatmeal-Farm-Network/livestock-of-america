@@ -107,9 +107,9 @@ export default function AboutAIAgents() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="AI Agents | Oatmeal Farm Network"
+        title="AI Agents | Livestock Of America"
         description="Meet Saige, Pairsley, Rosemarie, Thaiyme, and Lavendir — five purpose-built AI agents covering every role in the food system, from field to fork to website."
-        canonical="https://oatmealfarmnetwork.com/ai-agents"
+        canonical="https://livestockofamerica.com/ai-agents"
       />
       <Header />
 

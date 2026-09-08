@@ -35,9 +35,9 @@ export default function IngredientVarieties() {
     <div className="min-h-screen font-sans">
       <PageMeta
         title={ingredientName ? `${ingredientName} Varieties | Ingredient Knowledgebase` : 'Ingredient Varieties | Ingredient Knowledgebase'}
-        description={ingredientName ? `Browse all known varieties of ${ingredientName} including flavor profiles, sourcing information, and nutritional data.` : 'Browse ingredient varieties in the Oatmeal Farm Network knowledgebase.'}
+        description={ingredientName ? `Browse all known varieties of ${ingredientName} including flavor profiles, sourcing information, and nutritional data.` : 'Browse ingredient varieties in the Livestock Of America knowledgebase.'}
         keywords={ingredientName ? `${ingredientName} varieties, ${ingredientName} types, ingredient varieties, ingredient knowledgebase` : 'ingredient varieties'}
-        canonical={`https://oatmealfarmnetwork.com/ingredient-knowledgebase/${category}/varieties/${ingredientId}`}
+        canonical={`https://livestockofamerica.com/ingredient-knowledgebase/${category}/varieties/${ingredientId}`}
       />
      <Header />
 

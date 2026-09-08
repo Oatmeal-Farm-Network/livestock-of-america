@@ -68,7 +68,7 @@ export default function UnifiedCart() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
-      <PageMeta title="Your Cart | Oatmeal Farm Network" noIndex />
+      <PageMeta title="Your Cart | Livestock Of America" noIndex />
       <Header />
 
       <div className="max-w-5xl mx-auto px-4 py-6">

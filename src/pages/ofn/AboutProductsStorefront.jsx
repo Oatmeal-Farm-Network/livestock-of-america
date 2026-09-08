@@ -29,9 +29,9 @@ export default function AboutProductsStorefront() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Products & Storefront | Oatmeal Farm Network"
-        description="Sell farm products, produce, and processed foods directly to consumers and restaurants on Oatmeal Farm Network's integrated marketplace and storefront."
-        canonical="https://oatmealfarmnetwork.com/platform/products-storefront"
+        title="Products & Storefront | Livestock Of America"
+        description="Sell farm products, produce, and processed foods directly to consumers and restaurants on Livestock Of America's integrated marketplace and storefront."
+        canonical="https://livestockofamerica.com/platform/products-storefront"
       />
       <Header />
 

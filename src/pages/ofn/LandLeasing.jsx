@@ -65,7 +65,7 @@ export default function LandLeasing() {
 
   return (
     <div style={{ backgroundColor: '#f7f2e8', minHeight: '100vh' }}>
-      <PageMeta title="Land Leasing — Oatmeal Farm Network" description="Find farmland available for lease, cash rent, and purchase." />
+      <PageMeta title="Land Leasing — Livestock Of America" description="Find farmland available for lease, cash rent, and purchase." />
       <Header />
       <div style={{ background: 'linear-gradient(90deg,rgba(255,255,255,0.93) 0%,rgba(255,255,255,0) 100%)', borderBottom: '1px solid #e5e7eb' }}>
         <div className="max-w-5xl mx-auto px-6 py-10 flex flex-wrap items-end justify-between gap-4">

@@ -29,9 +29,9 @@ export default function AboutLandLeasing() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Real Estate & Land Leasing | Oatmeal Farm Network"
+        title="Real Estate & Land Leasing | Livestock Of America"
         description="Find or list agricultural land and farmsteads for lease or sale on OFN — pasture, cropland, orchards, rural properties, and land-access resources for beginning farmers."
-        canonical="https://oatmealfarmnetwork.com/platform/land-leasing"
+        canonical="https://livestockofamerica.com/platform/land-leasing"
       />
       <Header />
 

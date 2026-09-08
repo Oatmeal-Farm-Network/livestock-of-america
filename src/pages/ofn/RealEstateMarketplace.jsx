@@ -131,9 +131,9 @@ export default function RealEstateMarketplace() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Farmland & Real Estate For Sale | Oatmeal Farm Network"
+        title="Farmland & Real Estate For Sale | Livestock Of America"
         description="Browse farmland and agricultural real estate for sale. Filter by state, acreage, and price. Contact sellers directly through OFN."
-        canonical="https://oatmealfarmnetwork.com/marketplaces/real-estate"
+        canonical="https://livestockofamerica.com/marketplaces/real-estate"
       />
       <Header />
 

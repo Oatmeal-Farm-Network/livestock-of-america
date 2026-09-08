@@ -20,9 +20,9 @@ export default function AboutMarketplace() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Marketplace | Oatmeal Farm Network"
+        title="Marketplace | Livestock Of America"
         description="List farm products once and appear in Farm 2 Table (chefs), Products (consumers), and Livestock (ranches). Stripe Connect payouts built in."
-        canonical="https://oatmealfarmnetwork.com/platform/marketplace"
+        canonical="https://livestockofamerica.com/platform/marketplace"
       />
       <Header />
 

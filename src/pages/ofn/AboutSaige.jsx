@@ -22,11 +22,11 @@ export default function AboutSaige() {
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
         title="Saige | AI Agricultural Assistant"
-        description="Saige is the Oatmeal Farm Network AI agent for growers and ranchers — crops, livestock, soil, weather, markets, and more."
-        keywords="farm AI assistant, agricultural AI, livestock AI, crop monitoring AI, precision agriculture software, farm management app, Saige AI, Oatmeal Farm Network"
-        canonical="https://oatmealfarmnetwork.com/platform/saige"
-        image="https://oatmealfarmnetwork.com/images/SaigeBanner.webp"
-        imageAlt="Saige AI Agricultural Assistant — Oatmeal Farm Network"
+        description="Saige is the Livestock Of America AI agent for growers and ranchers — crops, livestock, soil, weather, markets, and more."
+        keywords="farm AI assistant, agricultural AI, livestock AI, crop monitoring AI, precision agriculture software, farm management app, Saige AI, Livestock Of America"
+        canonical="https://livestockofamerica.com/platform/saige"
+        image="https://livestockofamerica.com/images/SaigeBanner.webp"
+        imageAlt="Saige AI Agricultural Assistant — Livestock Of America"
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -34,19 +34,18 @@ export default function AboutSaige() {
             'name': 'Saige',
             'applicationCategory': 'BusinessApplication',
             'operatingSystem': 'Web',
-            'url': 'https://oatmealfarmnetwork.com/platform/saige',
+            'url': 'https://livestockofamerica.com/platform/saige',
             'description': 'AI agricultural assistant for farmers and ranchers — crops, livestock, soil, weather, markets, and precision-ag field analysis.',
             'featureList': ['Crop monitoring', 'Livestock management', 'Weather analysis', 'Market prices', 'Precision agriculture', 'Field reports'],
             'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-            'provider': { '@type': 'Organization', 'name': 'Oatmeal Farm Network', 'url': 'https://oatmealfarmnetwork.com' },
+            'provider': { '@type': 'Organization', 'name': 'Livestock Of America', 'url': 'https://livestockofamerica.com' },
           },
           {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             'itemListElement': [
-              { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://oatmealfarmnetwork.com' },
-              { '@type': 'ListItem', 'position': 2, 'name': 'Services', 'item': 'https://oatmealfarmnetwork.com/platform' },
-              { '@type': 'ListItem', 'position': 3, 'name': 'Saige', 'item': 'https://oatmealfarmnetwork.com/platform/saige' },
+              { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://livestockofamerica.com' },
+              { '@type': 'ListItem', 'position': 2, 'name': 'Saige', 'item': 'https://livestockofamerica.com/platform/saige' },
             ],
           },
           {

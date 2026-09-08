@@ -142,12 +142,12 @@ export default function IngredientKnowledgebase() {
         title="Ingredient Knowledgebase | 1,400+ Agricultural Ingredients"
         description="Browse 1,400+ agricultural ingredients and 14,000+ varieties. Search by category for flavor profiles, nutritional data, processing methods, and culinary uses."
         keywords="ingredient database, agricultural ingredients, food ingredients, flavor profiles, culinary ingredients, ingredient knowledgebase"
-        canonical="https://oatmealfarmnetwork.com/ingredient-knowledgebase"
+        canonical="https://livestockofamerica.com/ingredient-knowledgebase"
         jsonLd={{
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
           name: 'Ingredient Knowledgebase',
-          url: 'https://oatmealfarmnetwork.com/ingredient-knowledgebase',
+          url: 'https://livestockofamerica.com/ingredient-knowledgebase',
           description: 'Comprehensive database of agricultural ingredients and varieties.'
         }}
       />

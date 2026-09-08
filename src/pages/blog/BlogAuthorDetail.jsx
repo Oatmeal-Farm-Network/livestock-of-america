@@ -112,9 +112,9 @@ export default function BlogAuthorDetail() {
     return text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   })() : '';
   const authorDesc = author
-    ? (authorBioText ? authorBioText.slice(0, 155) : `Read blog posts by ${author.name} on Oatmeal Farm Network.`)
+    ? (authorBioText ? authorBioText.slice(0, 155) : `Read blog posts by ${author.name} on Livestock Of America.`)
     : '';
-  const canonical = `https://oatmealfarmnetwork.com/blog/authors/${authorId}`;
+  const canonical = `https://livestockofamerica.com/blog/authors/${authorId}`;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -122,7 +122,7 @@ export default function BlogAuthorDetail() {
         <PageMeta
           title={`${author.name} | Blog Author`}
           description={authorDesc}
-          keywords={`${author.name}, blog author, farm blog, ${author.name} posts, Oatmeal Farm Network`}
+          keywords={`${author.name}, blog author, farm blog, ${author.name} posts, Livestock Of America`}
           canonical={canonical}
           image={author.avatar_url || undefined}
           jsonLd={{
@@ -139,7 +139,7 @@ export default function BlogAuthorDetail() {
       {!author && !loading && notFound && (
         <PageMeta
           title="Author Not Found"
-          description="The blog author you're looking for is no longer available on Oatmeal Farm Network."
+          description="The blog author you're looking for is no longer available on Livestock Of America."
           canonical={canonical}
           noIndex
         />

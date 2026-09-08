@@ -152,9 +152,9 @@ export default function ForBusinessPage({ type }) {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title={`${cfg.heroTitle} | Oatmeal Farm Network`}
+        title={`${cfg.heroTitle} | Livestock Of America`}
         description={cfg.heroSub}
-        canonical={`https://oatmealfarmnetwork.com/for-${type}`}
+        canonical={`https://livestockofamerica.com/for-${type}`}
       />
       <Header />
 

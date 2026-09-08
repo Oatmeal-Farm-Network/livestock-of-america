@@ -159,11 +159,11 @@ export default function ProductDetail() {
         title={`${productName} | Farm Products Marketplace`}
         description={productDesc
           ? productDesc.replace(/<[^>]+>/g, '').slice(0, 155)
-          : `Shop ${productName} from ${product.SellerName || 'a local farm'} on Oatmeal Farm Network. Buy farm-fresh products directly from farmers.`}
+          : `Shop ${productName} from ${product.SellerName || 'a local farm'} on Livestock Of America. Buy farm-fresh products directly from farmers.`}
         keywords={`${productName}, ${product.SellerName || 'farm products'}, ${product.CategoryName || 'local farm goods'}, buy direct from farm`}
         image={mainImg || undefined}
         ogType="product"
-        canonical={`https://oatmealfarmnetwork.com/marketplace/products/${id}`}
+        canonical={`https://livestockofamerica.com/marketplace/products/${id}`}
         jsonLd={[
           {
             '@context': 'https://schema.org',
@@ -185,10 +185,9 @@ export default function ProductDetail() {
             '@context': 'https://schema.org',
             '@type': 'BreadcrumbList',
             itemListElement: [
-              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://oatmealfarmnetwork.com' },
-              { '@type': 'ListItem', position: 2, name: 'Marketplaces', item: 'https://oatmealfarmnetwork.com/marketplaces' },
-              { '@type': 'ListItem', position: 3, name: 'Products', item: 'https://oatmealfarmnetwork.com/marketplace/products' },
-              ...(product.CategoryName ? [{ '@type': 'ListItem', position: 4, name: product.CategoryName, item: `https://oatmealfarmnetwork.com/marketplace/products` }, { '@type': 'ListItem', position: 5, name: productName, item: `https://oatmealfarmnetwork.com/marketplace/products/${id}` }] : [{ '@type': 'ListItem', position: 4, name: productName, item: `https://oatmealfarmnetwork.com/marketplace/products/${id}` }]),
+              { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://livestockofamerica.com' },
+              { '@type': 'ListItem', position: 2, name: 'Products', item: 'https://livestockofamerica.com/marketplace/products' },
+              ...(product.CategoryName ? [{ '@type': 'ListItem', position: 3, name: product.CategoryName, item: `https://livestockofamerica.com/marketplace/products` }, { '@type': 'ListItem', position: 4, name: productName, item: `https://livestockofamerica.com/marketplace/products/${id}` }] : [{ '@type': 'ListItem', position: 3, name: productName, item: `https://livestockofamerica.com/marketplace/products/${id}` }]),
             ],
           },
         ]}

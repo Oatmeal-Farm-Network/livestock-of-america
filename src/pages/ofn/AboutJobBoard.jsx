@@ -29,9 +29,9 @@ export default function AboutJobBoard() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Agricultural Job Board | Oatmeal Farm Network"
+        title="Agricultural Job Board | Livestock Of America"
         description="Find farm workers, herd managers, artisan producers, and agricultural professionals on the OFN Job Board — built exclusively for the agriculture industry."
-        canonical="https://oatmealfarmnetwork.com/platform/jobs"
+        canonical="https://livestockofamerica.com/platform/jobs"
       />
       <Header />
 

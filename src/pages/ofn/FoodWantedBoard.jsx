@@ -149,9 +149,9 @@ export default function FoodWantedBoard() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Food Wanted Board | Oatmeal Farm Network"
+        title="Food Wanted Board | Livestock Of America"
         description="Restaurants, artisan producers, and food businesses post ingredient requests. Farms respond directly."
-        canonical="https://oatmealfarmnetwork.com/marketplaces/food-wanted"
+        canonical="https://livestockofamerica.com/marketplaces/food-wanted"
       />
       <Header />
 

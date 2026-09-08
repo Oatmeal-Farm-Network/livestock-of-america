@@ -215,7 +215,7 @@ const BusinessProfile = () => {
     const bizLocation = [business.AddressCity, business.AddressState].filter(Boolean).join(', ');
     const bizDesc = business.BusinessDescription
       ? business.BusinessDescription.replace(/<[^>]+>/g, '').slice(0, 155)
-      : `${business.BusinessName}${bizLocation ? ' in ' + bizLocation : ''} — ${DIRECTORY_TYPE_TO_BUSINESS_TYPE[directoryType] || 'food business'} on Oatmeal Farm Network.`;
+      : `${business.BusinessName}${bizLocation ? ' in ' + bizLocation : ''} — ${DIRECTORY_TYPE_TO_BUSINESS_TYPE[directoryType] || 'food business'} on Livestock Of America.`;
     const bizTypeLabel = DIRECTORY_TYPE_TO_BUSINESS_TYPE[directoryType] || 'Business';
 
     return (

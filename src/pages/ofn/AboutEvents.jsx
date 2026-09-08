@@ -36,9 +36,9 @@ export default function AboutEvents() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Events | Oatmeal Farm Network"
+        title="Events | Livestock Of America"
         description="Turnkey event management for the ag world — fiber festivals, livestock shows, auctions, conferences, workshops, farm tours, and vendor fairs. All in one place."
-        canonical="https://oatmealfarmnetwork.com/platform/events"
+        canonical="https://livestockofamerica.com/platform/events"
       />
       <Header />
 

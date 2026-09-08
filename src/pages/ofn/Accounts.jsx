@@ -38,8 +38,8 @@ export default function Accounts() {
   return (
     <div className="min-h-screen font-sans">
       <PageMeta
-        title="My Accounts | Oatmeal Farm Network"
-        description="Manage your farm and ranch business accounts on Oatmeal Farm Network."
+        title="My Accounts | Livestock Of America"
+        description="Manage your farm and ranch business accounts on Livestock Of America."
         noIndex
       />
       <Header />

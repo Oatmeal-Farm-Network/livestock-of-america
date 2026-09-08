@@ -31,9 +31,9 @@ export default function AboutDirectory() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Directory | Oatmeal Farm Network"
-        description="A searchable directory of farms, ranches, mills, bakers, chefs, and agricultural businesses on Oatmeal Farm Network. Filter by product, livestock breed, certification, and region."
-        canonical="https://oatmealfarmnetwork.com/platform/directory"
+        title="Directory | Livestock Of America"
+        description="A searchable directory of farms, ranches, mills, bakers, chefs, and agricultural businesses on Livestock Of America. Filter by product, livestock breed, certification, and region."
+        canonical="https://livestockofamerica.com/platform/directory"
       />
       <Header />
 

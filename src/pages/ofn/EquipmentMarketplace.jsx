@@ -181,9 +181,9 @@ export default function EquipmentMarketplace() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Farm Equipment Marketplace | Buy, Sell, Swap & Borrow | Oatmeal Farm Network"
+        title="Farm Equipment Marketplace | Buy, Sell, Swap & Borrow | Livestock Of America"
         description="Browse farm equipment listings — tractors, tillage, harvesters, irrigation and more. Buy outright, trade at the Swap Meet, or borrow from neighbors."
-        canonical="https://oatmealfarmnetwork.com/marketplaces/equipment"
+        canonical="https://livestockofamerica.com/marketplaces/equipment"
       />
       <Header />
 

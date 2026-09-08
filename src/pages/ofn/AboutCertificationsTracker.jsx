@@ -29,9 +29,9 @@ export default function AboutCertificationsTracker() {
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
-        title="Certifications Tracker | Oatmeal Farm Network"
+        title="Certifications Tracker | Livestock Of America"
         description="Track, store, and renew agricultural certifications on OFN — USDA Organic, GAP, Animal Welfare, Non-GMO, and more. Expiration reminders and document storage included."
-        canonical="https://oatmealfarmnetwork.com/platform/certifications-tracker"
+        canonical="https://livestockofamerica.com/platform/certifications-tracker"
       />
       <Header />
 
