@@ -65,6 +65,26 @@ const MarketplaceOrders = lazy(() => import("./pages/MarketplaceOrders"));
 const OrderDetail = lazy(() => import("./pages/OrderDetail"));
 const LivestockAnimalProgeny = lazy(() => import("./pages/LivestockAnimalProgeny"));
 const FarmStandingOrders = lazy(() => import("./pages/FarmStandingOrders"));
+const AboutAccounting = lazy(() => import("./pages/ofn/AboutAccounting"));
+const AboutBlog = lazy(() => import("./pages/ofn/AboutBlog"));
+const AboutCertificationsTracker = lazy(() => import("./pages/ofn/AboutCertificationsTracker"));
+const AboutCommunity = lazy(() => import("./pages/ofn/AboutCommunity"));
+const AboutDirectory = lazy(() => import("./pages/ofn/AboutDirectory"));
+const AboutEquipmentMarketplace = lazy(() => import("./pages/ofn/AboutEquipmentMarketplace"));
+const AboutEvents = lazy(() => import("./pages/ofn/AboutEvents"));
+const AboutGrants = lazy(() => import("./pages/ofn/AboutGrants"));
+const AboutJobBoard = lazy(() => import("./pages/ofn/AboutJobBoard"));
+const AboutLandLeasing = lazy(() => import("./pages/ofn/AboutLandLeasing"));
+const AboutLivestockHerdHealth = lazy(() => import("./pages/ofn/AboutLivestockHerdHealth"));
+const AboutLivestockMarketplace = lazy(() => import("./pages/ofn/AboutLivestockMarketplace"));
+const AboutMarketplace = lazy(() => import("./pages/ofn/AboutMarketplace"));
+const AboutMarketplaces = lazy(() => import("./pages/ofn/AboutMarketplaces"));
+const AboutPairsley = lazy(() => import("./pages/ofn/AboutPairsley"));
+const AboutProductsStorefront = lazy(() => import("./pages/ofn/AboutProductsStorefront"));
+const AboutSaige = lazy(() => import("./pages/ofn/AboutSaige"));
+const AboutThaiyme = lazy(() => import("./pages/ofn/AboutThaiyme"));
+const AboutWebsiteBuilder = lazy(() => import("./pages/ofn/AboutWebsiteBuilder"));
+const ServicesHome = lazy(() => import("./pages/ofn/ServicesHome"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -518,6 +538,29 @@ export default function App() {
             </RequireAuth>
           }
         />
+
+        {/* Platform feature pages ported from OFN. All public: they are
+            marketing/explainer pages, not workspace tools. */}
+        <Route path="/platform/accounting" element={<AboutAccounting />} />
+        <Route path="/platform/blog" element={<AboutBlog />} />
+        <Route path="/platform/certifications-tracker" element={<AboutCertificationsTracker />} />
+        <Route path="/platform/community" element={<AboutCommunity />} />
+        <Route path="/platform/directory" element={<AboutDirectory />} />
+        <Route path="/platform/equipment-marketplace" element={<AboutEquipmentMarketplace />} />
+        <Route path="/platform/events" element={<AboutEvents />} />
+        <Route path="/platform/grants" element={<AboutGrants />} />
+        <Route path="/platform/jobs" element={<AboutJobBoard />} />
+        <Route path="/platform/land-leasing" element={<AboutLandLeasing />} />
+        <Route path="/platform/livestock-herd-health" element={<AboutLivestockHerdHealth />} />
+        <Route path="/platform/livestock-marketplace" element={<AboutLivestockMarketplace />} />
+        <Route path="/platform/marketplace" element={<AboutMarketplace />} />
+        <Route path="/platform/marketplaces" element={<AboutMarketplaces />} />
+        <Route path="/platform/pairsley" element={<AboutPairsley />} />
+        <Route path="/platform/products-storefront" element={<AboutProductsStorefront />} />
+        <Route path="/platform/saige" element={<AboutSaige />} />
+        <Route path="/platform/thaiyme" element={<AboutThaiyme />} />
+        <Route path="/platform/website-builder" element={<AboutWebsiteBuilder />} />
+        <Route path="/services" element={<ServicesHome />} />
         <Route
           path="/account/profile"
           element={
