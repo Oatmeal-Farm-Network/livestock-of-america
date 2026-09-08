@@ -183,69 +183,94 @@ function BasicsTab({ ServicesID, BusinessID }) {
   );
 }
 
-// ─── PHOTOS TAB ──────────────────────────────────────────────────────────────
-// The photo panel talks to /api/services/{id}/photos, /photos/upload,
-// /photos/{slot}/remove and /photos/{slot}/caption. None of those routes exist
-// in either backend — OFN's services.py and LOA's are byte-identical, and
-// neither defines them. The service record does carry Photo1..Photo8, which the
-// detail endpoint returns read-only, so the columns are real but nothing writes
-// them over HTTP.
+// ─── PHOTOS TAB ──────────────────────────────────────────────
+// Talks to /api/services/{id}/photos, /photos/upload, /photos/{slot}/remove and
+// /photos/{slot}/caption. Those routes exist now — they had been defined on the
+// produce router, whose prefix put them at /api/produce/... so every call from
+// here 404'd until they were moved.
 //
-// Left in place rather than deleted, because the moment those routes are added
-// this panel works as written. Flip to true then.
-const SERVICE_PHOTO_API = false;
+// Six slots. The table carries Photo1..Photo8, but only the first six are
+// offered and the backend refuses any slot outside that range.
+const MAX_SERVICE_PHOTOS = 6;
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 function PhotosTab({ ServicesID }) {
   const { t } = useTranslation();
-  const [photos, setPhotos] = useState(Array(8).fill(null).map((_, i) => ({ slot: i + 1, url: '', caption: '' })));
+  const emptySlots = () => Array.from({ length: MAX_SERVICE_PHOTOS },
+    (_, i) => ({ slot: i + 1, url: '', caption: '' }));
+  const [photos, setPhotos] = useState(emptySlots);
   const [uploading, setUploading] = useState(null);
   const [saving, setSaving] = useState(null);
+  // Failures used to reach console.error only, so a rejected upload looked
+  // exactly like nothing happening. Slot 0 holds page-level errors.
+  const [errors, setErrors] = useState({});
+  const setError = (slot, msg) => setErrors(e => ({ ...e, [slot]: msg }));
 
   useEffect(() => {
-    if (!ServicesID || !SERVICE_PHOTO_API) return;
+    if (!ServicesID) return;
     fetch(`${apiBase}/api/services/${ServicesID}/photos`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
     })
-      .then(r => r.json())
-      .then(d => {
-        if (Array.isArray(d)) setPhotos(d);
-      })
-      .catch(() => {});
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then(d => { if (Array.isArray(d) && d.length) setPhotos(d); })
+      .catch(() => setError(0, t('services_edit.photo_error_load')));
   }, [ServicesID]);
 
-  const setCaption = (slot, val) => setPhotos(ps => ps.map(p => p.slot === slot ? { ...p, caption: val } : p));
+  const setCaption = (slot, val) =>
+    setPhotos(ps => ps.map(p => (p.slot === slot ? { ...p, caption: val } : p)));
 
   const uploadPhoto = async (slot, file) => {
+    // Checked here as well as on the server, so the two common mistakes do not
+    // cost a round trip of the whole file.
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      setError(slot, t('services_edit.photo_error_type'));
+      return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError(slot, t('services_edit.photo_error_size'));
+      return;
+    }
+    setError(slot, null);
     setUploading(slot);
     const fd = new FormData();
     fd.append('file', file);
-    fd.append('slot', slot);
     try {
-      const res = await fetch(`${apiBase}/api/services/${ServicesID}/photos/upload`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
-        body: fd,
-      });
-      const data = await res.json();
-      setPhotos(ps => ps.map(p => p.slot === slot ? { ...p, url: data.url } : p));
-    } catch (e) { console.error(e); }
+      // slot is a query parameter on the endpoint, not part of the form body.
+      const res = await fetch(
+        `${apiBase}/api/services/${ServicesID}/photos/upload?slot=${slot}`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
+          body: fd,
+        });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.detail || t('services_edit.photo_error_upload'));
+      setPhotos(ps => ps.map(p => (p.slot === slot ? { ...p, url: data.url } : p)));
+    } catch (e) {
+      setError(slot, e.message || t('services_edit.photo_error_upload'));
+    }
     setUploading(null);
   };
 
   const removePhoto = async (slot) => {
+    setError(slot, null);
     try {
-      await fetch(`${apiBase}/api/services/${ServicesID}/photos/${slot}/remove`, {
+      const res = await fetch(`${apiBase}/api/services/${ServicesID}/photos/${slot}/remove`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
       });
-      setPhotos(ps => ps.map(p => p.slot === slot ? { ...p, url: '', caption: '' } : p));
-    } catch (e) { console.error(e); }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setPhotos(ps => ps.map(p => (p.slot === slot ? { ...p, url: '', caption: '' } : p)));
+    } catch {
+      setError(slot, t('services_edit.photo_error_remove'));
+    }
   };
 
   const saveCaption = async (slot, caption) => {
+    setError(slot, null);
     setSaving(slot);
     try {
-      await fetch(`${apiBase}/api/services/${ServicesID}/photos/${slot}/caption`, {
+      const res = await fetch(`${apiBase}/api/services/${ServicesID}/photos/${slot}/caption`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -253,32 +278,29 @@ function PhotosTab({ ServicesID }) {
         },
         body: JSON.stringify({ caption }),
       });
-    } catch (e) { console.error(e); }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    } catch {
+      setError(slot, t('services_edit.photo_error_caption'));
+    }
     setSaving(null);
   };
 
-  if (!SERVICE_PHOTO_API) {
-    return (
-      <div>
-        <div style={{ fontFamily: 'Georgia, serif', fontWeight: 700, fontSize: 17, color: '#2c1a0e', borderBottom: '1px solid #e8e0d5', paddingBottom: 8, marginBottom: 20 }}>
-          {t('services_edit.photos_heading')}
-        </div>
-        <p style={{ color: '#7a6a5a', fontSize: 13 }}>
-          Photo management is not available yet. Service photos are shown from
-          the existing record but cannot be changed here.
-        </p>
-      </div>
-    );
-  }
+  const used = photos.filter(p => p.url).length;
 
   return (
     <div>
       <div style={{ fontFamily: 'Georgia, serif', fontWeight: 700, fontSize: 17, color: '#2c1a0e', borderBottom: '1px solid #e8e0d5', paddingBottom: 8, marginBottom: 20 }}>
         {t('services_edit.photos_heading')}
       </div>
-      <p style={{ color: '#7a6a5a', fontSize: 13, marginBottom: 24 }}>
+      <p style={{ color: '#7a6a5a', fontSize: 13, marginBottom: 6 }}>
         {t('services_edit.photos_subtitle')}
       </p>
+      <p style={{ color: '#8b7355', fontSize: 12, marginBottom: 24 }}>
+        {t('services_edit.photos_used', { used, max: MAX_SERVICE_PHOTOS })}
+      </p>
+      {errors[0] && (
+        <p style={{ color: '#c0392b', fontSize: 13, marginBottom: 16 }}>{errors[0]}</p>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 20 }}>
         {photos.map(photo => (
@@ -290,7 +312,13 @@ function PhotosTab({ ServicesID }) {
             {/* Preview */}
             <div style={{ width: '100%', height: 160, background: '#f0ebe3', borderRadius: 6, marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
               {photo.url ? (
-                <img src={photo.url} alt={t('services_edit.photo_slot', { slot: photo.slot })} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 6 }} />
+                <img
+                  src={photo.url}
+                  alt={photo.caption
+                    ? t('services_edit.photo_alt_captioned', { caption: photo.caption })
+                    : t('services_edit.photo_alt', { slot: photo.slot })}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 6 }}
+                />
               ) : (
                 <span style={{ color: '#c0a882', fontSize: 13 }}>{t('services_edit.no_image')}</span>
               )}
@@ -298,22 +326,36 @@ function PhotosTab({ ServicesID }) {
 
             {/* Upload */}
             <label style={{ display: 'block', marginBottom: 10 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#5a3e2b', marginBottom: 4 }}>{t('services_edit.upload_photo')}</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: '#5a3e2b', marginBottom: 4 }}>
+                {photo.url ? t('services_edit.replace_photo') : t('services_edit.upload_photo')}
+              </div>
               <input
                 type="file"
-                accept="image/*"
-                onChange={e => e.target.files[0] && uploadPhoto(photo.slot, e.target.files[0])}
+                accept={ACCEPTED_IMAGE_TYPES.join(',')}
+                onChange={e => {
+                  const f = e.target.files[0];
+                  if (f) uploadPhoto(photo.slot, f);
+                  // Cleared so re-picking the same file fires onChange again.
+                  e.target.value = '';
+                }}
+                disabled={uploading === photo.slot}
                 style={{ fontSize: 12, width: '100%' }}
               />
-              {uploading === photo.slot && <div style={{ fontSize: 12, color: '#8b7355', marginTop: 4 }}>{t('services_edit.uploading')}</div>}
+              {uploading === photo.slot && (
+                <div style={{ fontSize: 12, color: '#8b7355', marginTop: 4 }}>{t('services_edit.uploading')}</div>
+              )}
             </label>
+
+            {errors[photo.slot] && (
+              <div style={{ color: '#c0392b', fontSize: 12, marginBottom: 8 }}>{errors[photo.slot]}</div>
+            )}
 
             {/* Caption */}
             <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
               <input
                 value={photo.caption || ''}
                 onChange={e => setCaption(photo.slot, e.target.value)}
-                maxLength={30}
+                maxLength={256}
                 placeholder={t('services_edit.caption_placeholder')}
                 style={{ ...inputStyle, fontSize: 12, padding: '5px 8px', flex: 1 }}
               />

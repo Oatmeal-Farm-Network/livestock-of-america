@@ -2095,7 +2095,7 @@
     "lbl_website": "Website",
     "lbl_email": "Email",
     "photos_heading": "Service Photos",
-    "photos_subtitle": "Upload up to 8 photos for this service listing.",
+    "photos_subtitle": "Upload up to 6 photos for this service listing. JPEG, PNG, GIF or WEBP, 10 MB max.",
     "photo_slot": "Photo {{slot}}",
     "no_image": "No image",
     "upload_photo": "Upload Photo",
@@ -2111,7 +2111,17 @@
     "no_service_back": "Back to services",
     "breadcrumb_my_services": "My Services",
     "page_title": "Edit Service",
-    "btn_back": "← Back to Services"
+    "btn_back": "← Back to Services",
+    "photos_used": "{{used}} of {{max}} photos used",
+    "replace_photo": "Replace Photo",
+    "photo_alt": "Service photo {{slot}}",
+    "photo_alt_captioned": "Service photo: {{caption}}",
+    "photo_error_load": "Could not load the photos for this service.",
+    "photo_error_type": "That file is not a JPEG, PNG, GIF or WEBP image.",
+    "photo_error_size": "That image is larger than 10 MB.",
+    "photo_error_upload": "The upload failed. Please try again.",
+    "photo_error_remove": "Could not remove that photo. Please try again.",
+    "photo_error_caption": "Could not save that caption. Please try again."
   },
   "services_suggest": {
     "page_title": "Suggest Category",

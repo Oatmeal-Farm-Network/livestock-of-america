@@ -124,7 +124,8 @@ export default function ServiceDetail() {
           {/* Left: photos */}
           <div>
             {mainPhoto ? (
-              <img src={mainPhoto} alt={svc.ServiceTitle}
+              <img src={mainPhoto}
+                alt={svc.photo_captions?.[svc.photos?.indexOf(mainPhoto)] || svc.ServiceTitle}
                 className="w-full rounded-xl object-cover max-h-80 mb-3"
                 onError={e => e.target.style.display = 'none'} />
             ) : (
@@ -137,7 +138,10 @@ export default function ServiceDetail() {
                 {svc.photos.map((p, i) => (
                   <button key={i} onClick={() => setMainPhoto(p)}
                     className={`rounded-lg overflow-hidden border-2 transition-all ${mainPhoto === p ? 'border-[#3D6B34]' : 'border-gray-200'}`}>
-                    <img src={p} alt={`Photo ${i + 1}`} className="w-16 h-16 object-cover"
+                    {/* Prefer the caption the owner wrote over a bare index. */}
+                    <img src={p}
+                      alt={svc.photo_captions?.[i] || `${svc.ServiceTitle} photo ${i + 1}`}
+                      className="w-16 h-16 object-cover"
                       onError={e => e.target.style.display = 'none'} />
                   </button>
                 ))}
