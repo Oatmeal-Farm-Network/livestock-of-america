@@ -85,6 +85,13 @@ const AboutSaige = lazy(() => import("./pages/ofn/AboutSaige"));
 const AboutThaiyme = lazy(() => import("./pages/ofn/AboutThaiyme"));
 const AboutWebsiteBuilder = lazy(() => import("./pages/ofn/AboutWebsiteBuilder"));
 const ServicesHome = lazy(() => import("./pages/ofn/ServicesHome"));
+const EquipmentMarketplace = lazy(() => import("./pages/ofn/EquipmentMarketplace"));
+const EquipmentListingDetail = lazy(() => import("./pages/ofn/EquipmentListingDetail"));
+const MyEquipmentListings = lazy(() => import("./pages/ofn/MyEquipmentListings"));
+const FoodWantedBoard = lazy(() => import("./pages/ofn/FoodWantedBoard"));
+const FoodWantedAdDetail = lazy(() => import("./pages/ofn/FoodWantedAdDetail"));
+const MyFoodWantedAds = lazy(() => import("./pages/ofn/MyFoodWantedAds"));
+const RealEstateMarketplace = lazy(() => import("./pages/ofn/RealEstateMarketplace"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -560,6 +567,15 @@ export default function App() {
         <Route path="/platform/saige" element={<AboutSaige />} />
         <Route path="/platform/thaiyme" element={<AboutThaiyme />} />
         <Route path="/platform/website-builder" element={<AboutWebsiteBuilder />} />
+
+        {/* Equipment, food-wanted and land marketplaces ported from OFN. */}
+        <Route path="/marketplaces/equipment" element={<EquipmentMarketplace />} />
+        <Route path="/marketplaces/equipment/:listingId" element={<EquipmentListingDetail />} />
+        <Route path="/equipment/my-listings" element={<RequireAuth><MyEquipmentListings /></RequireAuth>} />
+        <Route path="/marketplaces/food-wanted" element={<FoodWantedBoard />} />
+        <Route path="/marketplaces/food-wanted/:adId" element={<FoodWantedAdDetail />} />
+        <Route path="/food-wanted/my-ads" element={<RequireAuth><MyFoodWantedAds /></RequireAuth>} />
+        <Route path="/marketplaces/real-estate" element={<RealEstateMarketplace />} />
         <Route path="/services" element={<ServicesHome />} />
         <Route
           path="/account/profile"
