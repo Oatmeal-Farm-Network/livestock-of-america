@@ -2,10 +2,11 @@
 // only: router package, i18n hook, component paths, API base env var,
 // people-id accessor.
 import React, { useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import AccountLayout from '../../components/AccountLayout';
 import { useAccount } from '../../lib/AccountContext';
+import { useBusinessId } from '../../lib/useBusinessId';
 import { getPeopleId } from '../../lib/auth';
 
 const apiBase = import.meta.env.VITE_LIVESTOCK_API_URL || '';
@@ -33,10 +34,11 @@ const Field = ({ label, error, children, hint }) => (
 export default function ServicesAdd() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const BusinessID = searchParams.get('BusinessID');
+  // Without this a bare /services/add loaded no categories and posted
+  // BusinessID: null.
+  const { businessId: BusinessID, resolving } = useBusinessId();
   const PeopleID = getPeopleId();
-  const { Business, LoadBusiness } = useAccount();
+  const { LoadBusiness } = useAccount();
 
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
@@ -56,13 +58,13 @@ export default function ServicesAdd() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (!BusinessID) return;
+    if (resolving || !BusinessID) return;
     LoadBusiness(BusinessID);
     fetch(`${apiBase}/api/services/categories`)
       .then(r => r.json())
       .then(d => setCategories(Array.isArray(d) ? d : []))
       .catch(() => {});
-  }, [BusinessID]);
+  }, [BusinessID, resolving]);
 
   useEffect(() => {
     if (!form.ServiceCategoryID) { setSubCategories([]); return; }
@@ -106,7 +108,7 @@ export default function ServicesAdd() {
   };
 
   return (
-    <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle={t('services_add.page_title')} breadcrumbs={[{ label: t('services_add.breadcrumb_dashboard'), to: '/dashboard' }, { label: t('services_add.breadcrumb_services') }, { label: t('services_add.breadcrumb_my_services'), to: `/services?BusinessID=${BusinessID}` }, { label: t('services_add.breadcrumb_add') }]}>
+    <AccountLayout BusinessID={BusinessID} PeopleID={PeopleID} pageTitle={t('services_add.page_title')} breadcrumbs={[{ label: t('services_add.breadcrumb_dashboard'), to: '/dashboard' }, { label: t('services_add.breadcrumb_services') }, { label: t('services_add.breadcrumb_my_services'), to: `/services?BusinessID=${BusinessID}` }, { label: t('services_add.breadcrumb_add') }]}>
       <div className="bg-white rounded-2xl shadow border border-gray-200 p-6" style={{ maxWidth: 600 }}>
 
         <div style={{ fontFamily: 'Georgia, serif', fontWeight: 700, fontSize: 22, color: '#2c1a0e', marginBottom: 6 }}>

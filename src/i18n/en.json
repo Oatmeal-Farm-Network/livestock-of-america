@@ -1769,7 +1769,11 @@
     "contact_for_price": "Contact for price",
     "btn_edit": "Edit",
     "btn_photos": "Photos",
-    "btn_delete": "Delete"
+    "btn_delete": "Delete",
+    "no_business": "Select an account to manage its services.",
+    "confirm_delete": "Delete \"{{title}}\"? This cannot be undone.",
+    "deleting": "Deleting...",
+    "err_delete": "Could not delete that service. Please try again."
   },
   "web_build": {
     "hero_badge": "Platform Service",

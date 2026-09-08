@@ -6,6 +6,7 @@ import { useSearchParams, useNavigate } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import AccountLayout from '../../components/AccountLayout';
 import { useAccount } from '../../lib/AccountContext';
+import { useBusinessId } from '../../lib/useBusinessId';
 import { getPeopleId } from '../../lib/auth';
 
 const apiBase = import.meta.env.VITE_LIVESTOCK_API_URL || '';
@@ -348,10 +349,13 @@ export default function ServicesEdit() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const ServicesID = searchParams.get('ServicesID');
-  const BusinessID = searchParams.get('BusinessID');
+  // Feeds the back-links, which otherwise read /services?BusinessID=null.
+  const { businessId: BusinessID } = useBusinessId();
   const PeopleID = getPeopleId();
-  const { Business, LoadBusiness } = useAccount();
-  const [activeTab, setActiveTab] = useState('basics');
+  const { LoadBusiness } = useAccount();
+  // ?tab=photos lets the list's Photos link open straight onto that tab.
+  const [activeTab, setActiveTab] = useState(
+    searchParams.get('tab') === 'photos' ? 'photos' : 'basics');
   const [serviceTitle, setServiceTitle] = useState('');
 
   const TABS = [
@@ -382,7 +386,7 @@ export default function ServicesEdit() {
   };
 
   return (
-    <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle={t('services_edit.page_title')} breadcrumbs={[{ label: t('common.dashboard'), to: '/dashboard' }, { label: t('services_edit.breadcrumb_my_services') }, { label: t('services_edit.breadcrumb_my_services'), to: `/services?BusinessID=${BusinessID}` }, { label: t('common.edit') }]}>
+    <AccountLayout BusinessID={BusinessID} PeopleID={PeopleID} pageTitle={t('services_edit.page_title')} breadcrumbs={[{ label: t('common.dashboard'), to: '/dashboard' }, { label: t('services_edit.breadcrumb_my_services') }, { label: t('services_edit.breadcrumb_my_services'), to: `/services?BusinessID=${BusinessID}` }, { label: t('common.edit') }]}>
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 0 60px' }}>
 
         {/* Breadcrumb */}

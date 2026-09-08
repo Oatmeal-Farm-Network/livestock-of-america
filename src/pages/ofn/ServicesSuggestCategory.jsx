@@ -2,10 +2,11 @@
 // only: router package, i18n hook, component paths, API base env var,
 // people-id accessor.
 import React, { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import AccountLayout from '../../components/AccountLayout';
 import { useAccount } from '../../lib/AccountContext';
+import { useBusinessId } from '../../lib/useBusinessId';
 import { getPeopleId } from '../../lib/auth';
 
 const apiBase = import.meta.env.VITE_LIVESTOCK_API_URL || '';
@@ -13,10 +14,10 @@ const apiBase = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 export default function ServicesSuggestCategory() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const BusinessID = searchParams.get('BusinessID');
+  // A bare URL used to post BusinessID: null.
+  const { businessId: BusinessID } = useBusinessId();
   const PeopleID = getPeopleId();
-  const { Business, LoadBusiness } = useAccount();
+  const { LoadBusiness } = useAccount();
 
   const [form, setForm] = useState({
     Categories: '',
@@ -64,7 +65,7 @@ export default function ServicesSuggestCategory() {
   };
 
   return (
-    <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle={t('services_suggest.page_title')} breadcrumbs={[{ label: t('services_suggest.breadcrumb_dashboard'), to: '/dashboard' }, { label: t('services_suggest.breadcrumb_services') }, { label: t('services_suggest.breadcrumb_suggest') }]}>
+    <AccountLayout BusinessID={BusinessID} PeopleID={PeopleID} pageTitle={t('services_suggest.page_title')} breadcrumbs={[{ label: t('services_suggest.breadcrumb_dashboard'), to: '/dashboard' }, { label: t('services_suggest.breadcrumb_services') }, { label: t('services_suggest.breadcrumb_suggest') }]}>
       <div className="bg-white rounded-2xl shadow border border-gray-200 p-6" style={{ maxWidth: 1300 }}>
 
         <div style={{ fontFamily: 'Georgia, serif', fontWeight: 700, fontSize: 22, color: '#2c1a0e', marginBottom: 6 }}>
