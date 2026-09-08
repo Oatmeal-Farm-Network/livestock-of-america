@@ -149,12 +149,20 @@ export default function ServiceDetail() {
           <div>
             <h1 className="text-2xl font-bold text-gray-800 mb-1">{svc.ServiceTitle}</h1>
 
-            {svc.ServicesCategory && (
-              <Link to={`/services/directory/${svc.ServiceCategoryID}`}
-                className="inline-block text-xs font-medium bg-[#3D6B34]/10 text-[#3D6B34] px-3 py-1 rounded-full mb-4 no-underline hover:bg-[#3D6B34]/20">
-                {svc.ServicesCategory}
-              </Link>
-            )}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {svc.ServicesCategory && (
+                <Link to={`/services/directory/${svc.ServiceCategoryID}`}
+                  className="inline-block text-xs font-medium bg-[#3D6B34]/10 text-[#3D6B34] px-3 py-1 rounded-full no-underline hover:bg-[#3D6B34]/20">
+                  {svc.ServicesCategory}
+                </Link>
+              )}
+              {/* Not a link: the directory browses by category only. */}
+              {svc.ServiceSubCategoryName && (
+                <span className="inline-block text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1 rounded-full">
+                  {svc.ServiceSubCategoryName}
+                </span>
+              )}
+            </div>
 
             {/* Price */}
             <div className="mb-4">

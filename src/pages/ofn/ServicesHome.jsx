@@ -125,6 +125,16 @@ export default function ServicesHome() {
                         >
                           {Service.ServiceTitle}
                         </span>
+                        {/* Classification was not shown at all; the list read as
+                            an undifferentiated set of titles. */}
+                        {Service.ServicesCategory && (
+                          <div className="text-xs text-gray-500 mt-0.5">
+                            {Service.ServicesCategory}
+                            {Service.ServiceSubCategoryName && (
+                              <> <span className="text-gray-300">›</span> {Service.ServiceSubCategoryName}</>
+                            )}
+                          </div>
+                        )}
                       </td>
                       <td className="py-3 px-2 hidden md:table-cell text-gray-600">
                         {Service.ServiceAvailable || '—'}
