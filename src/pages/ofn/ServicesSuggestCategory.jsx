@@ -17,7 +17,8 @@ export default function ServicesSuggestCategory() {
   // A bare URL used to post BusinessID: null.
   const { businessId: BusinessID } = useBusinessId();
   const PeopleID = getPeopleId();
-  const { LoadBusiness } = useAccount();
+  // Business still feeds the read-only name field below.
+  const { Business, LoadBusiness } = useAccount();
 
   const [form, setForm] = useState({
     Categories: '',
