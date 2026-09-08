@@ -478,6 +478,59 @@ export default function AccountSidebar({ onNavigate }) {
           <NavChild to={biz('/herd-health')} label="Herd Health" />
         </NavGroup>
 
+        {/* Marketplace group. These are the Rancher Pro features that had
+            working pages but no way to reach them from the nav. Every link
+            below points at a route that exists; the OFN sidebar also lists
+            /products/settings, /jobs/my-listings and /land/my-listings, which
+            are not ported yet and are therefore left out rather than pointed
+            at a placeholder. */}
+        <NavGroup icon={ICONS.marketplace} label="Marketplace" expanded={Expanded !== false} isOpen={OpenSections?.['g_marketplace'] || false} onToggle={() => toggleSection('g_marketplace')}>
+          <NavSection icon={ICONS.products} label={t('account_sidebar.sec_products', 'Products')} expanded={Expanded !== false}
+            isOpen={OpenSections?.Products || false} onToggle={() => toggleSection('Products')}>
+            <NavChild to="/marketplace/products" label={t('account_sidebar.browse_marketplace', 'Browse Marketplace')} />
+            <NavChild to={biz('/products')} label={t('account_sidebar.my_products', 'My Products')} />
+            <NavChild to={biz('/products/add')} label={t('account_sidebar.add_product', 'Add Product')} />
+          </NavSection>
+
+          <NavSection icon={ICONS.equipment} label="Equipment" expanded={Expanded !== false}
+            isOpen={OpenSections?.Equipment || false} onToggle={() => toggleSection('Equipment')}>
+            <NavChild to="/marketplaces/equipment" label="Browse Equipment" />
+            <NavChild to={biz('/equipment/my-listings')} label="My Listings" />
+          </NavSection>
+
+          <NavSection icon={ICONS.services} label={t('account_sidebar.sec_services', 'Services')} expanded={Expanded !== false}
+            isOpen={OpenSections?.Services || false} onToggle={() => toggleSection('Services')}>
+            <NavChild to={biz('/services')} label={t('account_sidebar.my_services', 'My Services')} />
+            <NavChild to={biz('/services/add')} label={t('account_sidebar.add', 'Add')} />
+            <NavChild to={biz('/services/suggest-category')} label={t('account_sidebar.suggest_category', 'Suggest a Category')} />
+          </NavSection>
+
+          <NavSection icon={ICONS.jobBoard} label="Job Board" expanded={Expanded !== false}
+            isOpen={OpenSections?.['Job Board'] || false} onToggle={() => toggleSection('Job Board')}>
+            <NavChild to="/jobs" label="Browse Jobs" />
+          </NavSection>
+
+          <NavSection icon={ICONS.landLeasing} label="Land Leasing" expanded={Expanded !== false}
+            isOpen={OpenSections?.['Land Leasing'] || false} onToggle={() => toggleSection('Land Leasing')}>
+            <NavChild to="/land" label="Browse Listings" />
+            <NavChild to="/marketplaces/real-estate" label="Real Estate" />
+          </NavSection>
+
+          <NavSection icon={ICONS.foodWanted} label="Food Wanted" expanded={Expanded !== false}
+            isOpen={OpenSections?.['Food Wanted'] || false} onToggle={() => toggleSection('Food Wanted')}>
+            <NavChild to="/marketplaces/food-wanted" label="Browse Ads" />
+            <NavChild to={biz('/food-wanted/my-ads')} label="My Ads" />
+          </NavSection>
+
+          <NavSection icon={ICONS.marketplace} label="Buying &amp; Selling" expanded={Expanded !== false}
+            isOpen={OpenSections?.['Buying'] || false} onToggle={() => toggleSection('Buying')}>
+            <NavChild to="/cart" label="Cart" />
+            <NavChild to="/orders" label="My Orders" />
+            <NavChild to={biz('/seller/listings')} label="Seller Listings" />
+            <NavChild to={biz('/seller/orders')} label="Seller Orders" />
+          </NavSection>
+        </NavGroup>
+
         <NavGroup icon={ICONS.community} label="Community" expanded={Expanded !== false} isOpen={OpenSections?.['g_community'] || false} onToggle={() => toggleSection('g_community')}>
         {on('blog') && (
           <NavSection icon={ICONS.blog} label={t('account_sidebar.sec_blog', 'Blog')} expanded={Expanded !== false}
