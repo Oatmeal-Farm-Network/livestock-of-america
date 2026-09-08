@@ -60,6 +60,9 @@ const Permissions = lazy(() => import("./pages/Permissions"));
 const AccountChangeType = lazy(() => import("./pages/AccountChangeType"));
 const AccountSubscription = lazy(() => import("./pages/AccountSubscription"));
 const AccountDelete = lazy(() => import("./pages/AccountDelete"));
+const UnifiedCart = lazy(() => import("./pages/UnifiedCart"));
+const MarketplaceOrders = lazy(() => import("./pages/MarketplaceOrders"));
+const OrderDetail = lazy(() => import("./pages/OrderDetail"));
 
 // HerdHealthModules exports one default plus twelve named components. lazy()
 // only understands a default export, so each is unwrapped here; they all
@@ -470,6 +473,31 @@ export default function App() {
           element={
             <RequireAuth>
               <AccountDelete />
+            </RequireAuth>
+          }
+        />
+        {/* Marketplace commerce: cart, buyer orders and one order's detail. */}
+        <Route
+          path="/cart"
+          element={
+            <RequireAuth>
+              <UnifiedCart />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <RequireAuth>
+              <MarketplaceOrders />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/orders/:orderId"
+          element={
+            <RequireAuth>
+              <OrderDetail />
             </RequireAuth>
           }
         />
