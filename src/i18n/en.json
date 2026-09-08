@@ -2095,7 +2095,7 @@
     "lbl_website": "Website",
     "lbl_email": "Email",
     "photos_heading": "Service Photos",
-    "photos_subtitle": "Upload up to 6 photos for this service listing. JPEG, PNG, GIF or WEBP, 10 MB max.",
+    "photos_subtitle": "Upload up to 6 photos for this service listing. Drag and drop them, or click to browse. JPEG, PNG, GIF or WEBP, 10 MB max.",
     "photo_slot": "Photo {{slot}}",
     "no_image": "No image",
     "upload_photo": "Upload Photo",
@@ -2121,7 +2121,18 @@
     "photo_error_size": "That image is larger than 10 MB.",
     "photo_error_upload": "The upload failed. Please try again.",
     "photo_error_remove": "Could not remove that photo. Please try again.",
-    "photo_error_caption": "Could not save that caption. Please try again."
+    "photo_error_caption": "Could not save that caption. Please try again.",
+    "photos_dropzone": "Drop images here, or click to browse",
+    "photos_dropzone_hint": "Several at once is fine — they fill the free slots, up to {{max}}.",
+    "photos_dropzone_aria": "Add service photos: drop image files here, or activate to browse",
+    "photos_drop_now": "Drop to upload",
+    "photos_full": "All {{max}} photo slots are full. Remove one to add another.",
+    "photos_no_room": "Only {{free}} slot(s) were free, so {{skipped}} file(s) were not uploaded.",
+    "photo_drop_now": "Drop to upload",
+    "photo_drop_replace": "Drop to replace",
+    "photo_empty_hint": "Drop an image, or click",
+    "photo_add_aria": "Add a photo to slot {{slot}}: drop a file here, or activate to browse",
+    "photo_replace_aria": "Replace the photo in slot {{slot}}: drop a file here, or activate to browse"
   },
   "services_suggest": {
     "page_title": "Suggest Category",
