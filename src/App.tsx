@@ -53,6 +53,7 @@ const HerdHealthReports = lazy(() => import("./pages/herd-health/HerdHealthRepor
 const Profile = lazy(() => import("./pages/Profile"));
 const AccountNew = lazy(() => import("./pages/AccountNew"));
 const AccountProfile = lazy(() => import("./pages/AccountProfile"));
+const BusinessPhotos = lazy(() => import("./pages/BusinessPhotos"));
 const AccountAssociations = lazy(() => import("./pages/AccountAssociations"));
 const AccountTeamMembers = lazy(() => import("./pages/AccountTeamMembers"));
 const Phase1EventsComingSoon = lazy(() => import("./pages/Phase1EventsComingSoon"));
@@ -643,6 +644,7 @@ export default function App() {
         {/* Seller tooling, jobs, land and the farm-operations dashboards. */}
         <Route path="/seller/listings" element={<SellerListings />} />
         <Route path="/seller/orders" element={<SellerOrders />} />
+        <Route path="/account/photos" element={<RequireAuth><BusinessPhotos /></RequireAuth>} />
         <Route path="/account/stripe-connect" element={<RequireAuth><SellerStripeConnect /></RequireAuth>} />
         <Route path="/jobs" element={<JobBoard />} />
         <Route path="/land" element={<LandLeasing />} />

@@ -113,6 +113,50 @@ function AnimalsTab({ businessId, isStuds }) {
   );
 }
 
+function PhotosTab({ photos }) {
+  const { t } = useTranslation();
+  const [active, setActive] = useState(0);
+
+  if (!photos) return <div className="py-5 text-gray-400">{t('ranch_profile.loading', 'Loading…')}</div>;
+  if (photos.length === 0) {
+    return <div className="py-5 text-gray-400">{t('ranch_profile.no_photos', 'No photos yet.')}</div>;
+  }
+
+  const current = photos[Math.min(active, photos.length - 1)];
+  const altFor = (p, i) => p.Caption || t('ranch_profile.photo_alt', 'Photo {{n}}', { n: i + 1 });
+
+  return (
+    <div>
+      <img
+        src={current.PhotoUrl}
+        alt={altFor(current, active)}
+        className="w-full rounded-xl object-cover mb-2"
+        style={{ maxHeight: 420 }}
+        onError={(e) => { e.target.style.display = 'none'; }}
+      />
+      {current.Caption && <p className="text-sm text-gray-600 mb-3">{current.Caption}</p>}
+
+      {photos.length > 1 && (
+        <div className="flex gap-2 flex-wrap">
+          {photos.map((p, i) => (
+            <button
+              key={p.BusinessPhotoID}
+              onClick={() => setActive(i)}
+              aria-label={altFor(p, i)}
+              className="rounded-lg overflow-hidden border-2 p-0 cursor-pointer"
+              style={{ borderColor: i === active ? OLIVE : '#e5e7eb', background: 'none' }}
+            >
+              <img src={p.PhotoUrl} alt={altFor(p, i)} className="w-16 h-16 object-cover block"
+                   loading="lazy"
+                   onError={(e) => { e.target.closest('button').style.display = 'none'; }} />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ServicesTab({ services }) {
   const { t } = useTranslation();
 
@@ -383,6 +427,7 @@ export default function RanchProfile() {
   const [animalCounts, setAnimalCounts] = useState({ for_sale: 0, studs: 0 });
   const [blogPosts, setBlogPosts] = useState(null);
   const [services, setServices] = useState(null);
+  const [photos, setPhotos] = useState(null);
 
   const activeTab = searchParams.get('tab') || 'home';
   const setTab = (tab) => setSearchParams({ tab });
@@ -403,6 +448,12 @@ export default function RanchProfile() {
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d && setAnimalCounts((prev) => ({ ...prev, studs: d.total })))
       .catch(() => {});
+
+    setPhotos(null);
+    fetch(`${API_URL}/api/businesses/${businessId}/photos`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setPhotos(Array.isArray(d) ? d : []))
+      .catch(() => setPhotos([]));
 
     // Only ServiceAvailable = 1 comes back, so an unlisted service stays off
     // the public profile the same way it stays out of the directory.
@@ -451,12 +502,14 @@ export default function RanchProfile() {
 
   const blogCount = blogPosts ? blogPosts.length : 0;
   const serviceCount = services ? services.length : 0;
+  const photoCount = photos ? photos.length : 0;
   const TABS = [
     { key: 'home', label: t('ranch_profile.tab_home', 'Home'), always: true },
     { key: 'blog', label: `Blog (${blogCount})`, show: blogCount > 0 },
     { key: 'animals', label: t('ranch_profile.tab_animals', 'Animals For Sale ({{count}})', { count: animalCounts.for_sale }), show: animalCounts.for_sale > 0 },
     { key: 'studs', label: t('ranch_profile.tab_studs', 'Studs ({{count}})', { count: animalCounts.studs }), show: animalCounts.studs > 0 },
     { key: 'services', label: t('ranch_profile.tab_services', 'Services ({{count}})', { count: serviceCount }), show: serviceCount > 0 },
+    { key: 'photos', label: t('ranch_profile.tab_photos', 'Photos ({{count}})', { count: photoCount }), show: photoCount > 0 },
     { key: 'contact', label: t('ranch_profile.tab_contact', 'Contact'), always: true },
   ].filter((tab) => tab.always || tab.show);
 
@@ -605,6 +658,7 @@ export default function RanchProfile() {
         {activeTab === 'animals' && <AnimalsTab businessId={businessId} isStuds={false} />}
         {activeTab === 'studs' && <AnimalsTab businessId={businessId} isStuds={true} />}
         {activeTab === 'services' && <ServicesTab services={services} />}
+        {activeTab === 'photos' && <PhotosTab photos={photos} />}
         {activeTab === 'contact' && <ContactTab ranch={ranch} />}
       </div>
 
