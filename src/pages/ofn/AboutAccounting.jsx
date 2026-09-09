@@ -32,6 +32,9 @@ export default function AboutAccounting() {
         title="Farm Accounting | Livestock Of America"
         description="Track farm income and expenses, generate financial reports, and get Thaiyme AI accounting assistance — all inside your OFN account dashboard."
         canonical="https://livestockofamerica.com/platform/accounting"
+        // Not indexed: accounting is hidden, so this page markets something a
+        // visitor cannot get to.
+        noIndex
       />
       <Header />
 

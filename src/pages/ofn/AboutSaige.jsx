@@ -25,6 +25,9 @@ export default function AboutSaige() {
         description="Saige is the Livestock Of America AI agent for growers and ranchers — crops, livestock, soil, weather, markets, and more."
         keywords="farm AI assistant, agricultural AI, livestock AI, crop monitoring AI, precision agriculture software, farm management app, Saige AI, Livestock Of America"
         canonical="https://livestockofamerica.com/platform/saige"
+        // Not indexed: Saige is not built here, so this page markets something a
+        // visitor cannot get to.
+        noIndex
         image="https://livestockofamerica.com/images/SaigeBanner.webp"
         imageAlt="Saige AI Agricultural Assistant — Livestock Of America"
         jsonLd={[

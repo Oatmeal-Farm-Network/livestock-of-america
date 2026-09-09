@@ -107,6 +107,9 @@ export default function AboutPairsley() {
         description="Pairsley is the Livestock Of America AI agent for restaurateurs, chefs, and professional kitchens — sourcing, seasonal menus, costing, and vendor relationships."
         keywords="restaurant AI assistant, chef AI tool, farm to table sourcing, menu costing software, local food sourcing app, Pairsley AI, Livestock Of America, restaurant technology"
         canonical="https://livestockofamerica.com/platform/pairsley"
+        // Not indexed: pairsley is hidden, so this page markets something a
+        // visitor cannot get to.
+        noIndex
         jsonLd={[
           {
             '@context': 'https://schema.org',

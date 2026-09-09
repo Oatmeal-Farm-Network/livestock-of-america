@@ -32,6 +32,9 @@ export default function AboutGrants() {
         title="Grants & Programs | Livestock Of America"
         description="Discover USDA, NRCS, state, and private agricultural grants and programs on OFN — with deadline tracking, eligibility filters, and Saige AI assistance."
         canonical="https://livestockofamerica.com/platform/grants"
+        // Not indexed: grants_programs is hidden, so this page markets something a
+        // visitor cannot get to.
+        noIndex
       />
       <Header />
 

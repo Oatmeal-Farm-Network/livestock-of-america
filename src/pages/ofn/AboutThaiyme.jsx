@@ -140,6 +140,9 @@ export default function AboutThaiyme() {
         description="Thaiyme is the Livestock Of America business-operations AI — accounting assistant, event organizer analyst, sponsorship tracker, lead retrieval, and precision-ag field advisor."
         keywords="business operations AI, accounting AI assistant, event management software, sponsorship tracking, lead retrieval AI, Thaiyme AI, Livestock Of America, farm business software"
         canonical="https://livestockofamerica.com/platform/thaiyme"
+        // Not indexed: Thaiyme is not built here, so this page markets something a
+        // visitor cannot get to.
+        noIndex
         imageAlt="Thaiyme Business Operations AI — Livestock Of America"
         jsonLd={[
           {

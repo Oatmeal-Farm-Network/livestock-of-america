@@ -101,6 +101,9 @@ export default function AboutAIAgents() {
         title="AI Agents | Livestock Of America"
         description="Meet Saige, Pairsley, Rosemarie and Thaiyme — purpose-built AI agents covering every role in the food system, from field to fork."
         canonical="https://livestockofamerica.com/ai-agents"
+        // Not indexed: none of the agents it lists are reachable here, so this page markets something a
+        // visitor cannot get to.
+        noIndex
       />
       <Header />
 

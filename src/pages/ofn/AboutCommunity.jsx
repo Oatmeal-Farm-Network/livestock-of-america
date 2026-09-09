@@ -32,6 +32,9 @@ export default function AboutCommunity() {
         title="Forums, Community & Over-the-Fence DM | Livestock Of America"
         description="Connect with farmers, ranchers, and food producers on OFN — discussion forums, direct messaging, community following, and agricultural knowledge sharing."
         canonical="https://livestockofamerica.com/platform/community"
+        // Not indexed: forums is hidden and this page is about forums, so this page markets something a
+        // visitor cannot get to.
+        noIndex
       />
       <Header />
 

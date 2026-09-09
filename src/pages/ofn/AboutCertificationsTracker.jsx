@@ -32,6 +32,9 @@ export default function AboutCertificationsTracker() {
         title="Certifications Tracker | Livestock Of America"
         description="Track, store, and renew agricultural certifications on OFN — USDA Organic, GAP, Animal Welfare, Non-GMO, and more. Expiration reminders and document storage included."
         canonical="https://livestockofamerica.com/platform/certifications-tracker"
+        // Not indexed: certifications is hidden, so this page markets something a
+        // visitor cannot get to.
+        noIndex
       />
       <Header />
 
