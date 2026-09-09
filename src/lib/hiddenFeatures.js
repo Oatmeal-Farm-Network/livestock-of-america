@@ -14,6 +14,12 @@
  * namesake link.
  */
 export const HIDDEN_FEATURES = new Set([
+  // Lavendir, the website AI agent. Off for now: this hides the sidebar link,
+  // the agent widget on the builder, the "copy an existing site" step that
+  // calls her scraper, and the card advertising her on the AI agents page.
+  // Delete this key to turn her back on; nothing else needs changing.
+  'lavendir',
+
   // Community sections
   'forums',
   'testimonials',

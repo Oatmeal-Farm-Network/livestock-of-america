@@ -622,7 +622,9 @@ export default function AccountSidebar({ onNavigate }) {
 
         {on('my_website') && (
         <NavGroup icon={ICONS.website} label={t('account_sidebar.sec_website', 'My Website')} expanded={Expanded !== false} isOpen={OpenSections?.['g_website'] || false} onToggle={() => toggleSection('g_website')}>
-          <NavChild to={biz('/website/builder', 'view=lavendir')} label={t('account_sidebar.lavendir_ai', 'Lavendir AI')} />
+          {on('lavendir') && (
+            <NavChild to={biz('/website/builder', 'view=lavendir')} label={t('account_sidebar.lavendir_ai', 'Lavendir AI')} />
+          )}
           {!websiteSlug ? (
             <NavChild to={biz('/website/builder')} label={t('account_sidebar.create_website', 'Create Website')} />
           ) : (

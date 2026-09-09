@@ -77,17 +77,8 @@ const AGENT_DATA = [
     learnMoreTo: null,
     capCount: 5,
   },
-  {
-    key: 'lavendir',
-    color: '#7C5CBF',
-    icon: (
-      <img src="/images/LavendirAIIcon.webp" alt="Lavendir"
-        style={{ width: 36, height: 36, display: 'block', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
-    ),
-    ctaTo: '/website-builder',
-    learnMoreTo: null,
-    capCount: 5,
-  },
+  // Lavendir's card is dropped while she is switched off in
+  // lib/hiddenFeatures.js -- no point advertising an agent with no way in.
 ];
 
 export default function AboutAIAgents() {

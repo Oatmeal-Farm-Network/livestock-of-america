@@ -6,6 +6,10 @@ import { useSearchParams, useNavigate } from 'react-router';
 import { useTranslation } from '../../lib/i18n';
 import AccountLayout from '../../components/AccountLayout';
 import { useAccount } from '../../lib/AccountContext';
+import { isHidden } from '../../lib/hiddenFeatures';
+
+// Lavendir is switched off from hiddenFeatures; see that file.
+const LAVENDIR_ON = !isHidden('lavendir');
 import WebsiteAIAgent from '../../components/WebsiteAIAgent';
 import { LivestockAnimalDetailContent } from '../../components/website/LivestockAnimalDetailContent';
 
@@ -6453,7 +6457,7 @@ export default function WebsiteBuilder() {
       await mkBlock(contactPage.page_id, 'contact', { heading: 'Get In Touch', custom_message: '', show_form: true }, 1);
 
       // Optional: scrape & copy from an existing website if requested
-      if (setupData.import_enabled && setupData.import_url.trim()) {
+      if (LAVENDIR_ON && setupData.import_enabled && setupData.import_url.trim()) {
         try {
           const importUrl = setupData.import_url.trim();
           let importHost = importUrl;
@@ -6939,7 +6943,9 @@ export default function WebsiteBuilder() {
               <input className={inp} value={setupData.email} onChange={e => setSetupData(p => ({ ...p, email: e.target.value }))} />
             </FormField>
           </div>
-          <div className="border-t border-gray-100 pt-3 mt-1">
+          {/* Copying an existing site runs through Lavendir's scraper, so it
+              goes when she does. */}
+          <div className="border-t border-gray-100 pt-3 mt-1" hidden={!LAVENDIR_ON}>
             <label className="flex items-start gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -6995,7 +7001,7 @@ export default function WebsiteBuilder() {
         </div>
       </div>
     </AccountLayout>
-    {paramView === 'lavendir' && (
+    {LAVENDIR_ON && paramView === 'lavendir' && (
       <WebsiteAIAgent
         websiteId={null}
         businessId={parseInt(BusinessID)}
@@ -7342,7 +7348,7 @@ export default function WebsiteBuilder() {
         </div>
       </AccountLayout>
 
-      {site && (
+      {site && LAVENDIR_ON && (
         <WebsiteAIAgent
           websiteId={site.website_id}
           businessId={parseInt(BusinessID)}
@@ -7457,7 +7463,7 @@ export default function WebsiteBuilder() {
       </div>
     </AccountLayout>
 
-    {site && (
+    {site && LAVENDIR_ON && (
       <WebsiteAIAgent
         websiteId={site.website_id}
         businessId={parseInt(BusinessID)}
