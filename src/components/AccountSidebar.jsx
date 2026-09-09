@@ -420,7 +420,6 @@ export default function AccountSidebar({ onNavigate }) {
               {isAccountOpen && Expanded !== false && (
                 <div className="flex flex-col gap-0.5 mt-0.5">
                   <NavChild to={biz('/account/profile')} label={t('account_sidebar.edit_profile', 'Edit Profile')} />
-                  <NavChild to={biz('/account/photos')} label={t('account_sidebar.photos', 'Photos')} />
                   <NavChild to={biz('/account/team')} label={t('account_sidebar.team_members', 'Team Members')} />
                   <NavChild to={biz('/account/change-type')} label={t('account_sidebar.change_account_type', 'Change Account Type')} />
                   <NavChild to={biz('/account/delete')} label={t('account_sidebar.delete_account', 'Delete Account')} />
@@ -544,6 +543,10 @@ export default function AccountSidebar({ onNavigate }) {
             <NavChild to={biz('/blog/authors/manage')} label={t('account_sidebar.authors', 'Authors')} />
           </NavSection>
         )}
+
+        {/* Sits with Blog rather than in Account: it is public-facing content,
+            not a setting. What is uploaded here shows on the directory listing. */}
+        <NavChild to={biz('/account/photos')} label={t('account_sidebar.photos', 'Photos')} />
 
         {on('forums') && (
           <NavSection icon={ICONS.forums} label="Forums" expanded={Expanded !== false}
