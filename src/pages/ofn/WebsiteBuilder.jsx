@@ -6929,7 +6929,7 @@ export default function WebsiteBuilder() {
             <input className={inp} value={setupData.site_name} placeholder={wb('setup_site_name_ph')}
               onChange={e => setSetupData(p => ({ ...p, site_name: e.target.value }))} />
           </FormField>
-          <FormField label={`${wb('slug_label')} — ${wb('slug_hint', { url: `${SITE_BASE_URL}/sites/${setupData.slug || 'your-farm'}` })}`}>
+          <FormField label={`${wb('slug_label')} (${wb('slug_hint', { url: `${SITE_BASE_URL}/sites/${setupData.slug || 'your-farm'}` })})`}>
             <input className={inp} value={setupData.slug} placeholder={wb('setup_slug_ph')}
               onChange={e => setSetupData(p => ({ ...p, slug: slugify(e.target.value) }))} />
           </FormField>
