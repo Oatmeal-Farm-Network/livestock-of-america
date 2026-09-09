@@ -385,8 +385,11 @@ export default function AccountSidebar({ onNavigate }) {
   const anyOn = (...keys) => keys.some((k) => !isHidden(k));
   
   useEffect(() => {
-    if (location.pathname.startsWith('/website/')) {
-      setOpenSections?.(prev => prev?.['My Website'] ? prev : { ...prev, 'My Website': true });
+    // g_website, not 'My Website': this was a NavSection inside Business Mgmt
+    // and is now a top-level NavGroup, which reads a different key. The old key
+    // left the group collapsed on the very pages it belongs to.
+    if (location.pathname.startsWith('/website')) {
+      setOpenSections?.(prev => prev?.g_website ? prev : { ...prev, g_website: true });
     }
     if (location.pathname.startsWith('/seller') || location.pathname.startsWith('/herd-health') || location.pathname.includes('/animals')) {
       setOpenSections?.(prev => ({
