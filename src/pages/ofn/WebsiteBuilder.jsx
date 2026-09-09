@@ -6902,14 +6902,16 @@ export default function WebsiteBuilder() {
   if (setupMode) return (
     <>
     <AccountLayout wide Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
-      <div style={{ maxWidth: 700, margin: '0 auto' }}>
+      {/* Was capped at 700px, which is why the builder still looked narrow
+          on the setup step even after the layout was widened. */}
+      <div className="w-full">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">{wb('setup_heading')}</h1>
         <p className="text-gray-500 text-sm mb-6">{wb('setup_hint')}</p>
 
         <div className="bg-white rounded-xl border border-gray-100 shadow p-6 mb-4">
           <h2 className="text-base font-bold text-gray-800 mb-1">{wb('setup_design_heading')}</h2>
           <p className="text-xs text-gray-400 mb-4">{wb('setup_design_hint')}</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
             {TEMPLATES.map(t => (
               <button key={t.id}
                 onClick={() => setSetupData(p => ({ ...p, primary_color: t.primary_color, secondary_color: t.secondary_color, accent_color: t.accent_color, bg_color: t.bg_color, text_color: t.text_color, nav_text_color: t.nav_text_color, footer_bg_color: t.footer_bg_color, font_family: t.font_family }))}
