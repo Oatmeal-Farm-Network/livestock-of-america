@@ -2398,6 +2398,11 @@ function SimpleBlockPreview({ block, site, businessId, onFieldSave }) {
   );
 
   if (bt === 'hero') {
+    // White text is legible over an image or an overlay. Over a bare colour it
+    // is not -- this site's primary is #FFFFFF -- so fall back to the site's
+    // text colour.
+    const heroOverImage = !!d.image_url;
+    const heroText = heroOverImage ? '#fff' : readableOn(d.bg_color || primary, d.text_color || textColor);
     return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div style={{
@@ -2408,12 +2413,16 @@ function SimpleBlockPreview({ block, site, businessId, onFieldSave }) {
           background: d.image_url ? `url(${d.image_url}) center/cover no-repeat` : primary,
           fontFamily,
         }}>
-          {d.overlay && <div style={{ position: 'absolute', inset: 0, background: d.overlay_color || 'rgba(0,0,0,0.42)' }} />}
+          {d.image_url && d.overlay && <div style={{ position: 'absolute', inset: 0, background: d.overlay_color || 'rgba(0,0,0,0.42)' }} />}
           <div style={{ position: 'relative', zIndex: 1, padding: '2rem 3rem', textAlign: d.align || 'center', maxWidth: cWidth, width: '100%' }}>
-            <h1 style={{ color: '#fff', fontSize: '2rem', fontWeight: 800, margin: '0 0 0.5rem', lineHeight: 1.2 }}>
-              {d.headline || 'Your Headline'}
-            </h1>
-            {d.subtext && <div className="site-rte" style={{ color: 'rgba(255,255,255,0.88)', fontSize: '1.05rem', margin: '0 0 1.2rem' }} dangerouslySetInnerHTML={{ __html: d.subtext }} />}
+            {/* Empty means empty: no placeholder standing in for content the
+                page does not have. */}
+            {d.headline && (
+              <h1 style={{ color: heroText, fontSize: '2rem', fontWeight: 800, margin: '0 0 0.5rem', lineHeight: 1.2 }}>
+                {d.headline}
+              </h1>
+            )}
+            {d.subtext && <div className="site-rte" style={{ color: heroOverImage ? 'rgba(255,255,255,0.88)' : heroText, fontSize: '1.05rem', margin: '0 0 1.2rem' }} dangerouslySetInnerHTML={{ __html: d.subtext }} />}
             {d.cta_text && (
               <span style={{ display: 'inline-block', background: accent, color: '#fff', padding: '0.5rem 1.5rem', borderRadius: 8, fontWeight: 700, fontSize: '0.95rem' }}>
                 {d.cta_text}
@@ -8037,6 +8046,21 @@ function WidthDiagram({ local }) {
       </p>
     </div>
   );
+}
+
+// Readable text over an arbitrary background: pick white or the site's own text
+// colour by the background's luminance, rather than assuming every hero sits on
+// something dark. A site whose primary colour is #FFFFFF was getting white
+// headings on a white band.
+function readableOn(bgColor, darkText) {
+  const hex = String(bgColor || '').trim().replace('#', '');
+  if (hex.length !== 3 && hex.length !== 6) return '#fff';
+  const full = hex.length === 3 ? hex.split('').map(c => c + c).join('') : hex;
+  const n = parseInt(full, 16);
+  if (Number.isNaN(n)) return '#fff';
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  // Rec. 709 relative luminance, 0..255
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 140 ? (darkText || '#111827') : '#fff';
 }
 
 function BandControl({ label, hint, width, onWidth, color, onColor, image, onImage, paletteColors, wb }) {

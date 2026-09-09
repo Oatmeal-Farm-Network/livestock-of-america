@@ -250,11 +250,28 @@ function SlideshowBlock({ data, site }) {
   );
 }
 
+// Readable text over an arbitrary background: pick white or the site's own text
+// colour by the background's luminance, rather than assuming every hero sits on
+// something dark. A site whose primary colour is #FFFFFF was getting white
+// headings on a white band.
+function readableOn(bgColor, darkText) {
+  const hex = String(bgColor || '').trim().replace('#', '');
+  if (hex.length !== 3 && hex.length !== 6) return '#fff';
+  const full = hex.length === 3 ? hex.split('').map(c => c + c).join('') : hex;
+  const n = parseInt(full, 16);
+  if (Number.isNaN(n)) return '#fff';
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  // Rec. 709 relative luminance, 0..255
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 140 ? (darkText || '#111827') : '#fff';
+}
+
 function HeroBlock({ data, site }) {
   const align = data.align || 'center';
   const alignClass = align === 'left' ? 'items-start text-left' : align === 'right' ? 'items-end text-right' : 'items-center text-center';
   const bgWidth = site.body_bg_width || '100%';
   const textWidth = site.body_content_width || '100%';
+  // Same rule as the builder preview, so the two agree.
+  const heroText = data.image_url ? '#fff' : readableOn(site.primary_color, site.text_color);
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <section style={{
@@ -273,12 +290,12 @@ function HeroBlock({ data, site }) {
              className={`flex flex-col gap-4 ${alignClass}`}>
           {data.headline && (
             <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.15,
-                          color: '#fff', fontFamily: site.font_family }}>
+                          color: heroText, fontFamily: site.font_family }}>
               {data.headline}
             </h1>
           )}
           {data.subtext && (
-            <div className="site-rte" style={{ fontSize: '1.2rem', color: data.image_url ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.85)',
+            <div className="site-rte" style={{ fontSize: '1.2rem', color: data.image_url ? 'rgba(255,255,255,0.9)' : heroText,
                          fontFamily: site.font_family }}
                  dangerouslySetInnerHTML={{ __html: addLinkTargets(data.subtext) }} />
           )}
