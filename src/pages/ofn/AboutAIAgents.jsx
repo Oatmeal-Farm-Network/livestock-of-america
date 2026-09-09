@@ -99,7 +99,7 @@ export default function AboutAIAgents() {
     <div className="min-h-screen font-sans" style={{ backgroundColor: '#f7f2e8' }}>
       <PageMeta
         title="AI Agents | Livestock Of America"
-        description="Meet Saige, Pairsley, Rosemarie, Thaiyme, and Lavendir — five purpose-built AI agents covering every role in the food system, from field to fork to website."
+        description="Meet Saige, Pairsley, Rosemarie and Thaiyme — purpose-built AI agents covering every role in the food system, from field to fork."
         canonical="https://livestockofamerica.com/ai-agents"
       />
       <Header />

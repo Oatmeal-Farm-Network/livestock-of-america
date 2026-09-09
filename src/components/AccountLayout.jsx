@@ -18,6 +18,9 @@ export default function AccountLayout({
   pageTitle,
   breadcrumbs,
   allowAnonymous = false,
+  // Opt-in: the website builder is an editing surface and needs the window,
+  // not the 1100px reading column the rest of the account pages use.
+  wide = false,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -47,11 +50,11 @@ export default function AccountLayout({
       <Header />
 
       {/* Breadcrumbs sit directly under the header on every page but Home. */}
-      <div className="mx-auto w-full px-5" style={{ maxWidth: '1100px' }}>
+      <div className="mx-auto w-full px-5" style={{ maxWidth: wide ? '100%' : '1100px' }}>
         <Breadcrumbs items={crumbs} />
       </div>
 
-      <div className="grow w-full mx-auto px-5 pb-10" style={{ maxWidth: '1100px' }}>
+      <div className="grow w-full mx-auto px-5 pb-10" style={{ maxWidth: wide ? '100%' : '1100px' }}>
         {children}
         <div className="mt-8">
           <Link to="/account" className="text-sm font-semibold no-underline" style={{ color: '#3d6b34' }}>

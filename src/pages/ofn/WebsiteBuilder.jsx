@@ -6869,7 +6869,7 @@ export default function WebsiteBuilder() {
   const PeopleID = localStorage.getItem('people_id');
 
   if (loading) return (
-    <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
+    <AccountLayout wide Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
       <div className="p-8 text-gray-400">{wb('setup_loading')}</div>
     </AccountLayout>
   );
@@ -6879,7 +6879,7 @@ export default function WebsiteBuilder() {
   // createSite is running, so the user never sees the empty Delete or
   // "Select a page" panel during the multi-second import flow.
   if (building) return (
-    <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
+    <AccountLayout wide Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
       <div style={{ minHeight: 'calc(100vh - 230px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 max-w-md w-full text-center">
           <div style={{ width: 56, height: 56, margin: '0 auto 1.25rem', borderRadius: '50%', border: '4px solid #e5e7eb', borderTopColor: '#7C5CBF', animation: 'wb-spin 0.9s linear infinite' }} />
@@ -6901,7 +6901,7 @@ export default function WebsiteBuilder() {
   // ── Setup wizard ───────────────────────────────────────────────
   if (setupMode) return (
     <>
-    <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
+    <AccountLayout wide Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
       <div style={{ maxWidth: 700, margin: '0 auto' }}>
         <h1 className="text-2xl font-bold text-gray-900 mb-1">{wb('setup_heading')}</h1>
         <p className="text-gray-500 text-sm mb-6">{wb('setup_hint')}</p>
@@ -7022,7 +7022,7 @@ export default function WebsiteBuilder() {
   // ── CANVAS PAGE EDITOR ─────────────────────────────────────────
   if (isPage) return (
     <>
-      <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
+      <AccountLayout wide Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
         <div className="-m-6 flex flex-col" style={{ height: 'calc(100vh - 72px)', overflow: 'hidden' }}>
 
           {/* ── Top bar ── */}
@@ -7362,7 +7362,7 @@ export default function WebsiteBuilder() {
   // ── Design / Settings / Delete / No-page views ─────────────────
   return (
     <>
-    <AccountLayout Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
+    <AccountLayout wide Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
 
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
