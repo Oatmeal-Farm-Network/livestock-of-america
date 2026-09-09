@@ -123,7 +123,10 @@ function PhotosTab({ pages, businessId }) {
   const [lightbox, setLightbox] = useState(null);
   const [rowH, setRowH] = useState(260);
 
-  const list = pages || [];
+  // Empty pages are hidden from the public listing: a chip reading "(0)" that
+  // opens on "nothing here yet" is not worth showing a visitor. The owner still
+  // sees them on /account/photos, which reads the same endpoint unfiltered.
+  const list = (pages || []).filter((p) => (p.PhotoCount || 0) > 0);
   const current = pageId ?? list[0]?.BusinessPhotoPageID ?? null;
 
   useEffect(() => {
