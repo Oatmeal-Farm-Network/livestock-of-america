@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Navigate, Outlet, Route, Routes } from "react-router";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router";
 
 // Only what the first paint needs is imported eagerly: the chrome, the auth
 // helpers, and the landing page. Every other route is a dynamic import, so a
@@ -177,6 +177,15 @@ function ContactUsConfirmGuest() {
 /** Guests: page Header. Signed-in: LOA top header + OFN-style left sidebar. */
 function AppChrome() {
   const outlet = <Outlet />;
+  const { pathname } = useLocation();
+  // A customer's own site renders bare: no LOA header, sidebar or footer around
+  // it, whether it is reached by Preview, View Live or a visitor's link. Oatmeal
+  // Farm Network has no global shell, so its site pages were already standalone;
+  // this site wraps every route for a signed-in user, which framed an owner's
+  // published site in our chrome the moment they previewed it.
+  if (pathname.startsWith('/sites/')) {
+    return outlet;
+  }
   if (isLoggedIn()) {
     return <AuthShell>{outlet}</AuthShell>;
   }
