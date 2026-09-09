@@ -7872,7 +7872,7 @@ function WidthDiagram({ local }) {
   // Zone renders the bg band (centered via margin:auto) and overlays a dashed
   // content-width indicator — both widths are relative to the same zone container
   // so percentages are always computed from the same full-width reference.
-  const Zone = ({ bgWidth, contentWidth, bgColor, bgImage, children, labelRow }) => (
+  const Zone = ({ bgWidth, contentWidth, bgColor, bgImage, contentBgColor, contentBgImage, children, labelRow }) => (
     <div style={{ position: 'relative' }}>
       {/* BG band: block element centered with margin:auto — width is % of zone container */}
       <div style={{
@@ -7883,11 +7883,15 @@ function WidthDiagram({ local }) {
       }}>
         {children}
       </div>
-      {/* Content-width dashed guide — absolute so it's relative to the same zone container */}
+      {/* Content band: its own colour or image when set, with the dashed guide
+          over it so both stay visible. */}
       <div style={{
         position: 'absolute', top: 0, bottom: 0,
         left: '50%', transform: 'translateX(-50%)',
         width: toPct(contentWidth),
+        background: contentBgImage
+          ? `url(${contentBgImage}) center/cover no-repeat`
+          : (contentBgColor || 'transparent'),
         borderLeft: '1px dashed rgba(255,255,255,0.55)',
         borderRight: '1px dashed rgba(255,255,255,0.55)',
         pointerEvents: 'none',
@@ -7926,6 +7930,8 @@ function WidthDiagram({ local }) {
             contentWidth={local.header_content_width}
             bgColor={local.primary_color}
             bgImage={local.nav_bg_image_url || local.header_banner_url}
+            contentBgColor={local.header_content_bg_color}
+            contentBgImage={local.header_content_bg_image_url}
             labelRow={<LabelBar dark left={`Header BG: ${local.header_bg_width || '100%'}`} right={`Content: ${local.header_content_width || '100%'}`} />}
           >
             {/* Top bar */}
@@ -7972,7 +7978,10 @@ function WidthDiagram({ local }) {
               key={bi}
               bgWidth={local.body_bg_width}
               contentWidth={local.body_content_width}
-              bgColor={stripeBg}
+              bgColor={local.body_bg_color || stripeBg}
+              bgImage={local.body_bg_image_url}
+              contentBgColor={local.body_content_bg_color}
+              contentBgImage={local.body_content_bg_image_url}
               labelRow={bi === 1
                 ? <LabelBar left={`Body BG: ${local.body_bg_width || '100%'}`} right={`Text: ${local.body_content_width || '100%'}`} />
                 : null}
@@ -7991,6 +8000,8 @@ function WidthDiagram({ local }) {
             bgWidth={local.footer_bg_width}
             contentWidth={local.footer_content_width}
             bgColor={local.footer_bg_color || local.primary_color}
+            contentBgColor={local.footer_content_bg_color}
+            contentBgImage={local.footer_content_bg_image_url}
             labelRow={<LabelBar dark left={`Footer BG: ${local.footer_bg_width || '100%'}`} right={`Content: ${local.footer_content_width || '100%'}`} />}
           >
             {local.footer_bg_image_url ? (
@@ -8024,6 +8035,26 @@ function WidthDiagram({ local }) {
       <p style={{ fontSize: 9, color: '#9CA3AF', textAlign: 'center', marginTop: 4 }}>
         Live mockup · 1600px reference · dashed lines show content width
       </p>
+    </div>
+  );
+}
+
+function BandControl({ label, hint, width, onWidth, color, onColor, image, onImage, paletteColors, wb }) {
+  // One band: how wide it is, what colour fills it, and the image over that.
+  // Grouped because they describe the same strip of the page -- splitting them
+  // across tabs meant setting a width here and its colour somewhere else.
+  return (
+    <div className="mb-4 last:mb-0">
+      <WidthControl label={label} hint={hint} value={width} onChange={onWidth} />
+      <div className="flex items-center gap-4 flex-wrap mt-2 pl-1">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-500">{wb('zone_bg_color')}</span>
+          <InlineColorPicker value={color} onChange={onColor} paletteColors={paletteColors} popupAlign="left" />
+        </div>
+        <div className="flex-1 min-w-48">
+          <ImageUploadField compact label={wb('zone_bg_image')} value={image} onChange={onImage} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -8810,36 +8841,48 @@ function DesignView({ site, onSave, saving, pages = [] }) {
               <div className="flex flex-col gap-4 flex-1">
                 <div className="border-l-4 pl-3" style={{ borderColor: local.primary_color }}>
                   <p className="text-xs font-semibold text-gray-500 mb-1">{wb('colors_header_sub')}</p>
-                  <WidthControl label={wb('colors_header_bg_width')} hint={wb('colors_header_bg_width_hint')} value={local.header_bg_width} onChange={v => set('header_bg_width', v)} />
-                  <WidthControl label={wb('colors_header_content_width')} hint={wb('colors_header_content_width_hint')} value={local.header_content_width} onChange={v => set('header_content_width', v)} />
-                  <div className="mt-3 pt-3 border-t border-gray-50">
-                    <ColorRow label={wb('zone_bg_color')} field="primary_color" />
-                    <ImageUploadField compact label={wb('zone_bg_image')}
-                      value={local.nav_bg_image_url}
-                      onChange={v => set('nav_bg_image_url', v)} />
-                  </div>
+                  <BandControl
+                    label={wb('colors_header_bg_width')} hint={wb('colors_header_bg_width_hint')}
+                    width={local.header_bg_width} onWidth={v => set('header_bg_width', v)}
+                    color={local.primary_color} onColor={v => set('primary_color', v)}
+                    image={local.nav_bg_image_url} onImage={v => set('nav_bg_image_url', v)}
+                    paletteColors={paletteColors} wb={wb} />
+                  <BandControl
+                    label={wb('colors_header_content_width')} hint={wb('colors_header_content_width_hint')}
+                    width={local.header_content_width} onWidth={v => set('header_content_width', v)}
+                    color={local.header_content_bg_color} onColor={v => set('header_content_bg_color', v)}
+                    image={local.header_content_bg_image_url} onImage={v => set('header_content_bg_image_url', v)}
+                    paletteColors={paletteColors} wb={wb} />
                 </div>
                 <div className="border-l-4 pl-3" style={{ borderColor: local.secondary_color }}>
                   <p className="text-xs font-semibold text-gray-500 mb-1">{wb('colors_body_sub')}</p>
-                  <WidthControl label={wb('colors_body_bg_width')} hint={wb('colors_body_bg_width_hint')} value={local.body_bg_width} onChange={v => set('body_bg_width', v)} />
-                  <WidthControl label={wb('colors_body_text_width')} hint={wb('colors_body_text_width_hint')} value={local.body_content_width} onChange={v => set('body_content_width', v)} />
-                  <div className="mt-3 pt-3 border-t border-gray-50">
-                    <ColorRow label={wb('zone_bg_color')} field="screen_background_color" />
-                    <ImageUploadField compact label={wb('zone_bg_image')}
-                      value={local.bg_image_url}
-                      onChange={v => set('bg_image_url', v)} />
-                  </div>
+                  <BandControl
+                    label={wb('colors_body_bg_width')} hint={wb('colors_body_bg_width_hint')}
+                    width={local.body_bg_width} onWidth={v => set('body_bg_width', v)}
+                    color={local.body_bg_color} onColor={v => set('body_bg_color', v)}
+                    image={local.body_bg_image_url} onImage={v => set('body_bg_image_url', v)}
+                    paletteColors={paletteColors} wb={wb} />
+                  <BandControl
+                    label={wb('colors_body_text_width')} hint={wb('colors_body_text_width_hint')}
+                    width={local.body_content_width} onWidth={v => set('body_content_width', v)}
+                    color={local.body_content_bg_color} onColor={v => set('body_content_bg_color', v)}
+                    image={local.body_content_bg_image_url} onImage={v => set('body_content_bg_image_url', v)}
+                    paletteColors={paletteColors} wb={wb} />
                 </div>
                 <div className="border-l-4 pl-3" style={{ borderColor: local.footer_bg_color }}>
                   <p className="text-xs font-semibold text-gray-500 mb-1">{wb('colors_footer_sub')}</p>
-                  <WidthControl label={wb('colors_footer_bg_width')} hint={wb('colors_footer_bg_width_hint')} value={local.footer_bg_width} onChange={v => set('footer_bg_width', v)} />
-                  <WidthControl label={wb('colors_footer_content_width')} hint={wb('colors_footer_content_width_hint')} value={local.footer_content_width} onChange={v => set('footer_content_width', v)} />
-                  <div className="mt-3 pt-3 border-t border-gray-50">
-                    <ColorRow label={wb('zone_bg_color')} field="footer_bg_color" />
-                    <ImageUploadField compact label={wb('zone_bg_image')}
-                      value={local.footer_bg_image_url}
-                      onChange={v => set('footer_bg_image_url', v)} />
-                  </div>
+                  <BandControl
+                    label={wb('colors_footer_bg_width')} hint={wb('colors_footer_bg_width_hint')}
+                    width={local.footer_bg_width} onWidth={v => set('footer_bg_width', v)}
+                    color={local.footer_bg_color} onColor={v => set('footer_bg_color', v)}
+                    image={local.footer_bg_image_url} onImage={v => set('footer_bg_image_url', v)}
+                    paletteColors={paletteColors} wb={wb} />
+                  <BandControl
+                    label={wb('colors_footer_content_width')} hint={wb('colors_footer_content_width_hint')}
+                    width={local.footer_content_width} onWidth={v => set('footer_content_width', v)}
+                    color={local.footer_content_bg_color} onColor={v => set('footer_content_bg_color', v)}
+                    image={local.footer_content_bg_image_url} onImage={v => set('footer_content_bg_image_url', v)}
+                    paletteColors={paletteColors} wb={wb} />
                 </div>
               </div>
               <div className="flex-1 min-w-0 lg:min-w-72">
