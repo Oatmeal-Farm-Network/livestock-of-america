@@ -3509,7 +3509,7 @@
     "setup_design_heading": "Choose a Starting Design",
     "setup_design_hint": "Pick a color scheme to start with. You can customize every detail afterwards.",
     "setup_email": "Email",
-    "setup_heading": "Styles",
+    "setup_heading": "Style",
     "setup_hint": "Set up your public business website. You can change everything later.",
     "setup_import": "Import from existing website",
     "setup_import_hint": "Lavendir will scrape an existing website and copy its design, navigation, and content into your new site.",
