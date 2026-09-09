@@ -1764,7 +1764,7 @@
     "empty": "You do not have any services listed.",
     "empty_cta": "Click here to add one.",
     "th_service": "Service",
-    "th_available": "Available",
+    "th_available": "Listing",
     "th_price": "Price / Rate",
     "th_options": "Options",
     "contact_for_price": "Contact for price",
@@ -1774,7 +1774,9 @@
     "no_business": "Select an account to manage its services.",
     "confirm_delete": "Delete \"{{title}}\"? This cannot be undone.",
     "deleting": "Deleting...",
-    "err_delete": "Could not delete that service. Please try again."
+    "err_delete": "Could not delete that service. Please try again.",
+    "status_listed": "Listed",
+    "status_hidden": "Hidden"
   },
   "web_build": {
     "hero_badge": "Platform Service",
@@ -2025,7 +2027,11 @@
     "suggest_category_link": "Suggest a new category",
     "btn_cancel": "Cancel",
     "btn_saving": "Saving…",
-    "btn_save": "Save & Continue to Edit"
+    "btn_save": "Save & Continue to Edit",
+    "lbl_listing_status": "Listing status",
+    "opt_listed": "Listed in the public directory",
+    "opt_hidden": "Hidden — only you can see it",
+    "listing_status_hint": "Listed services appear in the Services Directory. You can change this any time."
   },
   "services_dir": {
     "title": "Agricultural Services Directory",
@@ -2070,7 +2076,8 @@
     "lead_planningmanagement": "Consultants, farm managers, bookkeepers, and planning specialists helping agricultural operations run and scale.",
     "lead_realestatelandmanagement": "Land brokers, farm realtors, surveyors, and property managers specializing in agricultural real estate and working land.",
     "lead_retailwholesale": "Farm stores, co-ops, distributors, and wholesalers moving farm products through retail and wholesale channels.",
-    "lead_specialtysupportservices": "Specialized providers — niche services and one-of-a-kind support roles that fill unique needs across the farm economy."
+    "lead_specialtysupportservices": "Specialized providers — niche services and one-of-a-kind support roles that fill unique needs across the farm economy.",
+    "hero_alt_category": "{{category}} services on Livestock Of America"
   },
   "services_edit": {
     "loading": "Loading…",
@@ -2133,7 +2140,11 @@
     "photo_drop_replace": "Drop to replace",
     "photo_empty_hint": "Drop an image, or click",
     "photo_add_aria": "Add a photo to slot {{slot}}: drop a file here, or activate to browse",
-    "photo_replace_aria": "Replace the photo in slot {{slot}}: drop a file here, or activate to browse"
+    "photo_replace_aria": "Replace the photo in slot {{slot}}: drop a file here, or activate to browse",
+    "lbl_listing_status": "Listing status",
+    "opt_listed": "Listed in the public directory",
+    "opt_hidden": "Hidden — only you can see it",
+    "listing_status_hint": "Listed services appear in the Services Directory."
   },
   "services_suggest": {
     "page_title": "Suggest Category",

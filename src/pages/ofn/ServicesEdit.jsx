@@ -155,8 +155,18 @@ function BasicsTab({ ServicesID, BusinessID }) {
         </div>
       </Field>
 
-      <Field label={t('services_edit.lbl_availability')}>
-        <input value={form.ServiceAvailable || ''} onChange={e => set('ServiceAvailable', e.target.value)} style={inputStyle} placeholder={t('services_edit.availability_placeholder')} />
+      <Field label={t('services_edit.lbl_listing_status')}>
+        <select
+          value={String(form.ServiceAvailable) === '1' ? '1' : '0'}
+          onChange={e => set('ServiceAvailable', e.target.value)}
+          style={inputStyle}
+        >
+          <option value="1">{t('services_edit.opt_listed')}</option>
+          <option value="0">{t('services_edit.opt_hidden')}</option>
+        </select>
+        <p style={{ fontSize: 12, color: '#7a6a5a', margin: '4px 0 0' }}>
+          {t('services_edit.listing_status_hint')}
+        </p>
       </Field>
 
       <Field label={t('services_edit.lbl_description')}>

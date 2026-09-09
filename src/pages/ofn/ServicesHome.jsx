@@ -136,8 +136,18 @@ export default function ServicesHome() {
                           </div>
                         )}
                       </td>
-                      <td className="py-3 px-2 hidden md:table-cell text-gray-600">
-                        {Service.ServiceAvailable || '—'}
+                      <td className="py-3 px-2 hidden md:table-cell">
+                        {/* Was printing the raw smallint, so a hidden listing
+                            showed as "0" and a listed one as "1". */}
+                        <span style={{
+                          fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 999,
+                          background: String(Service.ServiceAvailable) === '1' ? '#e8f0e3' : '#f0ebe3',
+                          color: String(Service.ServiceAvailable) === '1' ? '#3D6B34' : '#8b7355',
+                        }}>
+                          {String(Service.ServiceAvailable) === '1'
+                            ? t('services_home.status_listed')
+                            : t('services_home.status_hidden')}
+                        </span>
                       </td>
                       <td className="py-3 px-2 hidden md:table-cell text-gray-600">
                         {Service.ServicePrice

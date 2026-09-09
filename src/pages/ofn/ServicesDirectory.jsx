@@ -41,6 +41,14 @@ const CATEGORY_IMAGES = {
 
 const imgForCategory = (name) => CATEGORY_IMAGES[norm(name)] || FALLBACK_IMG;
 
+// Each category page gets its own hero. Keyed by id, not name, because the id
+// is in the URL from the first render while the name only arrives with the
+// categories fetch -- keying by name would load the shared hero first and swap,
+// which is the worst thing to do to an eager, high-priority LCP image.
+const HERO_DEFAULT = '/images/ServiceDirectory.webp';
+const heroForCategory = (id) =>
+  (id ? `/images/service-heroes/${id}.webp` : HERO_DEFAULT);
+
 const DEFAULT_LEAD = 'From veterinarians and farriers to shearing, equipment rental, and farm consulting — connect with agricultural professionals serving farms and ranches.';
 
 const CATEGORY_LEADS = {
@@ -195,8 +203,10 @@ export default function ServicesDirectory() {
 
         <div className="relative w-full overflow-hidden rounded-xl rounded-b-none md:rounded-b-xl">
           <img
-            src="/images/ServiceDirectory.webp"
-            alt={t('services_dir.hero_alt')}
+            key={categoryId || 'all'}
+            src={heroForCategory(categoryId)}
+            alt={catName ? t('services_dir.hero_alt_category', { category: catName }) : t('services_dir.hero_alt')}
+            onError={e => { e.target.onerror = null; e.target.src = HERO_DEFAULT; }}
             className="w-full object-cover block h-[160px] md:h-[250px]"
             loading="eager"
             fetchPriority="high"

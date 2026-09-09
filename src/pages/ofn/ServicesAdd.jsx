@@ -47,7 +47,8 @@ export default function ServicesAdd() {
     ServiceCategoryID: '',
     ServiceSubCategoryID: '',
     ServicePrice: '',
-    ServiceAvailable: '',
+    // smallint publish flag, not free text. Default to listed.
+    ServiceAvailable: '1',
     ServiceContactForPrice: '0',
     ServicePhone: '',
     Servicewebsite: '',
@@ -183,13 +184,18 @@ export default function ServicesAdd() {
           </div>
         </Field>
 
-        <Field label={t('services_add.lbl_availability')}>
-          <input
+        <Field label={t('services_add.lbl_listing_status')}>
+          <select
             value={form.ServiceAvailable}
             onChange={e => set('ServiceAvailable', e.target.value)}
             style={inputStyle}
-            placeholder={t('services_add.placeholder_availability')}
-          />
+          >
+            <option value="1">{t('services_add.opt_listed')}</option>
+            <option value="0">{t('services_add.opt_hidden')}</option>
+          </select>
+          <p style={{ fontSize: 12, color: '#7a6a5a', margin: '4px 0 0' }}>
+            {t('services_add.listing_status_hint')}
+          </p>
         </Field>
 
         <Field label={t('services_add.lbl_description')}>
