@@ -14,7 +14,7 @@ import WebsiteAIAgent from '../../components/WebsiteAIAgent';
 import { LivestockAnimalDetailContent } from '../../components/website/LivestockAnimalDetailContent';
 
 const API = import.meta.env.VITE_LIVESTOCK_API_URL;
-const SITE_BASE_URL = 'https://www.OatmealFarmNetwork.com';
+const SITE_BASE_URL = 'https://livestockofamerica.com';
 
 // ── Block type catalogue ─────────────────────────────────────────
 const BI = ({ children }) => (
@@ -6058,9 +6058,9 @@ function CanvasSiteFooter({ site }) {
         <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.65)' }}>
           {copyrightLine}
         </span>
-        <a href="https://www.OatmealFarmNetwork.com" target="_blank" rel="noopener noreferrer"
+        <a href="https://livestockofamerica.com" target="_blank" rel="noopener noreferrer"
           style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>
-          Powered by Oatmeal Farm Network
+          Powered by Livestock Of America
         </a>
       </div>
     </div>
@@ -6929,9 +6929,20 @@ export default function WebsiteBuilder() {
             <input className={inp} value={setupData.site_name} placeholder={wb('setup_site_name_ph')}
               onChange={e => setSetupData(p => ({ ...p, site_name: e.target.value }))} />
           </FormField>
-          <FormField label={`${wb('slug_label')} (${wb('slug_hint', { url: `${SITE_BASE_URL}/sites/${setupData.slug || 'your-farm'}` })})`}>
-            <input className={inp} value={setupData.slug} placeholder={wb('setup_slug_ph')}
-              onChange={e => setSetupData(p => ({ ...p, slug: slugify(e.target.value) }))} />
+          <FormField label={wb('slug_label')}>
+            {/* The address is shown as a prefix on the field rather than
+                described in the label, so it is obvious what the slug is
+                appended to. */}
+            <div className="flex items-stretch w-full">
+              <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 text-gray-500 text-xs whitespace-nowrap shrink-0">
+                {SITE_BASE_URL.replace(/^https?:\/\//, '')}/sites/
+              </span>
+              <input className={`${inp} rounded-l-none min-w-0`} value={setupData.slug} placeholder={wb('setup_slug_ph')}
+                onChange={e => setSetupData(p => ({ ...p, slug: slugify(e.target.value) }))} />
+            </div>
+            <p className="text-xs text-gray-400 mt-1 break-all">
+              {wb('slug_hint', { url: `${SITE_BASE_URL}/sites/${setupData.slug || 'your-farm'}` })}
+            </p>
           </FormField>
           <FormField label={wb('setup_tagline')}>
             <input className={inp} value={setupData.tagline} placeholder={wb('setup_tagline_ph')}
@@ -8603,9 +8614,9 @@ function DesignView({ site, onSave, saving, pages = [] }) {
           <span style={{ fontSize: '0.68rem', color: isTranspCopyright ? '#374151' : 'rgba(255,255,255,0.65)' }}>
             {local.copyright_text || `© ${new Date().getFullYear()} ${site.site_name}`}
           </span>
-          <a href="https://www.OatmealFarmNetwork.com" target="_blank" rel="noopener noreferrer"
+          <a href="https://livestockofamerica.com" target="_blank" rel="noopener noreferrer"
             style={{ fontSize: '0.65rem', color: isTranspCopyright ? '#6b7280' : 'rgba(255,255,255,0.35)', textDecoration: 'none' }}>
-            Powered by Oatmeal Farm Network
+            Powered by Livestock Of America
           </a>
         </div>
       </div>

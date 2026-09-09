@@ -2740,7 +2740,7 @@ export default function WebsitePublic() {
                   <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.65)' }}>
                     {copyrightLine}
                   </span>
-                  <a href="https://www.OatmealFarmNetwork.com" target="_blank" rel="noopener noreferrer"
+                  <a href="https://livestockofamerica.com" target="_blank" rel="noopener noreferrer"
                     style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', textDecoration: 'none' }}>
                     {wp('powered_by')}
                   </a>
@@ -2765,7 +2765,7 @@ export default function WebsitePublic() {
                   <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.65)' }}>
                     {copyrightLine}
                   </span>
-                  <a href="https://www.OatmealFarmNetwork.com" target="_blank" rel="noopener noreferrer"
+                  <a href="https://livestockofamerica.com" target="_blank" rel="noopener noreferrer"
                     style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', textDecoration: 'none' }}>
                     {wp('powered_by')}
                   </a>
