@@ -620,6 +620,29 @@ export default function AccountSidebar({ onNavigate }) {
 
         </NavGroup>
 
+        {on('my_website') && (
+        <NavGroup icon={ICONS.website} label={t('account_sidebar.sec_website', 'My Website')} expanded={Expanded !== false} isOpen={OpenSections?.['g_website'] || false} onToggle={() => toggleSection('g_website')}>
+          <NavChild to={biz('/website/builder', 'view=lavendir')} label={t('account_sidebar.lavendir_ai', 'Lavendir AI')} />
+          {!websiteSlug ? (
+            <NavChild to={biz('/website/builder')} label={t('account_sidebar.create_website', 'Create Website')} />
+          ) : (
+            <>
+              <NavChild to={biz('/website/builder', 'view=manage-pages')} label={t('account_sidebar.sec_dashboard', 'Dashboard')} />
+              <NavChild to={biz('/website/builder', 'view=design')} label={t('account_sidebar.design', 'Design')} />
+              <NavChild to={biz('/website/builder', 'view=settings')} label={t('account_sidebar.website_settings', 'Website Settings')} />
+              <NavChild to={biz('/website/builder', 'view=delete')} label={t('account_sidebar.delete_website', 'Delete Website')} />
+              <a
+                href={`/sites/${websiteSlug}`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center px-3 py-1.5 ml-4 rounded-lg hover:bg-white/50 text-gray-600 text-xs transition-all"
+              >
+                {t('account_sidebar.view_live', 'View Live')}
+              </a>
+            </>
+          )}
+        </NavGroup>
+        )}
+
         {anyOn('certifications','commodity_prices','education_center','grants_programs') && (
         <NavGroup icon={ICONS.programs} label="Programs" expanded={Expanded !== false} isOpen={OpenSections?.['g_programs'] || false} onToggle={() => toggleSection('g_programs')}>
         {on('certifications') && (
@@ -654,32 +677,8 @@ export default function AccountSidebar({ onNavigate }) {
         </NavGroup>
         )}
 
-        {anyOn('accounting','cash_flow_forecast','document_vault','farm_pl','meetings','my_website','report_center') && (
+        {anyOn('accounting','cash_flow_forecast','document_vault','farm_pl','meetings','report_center') && (
         <NavGroup icon={ICONS.businessMgmt} label="Business Mgmt" expanded={Expanded !== false} isOpen={OpenSections?.['g_business'] || false} onToggle={() => toggleSection('g_business')}>
-        {on('my_website') && (
-          <NavSection icon={ICONS.website} label={t('account_sidebar.sec_website', 'My Website')} expanded={Expanded !== false}
-            isOpen={OpenSections?.['My Website'] || false} onToggle={() => toggleSection('My Website')}>
-            <NavChild to={biz('/website/builder', 'view=lavendir')} label={t('account_sidebar.lavendir_ai', 'Lavendir AI')} />
-            {!websiteSlug ? (
-              <NavChild to={biz('/website/builder')} label={t('account_sidebar.create_website', 'Create Website')} />
-            ) : (
-              <>
-                <NavChild to={biz('/website/builder', 'view=manage-pages')} label={t('account_sidebar.sec_dashboard', 'Dashboard')} />
-                <NavChild to={biz('/website/builder', 'view=design')} label={t('account_sidebar.design', 'Design')} />
-                <NavChild to={biz('/website/builder', 'view=settings')} label={t('account_sidebar.website_settings', 'Website Settings')} />
-                <NavChild to={biz('/website/builder', 'view=delete')} label={t('account_sidebar.delete_website', 'Delete Website')} />
-                <a
-                  href={`/sites/${websiteSlug}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="flex items-center px-3 py-1.5 ml-4 rounded-lg hover:bg-white/50 text-gray-600 text-xs transition-all"
-                >
-                  {t('account_sidebar.view_live', 'View Live')}
-                </a>
-              </>
-            )}
-          </NavSection>
-        )}
-
         {on('accounting') && (
           <NavSection icon={ICONS.accounting} label={t('account_sidebar.sec_accounting', 'Accounting')} expanded={Expanded !== false}
             isOpen={OpenSections?.['Accounting'] || false} onToggle={() => toggleSection('Accounting')}>
