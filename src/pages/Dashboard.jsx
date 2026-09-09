@@ -277,6 +277,9 @@ export default function Dashboard() {
           <div className="space-y-4">
             {businesses.map((b) => {
               const features = featuresByBusiness[b.BusinessID];
+              // Service links are switched off for now; the builder is kept so
+              // turning them back on is deleting the `true`.
+              // eslint-disable-next-line no-constant-condition
               const serviceLinks = true
                 ? []
                 : buildServiceLinks(b.BusinessID, features, t);

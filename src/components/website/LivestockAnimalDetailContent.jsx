@@ -17,6 +17,22 @@ import { useLanguage } from '../../lib/LanguageContext';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || 'http://127.0.0.1:8000';
 
+// Lifted with the component: the extraction cut the file above these, so the
+// component referenced them and they were not there.
+function formatPrice(n) {
+  if (n == null) return null;
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+}
+
+function formatDOB({ month, day, year }) {
+  const parts = [];
+  if (month && String(month) !== '0') parts.push(String(month).padStart(2, '0'));
+  if (day   && String(day)   !== '0') parts.push(String(day).padStart(2, '0'));
+  if (year  && String(year)  !== '0') parts.push(String(year));
+  return parts.join('/') || null;
+}
+
+
 // ── Legacy redirect component ─────────────────────────────────────────────────
 
 export function LivestockAnimalDetailContent({
