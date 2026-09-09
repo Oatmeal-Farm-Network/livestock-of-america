@@ -7044,7 +7044,7 @@ export default function WebsiteBuilder() {
   // ── CANVAS PAGE EDITOR ─────────────────────────────────────────
   if (isPage) return (
     <>
-      <AccountLayout wide Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
+      <AccountLayout wide hideBreadcrumbs Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
         <div className="-m-6 flex flex-col" style={{ height: 'calc(100vh - 72px)', overflow: 'hidden' }}>
 
           {/* ── Top bar ── */}

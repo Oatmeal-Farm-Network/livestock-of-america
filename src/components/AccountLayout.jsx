@@ -21,6 +21,11 @@ export default function AccountLayout({
   // Opt-in: the website builder is an editing surface and needs the window,
   // not the 1100px reading column the rest of the account pages use.
   wide = false,
+  // Opt-out for full-height editors, where a breadcrumb row is a strip of
+  // chrome above a canvas that is already sized to the viewport. Passing an
+  // empty breadcrumbs array cannot express this: the default trail is used
+  // whenever the list comes back empty.
+  hideBreadcrumbs = false,
 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -50,9 +55,11 @@ export default function AccountLayout({
       <Header />
 
       {/* Breadcrumbs sit directly under the header on every page but Home. */}
-      <div className="mx-auto w-full px-5" style={{ maxWidth: wide ? '100%' : '1100px' }}>
-        <Breadcrumbs items={crumbs} />
-      </div>
+      {!hideBreadcrumbs && (
+        <div className="mx-auto w-full px-5" style={{ maxWidth: wide ? '100%' : '1100px' }}>
+          <Breadcrumbs items={crumbs} />
+        </div>
+      )}
 
       <div className="grow w-full mx-auto px-5 pb-10" style={{ maxWidth: wide ? '100%' : '1100px' }}>
         {children}
