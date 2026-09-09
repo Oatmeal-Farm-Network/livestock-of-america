@@ -113,6 +113,92 @@ function AnimalsTab({ businessId, isStuds }) {
   );
 }
 
+function ServicesTab({ services }) {
+  const { t } = useTranslation();
+
+  if (!services) return <div className="py-5 text-gray-400">{t('ranch_profile.loading', 'Loading…')}</div>;
+  if (services.length === 0) {
+    return (
+      <div className="py-5 text-gray-400">
+        {t('ranch_profile.no_services', 'No services listed right now.')}
+      </div>
+    );
+  }
+
+  const priceLabel = (svc) => {
+    if (svc.ServicePrice !== null && svc.ServicePrice !== undefined && svc.ServicePrice !== '') {
+      const n = parseFloat(svc.ServicePrice);
+      if (!Number.isNaN(n)) return `$${n.toLocaleString()}`;
+    }
+    if (String(svc.ServiceContactForPrice) === '1' || svc.ServiceContactForPrice === 'Yes') {
+      return t('ranch_profile.contact_for_price', 'Contact for price');
+    }
+    return '';
+  };
+
+  return (
+    <div>
+      <p className="text-sm text-gray-500 mb-3">
+        {t('ranch_profile.service_count', '{{count}} services', { count: services.length })}
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {services.map((svc) => (
+          <div
+            key={svc.ServicesID}
+            className="flex bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+          >
+            {/* Only when the service actually has a photo, matching the
+                services directory -- no stock stand-in. */}
+            {svc.Photo1 ? (
+              <Link
+                to={`/services/public/${svc.ServicesID}`}
+                className="shrink-0 overflow-hidden"
+                style={{ width: '130px', height: '130px' }}
+              >
+                <img
+                  src={svc.Photo1}
+                  alt={svc.ServiceTitle}
+                  width="130"
+                  height="130"
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.target.closest('a').style.display = 'none'; }}
+                />
+              </Link>
+            ) : null}
+
+            <div className="flex flex-col justify-between px-4 py-3 flex-1 min-w-0">
+              <div>
+                <Link
+                  to={`/services/public/${svc.ServicesID}`}
+                  className="font-bold text-sm hover:underline block"
+                  style={{ color: OLIVE }}
+                >
+                  {svc.ServiceTitle}
+                </Link>
+                {svc.ServicesCategory && (
+                  <p className="text-xs mt-0.5" style={{ color: '#819360' }}>
+                    {svc.ServicesCategory}
+                    {svc.ServiceSubCategoryName ? ` \u203a ${svc.ServiceSubCategoryName}` : ''}
+                  </p>
+                )}
+                {svc.ServicesDescription && (
+                  <p className="text-xs text-gray-600 mt-1.5 leading-relaxed">
+                    {String(svc.ServicesDescription).replace(/<[^>]+>/g, '').slice(0, 140)}
+                  </p>
+                )}
+              </div>
+              {priceLabel(svc) && (
+                <p className="text-sm font-semibold text-gray-800 mt-2">{priceLabel(svc)}</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function ContactTab({ ranch }) {
   const { t } = useTranslation();
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
@@ -296,6 +382,7 @@ export default function RanchProfile() {
   const [loading, setLoading] = useState(true);
   const [animalCounts, setAnimalCounts] = useState({ for_sale: 0, studs: 0 });
   const [blogPosts, setBlogPosts] = useState(null);
+  const [services, setServices] = useState(null);
 
   const activeTab = searchParams.get('tab') || 'home';
   const setTab = (tab) => setSearchParams({ tab });
@@ -316,6 +403,14 @@ export default function RanchProfile() {
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => d && setAnimalCounts((prev) => ({ ...prev, studs: d.total })))
       .catch(() => {});
+
+    // Only ServiceAvailable = 1 comes back, so an unlisted service stays off
+    // the public profile the same way it stays out of the directory.
+    setServices(null);
+    fetch(`${API_URL}/api/services/business/${businessId}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setServices(Array.isArray(d) ? d : []))
+      .catch(() => setServices([]));
 
     setBlogPosts(null);
     fetch(`${API_URL}/api/blog/posts?business_id=${businessId}&limit=50`)
@@ -355,11 +450,13 @@ export default function RanchProfile() {
   }
 
   const blogCount = blogPosts ? blogPosts.length : 0;
+  const serviceCount = services ? services.length : 0;
   const TABS = [
     { key: 'home', label: t('ranch_profile.tab_home', 'Home'), always: true },
     { key: 'blog', label: `Blog (${blogCount})`, show: blogCount > 0 },
     { key: 'animals', label: t('ranch_profile.tab_animals', 'Animals For Sale ({{count}})', { count: animalCounts.for_sale }), show: animalCounts.for_sale > 0 },
     { key: 'studs', label: t('ranch_profile.tab_studs', 'Studs ({{count}})', { count: animalCounts.studs }), show: animalCounts.studs > 0 },
+    { key: 'services', label: t('ranch_profile.tab_services', 'Services ({{count}})', { count: serviceCount }), show: serviceCount > 0 },
     { key: 'contact', label: t('ranch_profile.tab_contact', 'Contact'), always: true },
   ].filter((tab) => tab.always || tab.show);
 
@@ -507,6 +604,7 @@ export default function RanchProfile() {
         {activeTab === 'blog' && <BlogTab posts={blogPosts} />}
         {activeTab === 'animals' && <AnimalsTab businessId={businessId} isStuds={false} />}
         {activeTab === 'studs' && <AnimalsTab businessId={businessId} isStuds={true} />}
+        {activeTab === 'services' && <ServicesTab services={services} />}
         {activeTab === 'contact' && <ContactTab ranch={ranch} />}
       </div>
 
