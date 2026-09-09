@@ -197,6 +197,13 @@ function PhotosTab({ pages, businessId }) {
               fills the width. flexGrow and flexBasis are both proportional to
               the ratio, which is what makes a row share its width by shape
               rather than by count. */}
+          {/* Breaks out of the page's 1000px column so the gallery uses the
+              window. Inset 20px a side rather than a flat 100vw: with a
+              vertical scrollbar present 100vw is wider than the content box and
+              would add a horizontal scrollbar, and nothing here sets
+              overflow-x. Capped so it does not sprawl on an ultrawide display. */}
+          <div style={{ width: 'calc(100vw - 40px)', marginLeft: 'calc(50% - 50vw + 20px)' }}>
+          <div style={{ maxWidth: 1800, margin: '0 auto' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: GAP }}>
             {shown.map((p, i) => {
               const ar = ratios[p.BusinessPhotoID] || 1.5;
@@ -234,6 +241,8 @@ function PhotosTab({ pages, businessId }) {
             {shown.length > 2 && [0, 1, 2].map((k) => (
               <i key={`sp${k}`} style={{ flexGrow: 10, flexBasis: rowH * 1.5, height: 0 }} />
             ))}
+          </div>
+          </div>
           </div>
 
           {open && (
