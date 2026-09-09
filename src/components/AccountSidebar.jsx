@@ -12,6 +12,8 @@ const LOA_LIVE = [
   /^\/account\/settings/,
   /^\/account\/profile/,
   /^\/account\/photos/,
+  /^\/website(\/|$|\?)/,
+  /^\/sites(\/|$|\?)/,
   /^\/account\/users/,
   /^\/account\/associations/,
   /^\/account\/change-type/,

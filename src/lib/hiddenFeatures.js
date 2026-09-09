@@ -36,7 +36,6 @@ export const HIDDEN_FEATURES = new Set([
   'document_vault',
   'farm_pl',
   'meetings',
-  'my_website',
   'report_center',
 ]);
 
