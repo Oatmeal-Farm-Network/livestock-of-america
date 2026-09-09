@@ -113,45 +113,90 @@ function AnimalsTab({ businessId, isStuds }) {
   );
 }
 
-function PhotosTab({ photos }) {
+function PhotosTab({ pages, businessId }) {
   const { t } = useTranslation();
+  const [pageId, setPageId] = useState(null);
+  const [photos, setPhotos] = useState(null);
   const [active, setActive] = useState(0);
 
-  if (!photos) return <div className="py-5 text-gray-400">{t('ranch_profile.loading', 'Loading…')}</div>;
-  if (photos.length === 0) {
+  const list = pages || [];
+  const current = pageId ?? list[0]?.BusinessPhotoPageID ?? null;
+
+  useEffect(() => {
+    if (!current) return;
+    setPhotos(null);
+    setActive(0);
+    fetch(`${API_URL}/api/businesses/${businessId}/photos?page_id=${current}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => setPhotos(Array.isArray(d) ? d : []))
+      .catch(() => setPhotos([]));
+  }, [businessId, current]);
+
+  if (!pages) return <div className="py-5 text-gray-400">{t('ranch_profile.loading', 'Loading…')}</div>;
+  if (list.length === 0) {
     return <div className="py-5 text-gray-400">{t('ranch_profile.no_photos', 'No photos yet.')}</div>;
   }
 
-  const current = photos[Math.min(active, photos.length - 1)];
+  const shown = photos || [];
+  const hero = shown[Math.min(active, Math.max(shown.length - 1, 0))];
   const altFor = (p, i) => p.Caption || t('ranch_profile.photo_alt', 'Photo {{n}}', { n: i + 1 });
 
   return (
     <div>
-      <img
-        src={current.PhotoUrl}
-        alt={altFor(current, active)}
-        className="w-full rounded-xl object-cover mb-2"
-        style={{ maxHeight: 420 }}
-        onError={(e) => { e.target.style.display = 'none'; }}
-      />
-      {current.Caption && <p className="text-sm text-gray-600 mb-3">{current.Caption}</p>}
-
-      {photos.length > 1 && (
-        <div className="flex gap-2 flex-wrap">
-          {photos.map((p, i) => (
+      {/* One chip per photo page. Hidden when there is only one, so a single
+          album does not get a pointless selector. */}
+      {list.length > 1 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {list.map((pg) => (
             <button
-              key={p.BusinessPhotoID}
-              onClick={() => setActive(i)}
-              aria-label={altFor(p, i)}
-              className="rounded-lg overflow-hidden border-2 p-0 cursor-pointer"
-              style={{ borderColor: i === active ? OLIVE : '#e5e7eb', background: 'none' }}
+              key={pg.BusinessPhotoPageID}
+              onClick={() => setPageId(pg.BusinessPhotoPageID)}
+              className="rounded-full px-3 py-1.5 text-xs font-semibold cursor-pointer"
+              style={{
+                border: `1px solid ${current === pg.BusinessPhotoPageID ? OLIVE : '#e5e7eb'}`,
+                background: current === pg.BusinessPhotoPageID ? '#e8f0e3' : '#fff',
+                color: current === pg.BusinessPhotoPageID ? OLIVE : '#555',
+              }}
             >
-              <img src={p.PhotoUrl} alt={altFor(p, i)} className="w-16 h-16 object-cover block"
-                   loading="lazy"
-                   onError={(e) => { e.target.closest('button').style.display = 'none'; }} />
+              {pg.Title} ({pg.PhotoCount || 0})
             </button>
           ))}
         </div>
+      )}
+
+      {photos === null ? (
+        <div className="py-5 text-gray-400">{t('ranch_profile.loading', 'Loading…')}</div>
+      ) : shown.length === 0 ? (
+        <div className="py-5 text-gray-400">{t('ranch_profile.no_photos_page', 'Nothing in this page yet.')}</div>
+      ) : (
+        <>
+          <img
+            src={hero.PhotoUrl}
+            alt={altFor(hero, active)}
+            className="w-full rounded-xl object-cover mb-2"
+            style={{ maxHeight: 420 }}
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+          {hero.Caption && <p className="text-sm text-gray-600 mb-3">{hero.Caption}</p>}
+
+          {shown.length > 1 && (
+            <div className="flex gap-2 flex-wrap">
+              {shown.map((p, i) => (
+                <button
+                  key={p.BusinessPhotoID}
+                  onClick={() => setActive(i)}
+                  aria-label={altFor(p, i)}
+                  className="rounded-lg overflow-hidden border-2 p-0 cursor-pointer"
+                  style={{ borderColor: i === active ? OLIVE : '#e5e7eb', background: 'none' }}
+                >
+                  <img src={p.PhotoUrl} alt={altFor(p, i)} className="w-16 h-16 object-cover block"
+                       loading="lazy"
+                       onError={(e) => { e.target.closest('button').style.display = 'none'; }} />
+                </button>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );
@@ -427,7 +472,7 @@ export default function RanchProfile() {
   const [animalCounts, setAnimalCounts] = useState({ for_sale: 0, studs: 0 });
   const [blogPosts, setBlogPosts] = useState(null);
   const [services, setServices] = useState(null);
-  const [photos, setPhotos] = useState(null);
+  const [photoPages, setPhotoPages] = useState(null);
 
   const activeTab = searchParams.get('tab') || 'home';
   const setTab = (tab) => setSearchParams({ tab });
@@ -449,11 +494,11 @@ export default function RanchProfile() {
       .then((d) => d && setAnimalCounts((prev) => ({ ...prev, studs: d.total })))
       .catch(() => {});
 
-    setPhotos(null);
-    fetch(`${API_URL}/api/businesses/${businessId}/photos`)
+    setPhotoPages(null);
+    fetch(`${API_URL}/api/businesses/${businessId}/photo-pages`)
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => setPhotos(Array.isArray(d) ? d : []))
-      .catch(() => setPhotos([]));
+      .then((d) => setPhotoPages(Array.isArray(d) ? d : []))
+      .catch(() => setPhotoPages([]));
 
     // Only ServiceAvailable = 1 comes back, so an unlisted service stays off
     // the public profile the same way it stays out of the directory.
@@ -502,7 +547,10 @@ export default function RanchProfile() {
 
   const blogCount = blogPosts ? blogPosts.length : 0;
   const serviceCount = services ? services.length : 0;
-  const photoCount = photos ? photos.length : 0;
+  // The tab counts photos across every page, not the number of pages.
+  const photoCount = photoPages
+    ? photoPages.reduce((n, p) => n + (p.PhotoCount || 0), 0)
+    : 0;
   const TABS = [
     { key: 'home', label: t('ranch_profile.tab_home', 'Home'), always: true },
     { key: 'blog', label: `Blog (${blogCount})`, show: blogCount > 0 },
@@ -658,7 +706,7 @@ export default function RanchProfile() {
         {activeTab === 'animals' && <AnimalsTab businessId={businessId} isStuds={false} />}
         {activeTab === 'studs' && <AnimalsTab businessId={businessId} isStuds={true} />}
         {activeTab === 'services' && <ServicesTab services={services} />}
-        {activeTab === 'photos' && <PhotosTab photos={photos} />}
+        {activeTab === 'photos' && <PhotosTab pages={photoPages} businessId={businessId} />}
         {activeTab === 'contact' && <ContactTab ranch={ranch} />}
       </div>
 

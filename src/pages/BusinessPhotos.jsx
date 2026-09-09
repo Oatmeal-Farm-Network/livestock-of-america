@@ -8,7 +8,8 @@ import { useBusinessId } from '../lib/useBusinessId';
 
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
-const MAX_PHOTOS = 12;
+const MAX_PAGES = 10;
+const MAX_PHOTOS = 12;   // per page
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
@@ -17,6 +18,10 @@ export default function BusinessPhotos() {
   const navigate = useNavigate();
   const { businessId, resolving } = useBusinessId();
 
+  const [pages, setPages] = useState(null);
+  const [pageId, setPageId] = useState(null);
+  const [newTitle, setNewTitle] = useState('');
+  const [creating, setCreating] = useState(false);
   const [photos, setPhotos] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [savingId, setSavingId] = useState(null);
@@ -29,12 +34,91 @@ export default function BusinessPhotos() {
   useEffect(() => {
     if (!token()) { navigate('/login'); return; }
     if (resolving) return;
-    if (!businessId) { setPhotos([]); return; }
-    fetch(`${API_URL}/api/businesses/${businessId}/photos`)
+    if (!businessId) { setPages([]); setPhotos([]); return; }
+    fetch(`${API_URL}/api/businesses/${businessId}/photo-pages`)
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then(d => {
+        const list = Array.isArray(d) ? d : [];
+        setPages(list);
+        // Keep the current selection if it still exists, else take the first.
+        setPageId(prev => (prev && list.some(p => p.BusinessPhotoPageID === prev))
+          ? prev
+          : (list[0]?.BusinessPhotoPageID ?? null));
+      })
+      .catch(() => { setPages([]); setError(t('business_photos.err_load')); });
+  }, [businessId, resolving]);
+
+  useEffect(() => {
+    if (!businessId || !pageId) { setPhotos(pageId ? null : []); return; }
+    setPhotos(null);
+    fetch(`${API_URL}/api/businesses/${businessId}/photos?page_id=${pageId}`)
       .then(r => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then(d => setPhotos(Array.isArray(d) ? d : []))
       .catch(() => { setPhotos([]); setError(t('business_photos.err_load')); });
-  }, [businessId, resolving]);
+  }, [businessId, pageId]);
+
+  // Keep the counts on the tabs honest as photos are added and removed.
+  const bumpCount = (delta) =>
+    setPages(ps => (ps || []).map(p => p.BusinessPhotoPageID === pageId
+      ? { ...p, PhotoCount: Math.max(0, (p.PhotoCount || 0) + delta) } : p));
+
+  const createPage = async () => {
+    const title = newTitle.trim();
+    if (!title) return;
+    setCreating(true); setError(null);
+    try {
+      const res = await fetch(`${API_URL}/api/businesses/${businessId}/photo-pages`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.detail || t('business_photos.err_page_create'));
+      setPages(ps => [...(ps || []), data]);
+      setPageId(data.BusinessPhotoPageID);
+      setNewTitle('');
+    } catch (e) {
+      setError(e.message || t('business_photos.err_page_create'));
+    }
+    setCreating(false);
+  };
+
+  const renamePage = async (page) => {
+    const title = window.prompt(t('business_photos.prompt_rename'), page.Title);
+    if (title === null) return;
+    if (!title.trim()) { setError(t('business_photos.err_title_required')); return; }
+    setError(null);
+    try {
+      const res = await fetch(
+        `${API_URL}/api/businesses/${businessId}/photo-pages/${page.BusinessPhotoPageID}`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token()}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: title.trim() }),
+        });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setPages(ps => ps.map(p => p.BusinessPhotoPageID === page.BusinessPhotoPageID
+        ? { ...p, Title: title.trim() } : p));
+    } catch {
+      setError(t('business_photos.err_page_rename'));
+    }
+  };
+
+  const deletePage = async (page) => {
+    if (!window.confirm(t('business_photos.confirm_delete_page', { title: page.Title, count: page.PhotoCount || 0 }))) return;
+    setError(null);
+    try {
+      const res = await fetch(
+        `${API_URL}/api/businesses/${businessId}/photo-pages/${page.BusinessPhotoPageID}`, {
+          method: 'DELETE', headers: { Authorization: `Bearer ${token()}` },
+        });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const left = pages.filter(p => p.BusinessPhotoPageID !== page.BusinessPhotoPageID);
+      setPages(left);
+      if (pageId === page.BusinessPhotoPageID) setPageId(left[0]?.BusinessPhotoPageID ?? null);
+    } catch {
+      setError(t('business_photos.err_page_delete'));
+    }
+  };
 
   const rejectReason = (file) => {
     if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) return t('business_photos.err_type');
@@ -46,7 +130,7 @@ export default function BusinessPhotos() {
   // the current maximum, so concurrent inserts would race for the same slot.
   const uploadMany = async (fileList) => {
     const files = Array.from(fileList || []);
-    if (!files.length || !businessId) return;
+    if (!files.length || !businessId || !pageId) return;
     const room = MAX_PHOTOS - (photos?.length || 0);
     if (room <= 0) { setError(t('business_photos.err_full', { max: MAX_PHOTOS })); return; }
 
@@ -62,7 +146,8 @@ export default function BusinessPhotos() {
       try {
         const fd = new FormData();
         fd.append('file', file);
-        const res = await fetch(`${API_URL}/api/businesses/${businessId}/photos/upload`, {
+        const res = await fetch(
+          `${API_URL}/api/businesses/${businessId}/photos/upload?page_id=${pageId}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token()}` },
           body: fd,
@@ -70,6 +155,7 @@ export default function BusinessPhotos() {
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data.detail || t('business_photos.err_upload'));
         setPhotos(ps => [...(ps || []), data]);
+        bumpCount(1);
       } catch (e) {
         setError(e.message || t('business_photos.err_upload'));
       }
@@ -108,6 +194,7 @@ export default function BusinessPhotos() {
         });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       setPhotos(ps => ps.filter(p => p.BusinessPhotoID !== photo.BusinessPhotoID));
+      bumpCount(-1);
     } catch {
       setError(t('business_photos.err_delete'));
     }
@@ -161,7 +248,69 @@ export default function BusinessPhotos() {
           <p className="text-gray-500 text-sm">{t('business_photos.no_business')}</p>
         ) : (
           <>
-            <div
+            {/* Pages. Each is its own gallery on the public listing. */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {(pages || []).map(pg => (
+                <button
+                  key={pg.BusinessPhotoPageID}
+                  onClick={() => setPageId(pg.BusinessPhotoPageID)}
+                  style={{
+                    border: `1px solid ${pageId === pg.BusinessPhotoPageID ? '#3D6B34' : '#d9cbb8'}`,
+                    background: pageId === pg.BusinessPhotoPageID ? '#e8f0e3' : '#fff',
+                    color: pageId === pg.BusinessPhotoPageID ? '#3D6B34' : '#5a3e2b',
+                    borderRadius: 999, padding: '5px 12px', fontSize: 12,
+                    fontWeight: 600, cursor: 'pointer',
+                  }}
+                >
+                  {pg.Title} ({pg.PhotoCount || 0})
+                </button>
+              ))}
+              {pages && pages.length > 0 && pageId && (
+                <>
+                  <button onClick={() => renamePage(pages.find(p => p.BusinessPhotoPageID === pageId))}
+                    style={{ background: 'none', border: '1px solid #d9cbb8', borderRadius: 5,
+                             padding: '4px 10px', fontSize: 12, cursor: 'pointer', color: '#5a3e2b' }}>
+                    {t('business_photos.btn_rename_page')}
+                  </button>
+                  <button onClick={() => deletePage(pages.find(p => p.BusinessPhotoPageID === pageId))}
+                    style={{ background: 'none', border: '1px solid #e0b0b0', borderRadius: 5,
+                             padding: '4px 10px', fontSize: 12, cursor: 'pointer', color: '#c0392b' }}>
+                    {t('business_photos.btn_delete_page')}
+                  </button>
+                </>
+              )}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 mb-5">
+              <input
+                value={newTitle}
+                onChange={e => setNewTitle(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); createPage(); } }}
+                maxLength={120}
+                placeholder={t('business_photos.new_page_placeholder')}
+                disabled={(pages || []).length >= MAX_PAGES}
+                style={{ fontSize: 12, padding: '6px 10px', border: '1px solid #d9cbb8',
+                         borderRadius: 5, minWidth: 220 }}
+              />
+              <button
+                onClick={createPage}
+                disabled={creating || !newTitle.trim() || (pages || []).length >= MAX_PAGES}
+                style={{ background: '#3D6B34', color: '#fff', border: 'none', borderRadius: 5,
+                         padding: '6px 14px', fontSize: 12, fontWeight: 600,
+                         cursor: (creating || !newTitle.trim()) ? 'default' : 'pointer',
+                         opacity: (creating || !newTitle.trim() || (pages || []).length >= MAX_PAGES) ? 0.5 : 1 }}
+              >
+                {creating ? t('business_photos.btn_creating') : t('business_photos.btn_add_page')}
+              </button>
+              <span style={{ fontSize: 11, color: '#8b7355' }}>
+                {t('business_photos.pages_used', { used: (pages || []).length, max: MAX_PAGES })}
+              </span>
+            </div>
+
+            {pages && pages.length === 0 && (
+              <p className="text-gray-500 text-sm mb-4">{t('business_photos.no_pages')}</p>
+            )}
+            {pageId && <div
               {...dropzone}
               onClick={() => !full && inputRef.current?.click()}
               onKeyDown={e => {
@@ -207,11 +356,11 @@ export default function BusinessPhotos() {
                 style={{ display: 'none' }}
                 onChange={e => { uploadMany(e.target.files); e.target.value = ''; }}
               />
-            </div>
+            </div>}
 
             {error && <p className="text-sm mb-4" style={{ color: '#c0392b' }}>{error}</p>}
 
-            {photos === null ? (
+            {!pageId ? null : photos === null ? (
               <p className="text-gray-400 text-sm">{t('business_photos.loading')}</p>
             ) : photos.length === 0 ? (
               <p className="text-gray-500 text-sm">{t('business_photos.empty')}</p>
