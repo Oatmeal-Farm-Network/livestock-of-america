@@ -365,7 +365,7 @@ export default function BusinessPhotos() {
             ) : photos.length === 0 ? (
               <p className="text-gray-500 text-sm">{t('business_photos.empty')}</p>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 18 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 18 }}>
                 {photos.map((photo, i) => (
                   <div key={photo.BusinessPhotoID}
                     style={{ border: '1px solid #e8e0d5', borderRadius: 10, padding: 14, background: '#faf7f4' }}>
@@ -374,7 +374,7 @@ export default function BusinessPhotos() {
                       alt={photo.Caption
                         ? t('business_photos.alt_captioned', { caption: photo.Caption })
                         : t('business_photos.alt', { n: i + 1 })}
-                      style={{ width: '100%', height: 150, objectFit: 'cover', borderRadius: 6, marginBottom: 10 }}
+                      style={{ width: '100%', height: 260, objectFit: 'cover', borderRadius: 6, marginBottom: 10 }}
                     />
 
                     <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>

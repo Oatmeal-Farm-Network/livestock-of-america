@@ -174,7 +174,7 @@ function PhotosTab({ pages, businessId }) {
             src={hero.PhotoUrl}
             alt={altFor(hero, active)}
             className="w-full rounded-xl object-cover mb-2"
-            style={{ maxHeight: 420 }}
+            style={{ maxHeight: 560 }}
             onError={(e) => { e.target.style.display = 'none'; }}
           />
           {hero.Caption && <p className="text-sm text-gray-600 mb-3">{hero.Caption}</p>}
@@ -189,7 +189,7 @@ function PhotosTab({ pages, businessId }) {
                   className="rounded-lg overflow-hidden border-2 p-0 cursor-pointer"
                   style={{ borderColor: i === active ? OLIVE : '#e5e7eb', background: 'none' }}
                 >
-                  <img src={p.PhotoUrl} alt={altFor(p, i)} className="w-16 h-16 object-cover block"
+                  <img src={p.PhotoUrl} alt={altFor(p, i)} className="w-24 h-24 object-cover block"
                        loading="lazy"
                        onError={(e) => { e.target.closest('button').style.display = 'none'; }} />
                 </button>
