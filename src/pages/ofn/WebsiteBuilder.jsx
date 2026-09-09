@@ -7045,7 +7045,10 @@ export default function WebsiteBuilder() {
   if (isPage) return (
     <>
       <AccountLayout wide hideBreadcrumbs Business={Business} BusinessID={BusinessID} PeopleID={PeopleID} pageTitle="Website Builder" breadcrumbs={[{ label: 'Dashboard', to: '/dashboard' }, { label: 'Website Builder' }]}>
-        <div className="-m-6 flex flex-col" style={{ height: 'calc(100vh - 72px)', overflow: 'hidden' }}>
+        {/* -mx-6/-mb-6, not -m-6: the top pull put the editor's own toolbar
+            under the sticky site header once the breadcrumb row that had been
+            absorbing it was removed. Sides and bottom still bleed. */}
+        <div className="-mx-6 -mb-6 flex flex-col" style={{ height: 'calc(100vh - 96px)', overflow: 'hidden' }}>
 
           {/* ── Top bar ── */}
           <div style={{ height: 48, flexShrink: 0, background: '#fff', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 12 }}>
