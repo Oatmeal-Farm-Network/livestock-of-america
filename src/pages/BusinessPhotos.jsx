@@ -9,7 +9,7 @@ import { useBusinessId } from '../lib/useBusinessId';
 const API_URL = import.meta.env.VITE_LIVESTOCK_API_URL || '';
 
 const MAX_PAGES = 10;
-const MAX_PHOTOS = 12;   // per page
+const MAX_PHOTOS = 24;   // per page; must match MAX_PHOTOS_PER_PAGE in routers/business_photos.py
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
