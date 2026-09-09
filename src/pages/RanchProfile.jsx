@@ -117,40 +117,63 @@ function PhotosTab({ pages, businessId }) {
   const { t } = useTranslation();
   const [pageId, setPageId] = useState(null);
   const [photos, setPhotos] = useState(null);
-  const [active, setActive] = useState(0);
+  // Natural aspect ratio per photo, measured as each one loads. The rows cannot
+  // be justified without it, and the dimensions are not stored anywhere.
+  const [ratios, setRatios] = useState({});
+  const [lightbox, setLightbox] = useState(null);
+  const [rowH, setRowH] = useState(260);
 
   const list = pages || [];
   const current = pageId ?? list[0]?.BusinessPhotoPageID ?? null;
 
   useEffect(() => {
+    const fit = () => setRowH(window.innerWidth < 640 ? 150
+      : window.innerWidth < 1024 ? 200 : 260);
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
+
+  useEffect(() => {
     if (!current) return;
     setPhotos(null);
-    setActive(0);
+    setRatios({});
     fetch(`${API_URL}/api/businesses/${businessId}/photos?page_id=${current}`)
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => setPhotos(Array.isArray(d) ? d : []))
       .catch(() => setPhotos([]));
   }, [businessId, current]);
 
+  const shown = photos || [];
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setLightbox(null);
+      if (e.key === 'ArrowRight') setLightbox((i) => (i + 1) % shown.length);
+      if (e.key === 'ArrowLeft') setLightbox((i) => (i - 1 + shown.length) % shown.length);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [lightbox, shown.length]);
+
   if (!pages) return <div className="py-5 text-gray-400">{t('ranch_profile.loading', 'Loading…')}</div>;
   if (list.length === 0) {
     return <div className="py-5 text-gray-400">{t('ranch_profile.no_photos', 'No photos yet.')}</div>;
   }
 
-  const shown = photos || [];
-  const hero = shown[Math.min(active, Math.max(shown.length - 1, 0))];
   const altFor = (p, i) => p.Caption || t('ranch_profile.photo_alt', 'Photo {{n}}', { n: i + 1 });
+  const GAP = 8;
+  const open = lightbox === null ? null : shown[lightbox];
 
   return (
     <div>
-      {/* One chip per photo page. Hidden when there is only one, so a single
-          album does not get a pointless selector. */}
       {list.length > 1 && (
         <div className="flex flex-wrap gap-2 mb-4">
           {list.map((pg) => (
             <button
               key={pg.BusinessPhotoPageID}
-              onClick={() => setPageId(pg.BusinessPhotoPageID)}
+              onClick={() => { setPageId(pg.BusinessPhotoPageID); setLightbox(null); }}
               className="rounded-full px-3 py-1.5 text-xs font-semibold cursor-pointer"
               style={{
                 border: `1px solid ${current === pg.BusinessPhotoPageID ? OLIVE : '#e5e7eb'}`,
@@ -170,30 +193,104 @@ function PhotosTab({ pages, businessId }) {
         <div className="py-5 text-gray-400">{t('ranch_profile.no_photos_page', 'Nothing in this page yet.')}</div>
       ) : (
         <>
-          <img
-            src={hero.PhotoUrl}
-            alt={altFor(hero, active)}
-            className="w-full rounded-xl object-cover mb-2"
-            style={{ maxHeight: 560 }}
-            onError={(e) => { e.target.style.display = 'none'; }}
-          />
-          {hero.Caption && <p className="text-sm text-gray-600 mb-3">{hero.Caption}</p>}
-
-          {shown.length > 1 && (
-            <div className="flex gap-2 flex-wrap">
-              {shown.map((p, i) => (
+          {/* Justified rows: each tile keeps its own aspect ratio and the row
+              fills the width. flexGrow and flexBasis are both proportional to
+              the ratio, which is what makes a row share its width by shape
+              rather than by count. */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: GAP }}>
+            {shown.map((p, i) => {
+              const ar = ratios[p.BusinessPhotoID] || 1.5;
+              return (
                 <button
                   key={p.BusinessPhotoID}
-                  onClick={() => setActive(i)}
+                  onClick={() => setLightbox(i)}
                   aria-label={altFor(p, i)}
-                  className="rounded-lg overflow-hidden border-2 p-0 cursor-pointer"
-                  style={{ borderColor: i === active ? OLIVE : '#e5e7eb', background: 'none' }}
+                  style={{
+                    flexGrow: ar, flexBasis: ar * rowH, height: rowH,
+                    minWidth: 0, padding: 0, border: 'none', borderRadius: 4,
+                    overflow: 'hidden', cursor: 'pointer', background: '#f0ebe3',
+                    position: 'relative',
+                  }}
                 >
-                  <img src={p.PhotoUrl} alt={altFor(p, i)} className="w-24 h-24 object-cover block"
-                       loading="lazy"
-                       onError={(e) => { e.target.closest('button').style.display = 'none'; }} />
+                  <img
+                    src={p.PhotoUrl}
+                    alt={altFor(p, i)}
+                    loading={i < 6 ? 'eager' : 'lazy'}
+                    onLoad={(e) => {
+                      const { naturalWidth: w, naturalHeight: h } = e.target;
+                      if (w && h) {
+                        setRatios((m) => (m[p.BusinessPhotoID] ? m
+                          : { ...m, [p.BusinessPhotoID]: w / h }));
+                      }
+                    }}
+                    onError={(e) => { e.target.closest('button').style.display = 'none'; }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
                 </button>
-              ))}
+              );
+            })}
+            {/* Without these the final row stretches its few tiles across the
+                whole width. They take up slack and have no height. */}
+            {shown.length > 2 && [0, 1, 2].map((k) => (
+              <i key={`sp${k}`} style={{ flexGrow: 10, flexBasis: rowH * 1.5, height: 0 }} />
+            ))}
+          </div>
+
+          {open && (
+            <div
+              onClick={() => setLightbox(null)}
+              role="dialog"
+              aria-modal="true"
+              aria-label={altFor(open, lightbox)}
+              style={{
+                position: 'fixed', inset: 0, zIndex: 10001,
+                background: 'rgba(0,0,0,0.88)', display: 'flex',
+                alignItems: 'center', justifyContent: 'center', padding: 24,
+              }}
+            >
+              <button
+                onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+                aria-label={t('ranch_profile.close', 'Close')}
+                style={{ position: 'absolute', top: 16, right: 20, background: 'none',
+                         border: 'none', color: '#fff', fontSize: 30, lineHeight: 1,
+                         cursor: 'pointer' }}
+              >
+                ×
+              </button>
+              {shown.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i - 1 + shown.length) % shown.length); }}
+                    aria-label={t('ranch_profile.prev_photo', 'Previous photo')}
+                    style={{ position: 'absolute', left: 12, background: 'none', border: 'none',
+                             color: '#fff', fontSize: 40, cursor: 'pointer', padding: '0 12px' }}
+                  >
+                    ‹
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setLightbox((i) => (i + 1) % shown.length); }}
+                    aria-label={t('ranch_profile.next_photo', 'Next photo')}
+                    style={{ position: 'absolute', right: 12, background: 'none', border: 'none',
+                             color: '#fff', fontSize: 40, cursor: 'pointer', padding: '0 12px' }}
+                  >
+                    ›
+                  </button>
+                </>
+              )}
+              <figure style={{ margin: 0, maxWidth: '100%', maxHeight: '100%', textAlign: 'center' }}
+                      onClick={(e) => e.stopPropagation()}>
+                <img
+                  src={open.PhotoUrl}
+                  alt={altFor(open, lightbox)}
+                  style={{ maxWidth: '100%', maxHeight: '82vh', objectFit: 'contain',
+                           borderRadius: 6, display: 'block', margin: '0 auto' }}
+                />
+                <figcaption style={{ color: '#fff', fontSize: 13, marginTop: 10 }}>
+                  {open.Caption ? open.Caption + ' — ' : ''}
+                  {t('ranch_profile.photo_of', '{{n}} of {{total}}',
+                     { n: lightbox + 1, total: shown.length })}
+                </figcaption>
+              </figure>
             </div>
           )}
         </>
