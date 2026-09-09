@@ -139,6 +139,7 @@ const ICONS = {
   ),
   dashboard:     <S><path d="M2 8L8 2l6 6"/><path d="M3 7.5V14h3.5v-3h3v3H13V7.5"/></S>,
   blog:          <S><path d="M11 2l3 3-8 8H3v-3z"/><line x1="9" y1="4" x2="12" y2="7"/></S>,
+  photos:        <S><rect x="2" y="3.5" width="12" height="9" rx="1.5"/><circle cx="5.75" cy="6.75" r="1.1"/><path d="M2.5 11l3-3 2.5 2.5L10.5 8l3 3"/></S>,
   precisionAg:   <S><rect x="2" y="2" width="12" height="12" rx="1"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="2" y1="10" x2="14" y2="10"/><line x1="6" y1="6" x2="6" y2="14"/></S>,
   farm2table:    <S><path d="M2 5h12l-1.5 7H3.5z"/><path d="M5.5 5L6.5 2M10.5 5l-1-3"/><circle cx="5.5" cy="13.5" r="0.8" fill="currentColor" stroke="none"/><circle cx="10.5" cy="13.5" r="0.8" fill="currentColor" stroke="none"/></S>,
   restaurant:    <S><line x1="5" y1="2" x2="5" y2="14"/><path d="M3 2v4a2 2 0 0 0 4 0V2"/><line x1="11" y1="2" x2="11" y2="14"/><path d="M9 2h3a0 0 0 0 1 0 4v0"/></S>,
@@ -239,6 +240,27 @@ function NavChild({ to, label, onNavigate }) {
     >
       {label}
     </Link>
+  );
+}
+
+function NavLinkSection({ icon, label, to, expanded }) {
+  // A top-level row that navigates instead of expanding. The classes are
+  // NavSection's header verbatim so the font, size, colour, padding and hover
+  // match its siblings; the chevron is the only thing left off, since there is
+  // nothing to open.
+  return (
+    <div className="mb-1">
+      <Link
+        to={to}
+        title={!expanded ? label : undefined}
+        className={`w-full flex items-center py-2 rounded-lg hover:bg-white/50 text-gray-700 text-sm transition-all no-underline ${
+          expanded ? 'gap-3 px-3' : 'justify-center'
+        }`}
+      >
+        <span className="w-4 h-4 shrink-0 flex items-center justify-center">{icon}</span>
+        {expanded && <span className="grow text-left whitespace-nowrap">{label}</span>}
+      </Link>
+    </div>
   );
 }
 
@@ -545,8 +567,11 @@ export default function AccountSidebar({ onNavigate }) {
         )}
 
         {/* Sits with Blog rather than in Account: it is public-facing content,
-            not a setting. What is uploaded here shows on the directory listing. */}
-        <NavChild to={biz('/account/photos')} label={t('account_sidebar.photos', 'Photos')} />
+            not a setting. What is uploaded here shows on the directory listing.
+            NavLinkSection, not NavChild, so it reads as a peer of Blog rather
+            than as one of Blog's children. */}
+        <NavLinkSection icon={ICONS.photos} label={t('account_sidebar.photos', 'Photos')}
+          to={biz('/account/photos')} expanded={Expanded !== false} />
 
         {on('forums') && (
           <NavSection icon={ICONS.forums} label="Forums" expanded={Expanded !== false}
