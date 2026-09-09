@@ -7925,7 +7925,7 @@ function WidthDiagram({ local }) {
             bgWidth={local.header_bg_width}
             contentWidth={local.header_content_width}
             bgColor={local.primary_color}
-            bgImage={local.header_banner_url}
+            bgImage={local.nav_bg_image_url || local.header_banner_url}
             labelRow={<LabelBar dark left={`Header BG: ${local.header_bg_width || '100%'}`} right={`Content: ${local.header_content_width || '100%'}`} />}
           >
             {/* Top bar */}
@@ -8805,22 +8805,41 @@ function DesignView({ site, onSave, saving, pages = [] }) {
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 mb-5">
             <h3 className="font-bold text-gray-800 mb-1 pb-2 border-b border-gray-100">{wb('colors_content_widths')}</h3>
             <p className="text-xs text-gray-400 mb-4">{wb('colors_content_widths_hint')}</p>
+            <p className="text-xs text-gray-400 mb-4">{wb('colors_zone_bg_hint')}</p>
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex flex-col gap-4 flex-1">
                 <div className="border-l-4 pl-3" style={{ borderColor: local.primary_color }}>
                   <p className="text-xs font-semibold text-gray-500 mb-1">{wb('colors_header_sub')}</p>
                   <WidthControl label={wb('colors_header_bg_width')} hint={wb('colors_header_bg_width_hint')} value={local.header_bg_width} onChange={v => set('header_bg_width', v)} />
                   <WidthControl label={wb('colors_header_content_width')} hint={wb('colors_header_content_width_hint')} value={local.header_content_width} onChange={v => set('header_content_width', v)} />
+                  <div className="mt-3 pt-3 border-t border-gray-50">
+                    <ColorRow label={wb('zone_bg_color')} field="primary_color" />
+                    <ImageUploadField compact label={wb('zone_bg_image')}
+                      value={local.nav_bg_image_url}
+                      onChange={v => set('nav_bg_image_url', v)} />
+                  </div>
                 </div>
                 <div className="border-l-4 pl-3" style={{ borderColor: local.secondary_color }}>
                   <p className="text-xs font-semibold text-gray-500 mb-1">{wb('colors_body_sub')}</p>
                   <WidthControl label={wb('colors_body_bg_width')} hint={wb('colors_body_bg_width_hint')} value={local.body_bg_width} onChange={v => set('body_bg_width', v)} />
                   <WidthControl label={wb('colors_body_text_width')} hint={wb('colors_body_text_width_hint')} value={local.body_content_width} onChange={v => set('body_content_width', v)} />
+                  <div className="mt-3 pt-3 border-t border-gray-50">
+                    <ColorRow label={wb('zone_bg_color')} field="screen_background_color" />
+                    <ImageUploadField compact label={wb('zone_bg_image')}
+                      value={local.bg_image_url}
+                      onChange={v => set('bg_image_url', v)} />
+                  </div>
                 </div>
                 <div className="border-l-4 pl-3" style={{ borderColor: local.footer_bg_color }}>
                   <p className="text-xs font-semibold text-gray-500 mb-1">{wb('colors_footer_sub')}</p>
                   <WidthControl label={wb('colors_footer_bg_width')} hint={wb('colors_footer_bg_width_hint')} value={local.footer_bg_width} onChange={v => set('footer_bg_width', v)} />
                   <WidthControl label={wb('colors_footer_content_width')} hint={wb('colors_footer_content_width_hint')} value={local.footer_content_width} onChange={v => set('footer_content_width', v)} />
+                  <div className="mt-3 pt-3 border-t border-gray-50">
+                    <ColorRow label={wb('zone_bg_color')} field="footer_bg_color" />
+                    <ImageUploadField compact label={wb('zone_bg_image')}
+                      value={local.footer_bg_image_url}
+                      onChange={v => set('footer_bg_image_url', v)} />
+                  </div>
                 </div>
               </div>
               <div className="flex-1 min-w-0 lg:min-w-72">

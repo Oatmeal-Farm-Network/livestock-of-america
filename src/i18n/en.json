@@ -3625,7 +3625,10 @@
     "templates_starter_confirm": "Add {{n}} starter pages to your site?",
     "tier_n": "Tier {{n}}",
     "version_n": "Version {{n}}",
-    "version_restore_confirm": "Restore version \"{{label}}\"? Your current site will be replaced."
+    "version_restore_confirm": "Restore version \"{{label}}\"? Your current site will be replaced.",
+    "zone_bg_color": "Background colour",
+    "zone_bg_image": "Background image",
+    "colors_zone_bg_hint": "Set the colour or background image for each zone. The preview updates as you change them; nothing is saved until you press Save."
   },
   "website_public": {
     "blog_back": "← Back to {{heading}}",
