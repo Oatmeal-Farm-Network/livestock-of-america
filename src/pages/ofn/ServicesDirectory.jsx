@@ -41,13 +41,8 @@ const CATEGORY_IMAGES = {
 
 const imgForCategory = (name) => CATEGORY_IMAGES[norm(name)] || FALLBACK_IMG;
 
-// Each category page gets its own hero. Keyed by id, not name, because the id
-// is in the URL from the first render while the name only arrives with the
-// categories fetch -- keying by name would load the shared hero first and swap,
-// which is the worst thing to do to an eager, high-priority LCP image.
+// The index keeps its banner; category pages are text-only.
 const HERO_DEFAULT = '/images/ServiceDirectory.webp';
-const heroForCategory = (id) =>
-  (id ? `/images/service-heroes/${id}.webp` : HERO_DEFAULT);
 
 const DEFAULT_LEAD = 'From veterinarians and farriers to shearing, equipment rental, and farm consulting — connect with agricultural professionals serving farms and ranches.';
 
@@ -201,61 +196,80 @@ export default function ServicesDirectory() {
           ...(catName ? [{ label: catName }] : []),
         ]} />
 
-        <div className="relative w-full overflow-hidden rounded-xl rounded-b-none md:rounded-b-xl">
-          <img
-            key={categoryId || 'all'}
-            src={heroForCategory(categoryId)}
-            alt={catName ? t('services_dir.hero_alt_category', { category: catName }) : t('services_dir.hero_alt')}
-            onError={e => { e.target.onerror = null; e.target.src = HERO_DEFAULT; }}
-            className="w-full object-cover block h-[160px] md:h-[250px]"
-            loading="eager"
-            fetchPriority="high"
-            width="1300"
-            height="250"
-          />
-          <div className="hidden md:block absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 45%, rgba(255,255,255,0) 75%)' }} />
-          <div className="hidden md:flex absolute inset-0 flex-col justify-center px-8 py-6" style={{ maxWidth: '780px' }}>
-            <h1 style={{ color: '#000000', fontFamily: "'Lora','Times New Roman',serif", fontSize: '2rem', fontWeight: 'bold', margin: '0 0 12px', lineHeight: 1.2 }}>
+        {/* No banner on a category page -- just the heading and the lead.
+            The index keeps its hero. */}
+        {categoryId ? (
+          <div className="bg-white px-5 py-4 md:px-8 md:py-6 rounded-xl border border-gray-200">
+            <h1 style={{ color: '#000000', fontFamily: "'Lora','Times New Roman',serif", fontWeight: 'bold', margin: '0 0 8px', lineHeight: 1.2 }}
+                className="text-[1.4rem] md:text-[2rem]">
               {catName || t('services_dir.title')}
             </h1>
-            <p style={{ color: '#111111', fontSize: '0.92rem', margin: '0 0 8px', lineHeight: 1.6 }}>
+            <p style={{ color: '#111111', margin: '0 0 6px', lineHeight: 1.6 }} className="text-[0.85rem] md:text-[0.92rem]">
+              {catName ? leadForCategory(catName, t) : t('services_dir.hero_body_pre')}
+            </p>
+            <p style={{ color: '#111111', margin: 0, lineHeight: 1.6 }} className="text-[0.85rem] md:text-[0.92rem]">
+              {t('services_dir.listings_added')}{' '}
+              <Link to="/contact-us" style={{ color: '#3D6B34', textDecoration: 'underline' }}>{t('services_dir.contact_us')}</Link>.
+            </p>
+          </div>
+        ) : (
+          <>
+          <div className="relative w-full overflow-hidden rounded-xl rounded-b-none md:rounded-b-xl">
+            <img
+              src={HERO_DEFAULT}
+              alt={t('services_dir.hero_alt')}
+              onError={e => { e.target.onerror = null; e.target.src = HERO_DEFAULT; }}
+              className="w-full object-cover block h-[160px] md:h-[250px]"
+              loading="eager"
+              fetchPriority="high"
+              width="1300"
+              height="250"
+            />
+            <div className="hidden md:block absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.72) 45%, rgba(255,255,255,0) 75%)' }} />
+            <div className="hidden md:flex absolute inset-0 flex-col justify-center px-8 py-6" style={{ maxWidth: '780px' }}>
+              <h1 style={{ color: '#000000', fontFamily: "'Lora','Times New Roman',serif", fontSize: '2rem', fontWeight: 'bold', margin: '0 0 12px', lineHeight: 1.2 }}>
+                {catName || t('services_dir.title')}
+              </h1>
+              <p style={{ color: '#111111', fontSize: '0.92rem', margin: '0 0 8px', lineHeight: 1.6 }}>
+                {catName ? (
+                  leadForCategory(catName, t)
+                ) : (
+                  <>
+                    {t('services_dir.hero_body_pre')}{' '}
+                    <strong>{categories.length > 0 ? t('services_dir.cat_count', { count: categories.length }) : '…'}</strong>{' '}
+                    {t('services_dir.hero_body_post')}
+                  </>
+                )}
+              </p>
+              <p style={{ color: '#111111', fontSize: '0.92rem', margin: 0, lineHeight: 1.6 }}>
+                {t('services_dir.listings_added')}{' '}
+                <Link to="/contact-us" style={{ color: '#3D6B34', textDecoration: 'underline' }}>{t('services_dir.contact_us')}</Link>.
+              </p>
+            </div>
+          </div>
+
+          <div className="md:hidden bg-white px-5 py-4 rounded-b-xl border border-t-0 border-gray-200">
+            <h1 style={{ color: '#000000', fontFamily: "'Lora','Times New Roman',serif", fontSize: '1.4rem', fontWeight: 'bold', margin: '0 0 8px', lineHeight: 1.2 }}>
+              {catName || t('services_dir.title')}
+            </h1>
+            <p style={{ color: '#111111', fontSize: '0.85rem', margin: '0 0 6px', lineHeight: 1.6 }}>
               {catName ? (
                 leadForCategory(catName, t)
               ) : (
                 <>
                   {t('services_dir.hero_body_pre')}{' '}
-                  <strong>{categories.length > 0 ? t('services_dir.cat_count', { count: categories.length }) : '…'}</strong>{' '}
+                  <strong>{categories.length > 0 ? t('services_dir.cat_count_mobile', { count: categories.length }) : '…'}</strong>{' '}
                   {t('services_dir.hero_body_post')}
                 </>
               )}
             </p>
-            <p style={{ color: '#111111', fontSize: '0.92rem', margin: 0, lineHeight: 1.6 }}>
-              {t('services_dir.listings_added')}{' '}
+            <p style={{ color: '#111111', fontSize: '0.85rem', margin: 0, lineHeight: 1.6 }}>
+              {t('services_dir.want_to_list')}{' '}
               <Link to="/contact-us" style={{ color: '#3D6B34', textDecoration: 'underline' }}>{t('services_dir.contact_us')}</Link>.
             </p>
           </div>
-        </div>
-
-        <div className="md:hidden bg-white px-5 py-4 rounded-b-xl border border-t-0 border-gray-200">
-          <h1 style={{ color: '#000000', fontFamily: "'Lora','Times New Roman',serif", fontSize: '1.4rem', fontWeight: 'bold', margin: '0 0 8px', lineHeight: 1.2 }}>
-            {catName || t('services_dir.title')}
-          </h1>
-          <p style={{ color: '#111111', fontSize: '0.85rem', margin: '0 0 6px', lineHeight: 1.6 }}>
-            {catName ? (
-              leadForCategory(catName, t)
-            ) : (
-              <>
-                {t('services_dir.hero_body_pre')}{' '}
-                <strong>{categories.length > 0 ? t('services_dir.cat_count_mobile', { count: categories.length }) : '…'}</strong>{' '}
-                {t('services_dir.hero_body_post')}
-              </>
-            )}
-          </p>
-          <p style={{ color: '#111111', fontSize: '0.85rem', margin: 0, lineHeight: 1.6 }}>
-            {t('services_dir.want_to_list')}{' '}
-            <Link to="/contact-us" style={{ color: '#3D6B34', textDecoration: 'underline' }}>{t('services_dir.contact_us')}</Link>.
-          </p>
-        </div>
+          </>
+        )}
       </div>
 
       <div className="mx-auto px-4 py-8 w-full flex-grow" style={{ maxWidth: '1300px' }}>
@@ -376,22 +390,29 @@ export default function ServicesDirectory() {
                     key={svc.ServicesID}
                     className="flex bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md hover:border-[#819360] transition-all duration-200"
                   >
-                    <Link
-                      to={`/services/public/${svc.ServicesID}`}
-                      className="shrink-0 overflow-hidden"
-                      style={{ width: '155px', height: '155px' }}
-                    >
-                      <img
-                        src={svc.Photo1 || FALLBACK_IMG}
-                        alt={svc.ServiceTitle}
-                        width="155"
-                        height="155"
-                        loading={index < EAGER_COUNT ? 'eager' : 'lazy'}
-                        decoding={index < EAGER_COUNT ? 'sync' : 'async'}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        onError={e => { e.target.onerror = null; e.target.src = FALLBACK_IMG; }}
-                      />
-                    </Link>
+                    {/* Only when the listing has a photo of its own. It used
+                        to fall back to a stock image, so every listing looked
+                        like it had one. A listing without a photo is text-only
+                        and takes the full width of the card; a broken stored
+                        URL hides the thumbnail rather than swapping in stock. */}
+                    {svc.Photo1 ? (
+                      <Link
+                        to={`/services/public/${svc.ServicesID}`}
+                        className="shrink-0 overflow-hidden"
+                        style={{ width: '155px', height: '155px' }}
+                      >
+                        <img
+                          src={svc.Photo1}
+                          alt={svc.ServiceTitle}
+                          width="155"
+                          height="155"
+                          loading={index < EAGER_COUNT ? 'eager' : 'lazy'}
+                          decoding={index < EAGER_COUNT ? 'sync' : 'async'}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          onError={e => { e.target.closest('a').style.display = 'none'; }}
+                        />
+                      </Link>
+                    ) : null}
 
                     <div className="flex flex-col justify-between px-5 py-4 flex-1 min-w-0">
                       <div>
