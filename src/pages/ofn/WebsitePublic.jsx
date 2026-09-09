@@ -2226,9 +2226,18 @@ function RenderBlock({ block, site, businessId }) {
   }
 }
 
-// Hostnames that are the OFN platform itself — everything else is a custom domain
-const OFN_HOSTS = ['oatmealfarmnetwork.com', 'www.oatmealfarmnetwork.com', 'localhost', '127.0.0.1'];
-const isCustomDomain = !OFN_HOSTS.some(h => window.location.hostname === h || window.location.hostname.endsWith(`.${h}`));
+// Hostnames that are this platform itself — anything else is a customer's own
+// domain, which is looked up by hostname rather than by URL slug.
+//
+// This list came across naming Oatmeal Farm Network's hosts, so every request
+// to livestockofamerica.com counted as a custom domain: /sites/{slug} asked for
+// a site registered to livestockofamerica.com, found none, and rendered "Site
+// Not Found" for a site that was published and serving fine.
+const PLATFORM_HOSTS = [
+  'livestockofamerica.com', 'www.livestockofamerica.com',
+  'localhost', '127.0.0.1',
+];
+const isCustomDomain = !PLATFORM_HOSTS.some(h => window.location.hostname === h || window.location.hostname.endsWith(`.${h}`));
 
 // Pick the header image whose month/day range covers today.
 // Falls back to header_banner_url if no images are configured.
