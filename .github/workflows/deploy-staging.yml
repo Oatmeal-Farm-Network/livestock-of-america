@@ -4,7 +4,7 @@ name: Deploy LOA Frontend Staging
 # API target: oatmeal-livestock-staging only (not OFN main backend).
 on:
   push:
-    branches: [GCP/frontend-staging]
+    branches: ['GCP/frontend-staging']
   workflow_dispatch:
 
 env:
