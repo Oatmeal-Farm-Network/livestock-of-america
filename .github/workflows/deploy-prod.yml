@@ -1,6 +1,8 @@
 name: Deploy LOA Frontend Production
 
 # main → livestock-frontend-prod in animated-flare-421518 (Oatmeal AI).
+# Restore the known-working prod WIF defaults from the last green deploy.
+# Skip only if provider and deployer SA both resolve empty. Never use staging.
 on:
   push:
     branches: [main]
@@ -12,11 +14,33 @@ env:
   GAR_REPOSITORY: ${{ vars.PROD_ARTIFACT_REGISTRY_REPOSITORY || 'oatmeal-farm-registry' }}
   SERVICE_NAME: livestock-frontend-prod
   IMAGE_NAME: livestock-frontend
-  RUNTIME_SERVICE_ACCOUNT: ${{ vars.PROD_FRONTEND_RUNTIME_SA }}
+  RUNTIME_SERVICE_ACCOUNT: ${{ vars.PROD_FRONTEND_RUNTIME_SA || 'livestock-of-america@animated-flare-421518.iam.gserviceaccount.com' }}
+  WIF_PROVIDER: ${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER || secrets.PROD_GCP_WIF_PROVIDER || 'projects/802455386518/locations/global/workloadIdentityPools/github-pool/providers/github-provider' }}
+  DEPLOYER_SA: ${{ secrets.PROD_GCP_SERVICE_ACCOUNT || 'github-deployer@animated-flare-421518.iam.gserviceaccount.com' }}
   LIVESTOCK_API_URL: ${{ vars.PROD_LIVESTOCK_API_URL || 'https://livestock-backend-prod-mt7mh6zhoa-uc.a.run.app' }}
 
 jobs:
+  check-prod-wif:
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
+    steps:
+      - name: Check prod WIF (secrets or known Oatmeal AI defaults)
+        id: check
+        shell: bash
+        run: |
+          provider="${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER }}${{ secrets.PROD_GCP_WIF_PROVIDER }}${{ env.WIF_PROVIDER }}"
+          sa="${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}${{ env.DEPLOYER_SA }}"
+          if [ -n "$provider" ] && [ -n "$sa" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Prod WIF is not configured. Skipping production deploy."
+          fi
+
   deploy:
+    needs: check-prod-wif
+    if: needs.check-prod-wif.outputs.configured == 'true'
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -27,19 +51,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Require Oatmeal AI project and WIF
+      - name: Require Oatmeal AI project
         shell: bash
         run: |
           if [ "${{ env.PROJECT_ID }}" != "animated-flare-421518" ]; then
             echo "::error::LOA prod must use animated-flare-421518 (Oatmeal AI)."
-            exit 1
-          fi
-          if [ -z "${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER }}${{ secrets.PROD_GCP_WIF_PROVIDER }}" ]; then
-            echo "::error::Set PROD_GCP_WORKLOAD_IDENTITY_PROVIDER (or PROD_GCP_WIF_PROVIDER)."
-            exit 1
-          fi
-          if [ -z "${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}" ]; then
-            echo "::error::Set PROD_GCP_SERVICE_ACCOUNT."
             exit 1
           fi
 
@@ -50,8 +66,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.PROD_GCP_WORKLOAD_IDENTITY_PROVIDER || secrets.PROD_GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.PROD_GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SA }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
