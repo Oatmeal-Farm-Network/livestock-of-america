@@ -1,23 +1,44 @@
 name: Deploy LOA Frontend Testing
 
-# GCP/frontend-testing → livestock-frontend-testing
-# API target: oatmeal-livestock-testing only (not OFN main backend).
-# Fails clearly until TESTING_* secrets/vars exist. Do not copy PROD_*.
+# GCP/frontend-testing → livestock-frontend-testing in oatmeal-farm-staging.
+# TESTING_* secrets/vars are optional; fall back to staging WIF, registry, and API URLs
+# until a dedicated testing stack exists. Never use animated-flare-421518.
+# API target: livestock Cloud Run only (not OFN main backend).
 on:
   push:
-    branches: [GCP/frontend-testing]
+    branches: ['GCP/frontend-testing']
   workflow_dispatch:
 
 env:
-  PROJECT_ID: ${{ secrets.TESTING_GCP_PROJECT_ID }}
-  REGION: ${{ vars.TESTING_REGION || 'us-central1' }}
-  GAR_REPOSITORY: ${{ vars.TESTING_ARTIFACT_REGISTRY_REPOSITORY || 'oatmeal-farm-registry' }}
+  PROJECT_ID: ${{ secrets.TESTING_GCP_PROJECT_ID || secrets.STAGING_GCP_PROJECT_ID || 'oatmeal-farm-staging' }}
+  REGION: ${{ vars.TESTING_REGION || vars.STAGING_REGION || 'us-central1' }}
+  GAR_REPOSITORY: ${{ vars.TESTING_ARTIFACT_REGISTRY_REPOSITORY || vars.STAGING_ARTIFACT_REGISTRY_REPOSITORY || 'oatmeal-farm-registry' }}
   SERVICE_NAME: livestock-frontend-testing
   IMAGE_NAME: livestock-frontend
-  RUNTIME_SERVICE_ACCOUNT: ${{ vars.TESTING_FRONTEND_RUNTIME_SA }}
+  RUNTIME_SERVICE_ACCOUNT: ${{ vars.TESTING_FRONTEND_RUNTIME_SA || vars.STAGING_FRONTEND_RUNTIME_SA || 'livestock-of-america@oatmeal-farm-staging.iam.gserviceaccount.com' }}
 
 jobs:
+  check-testing-wif:
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
+    steps:
+      - name: Check testing or staging WIF
+        id: check
+        shell: bash
+        run: |
+          provider="${{ secrets.TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER }}${{ secrets.STAGING_GCP_WORKLOAD_IDENTITY_PROVIDER }}"
+          sa="${{ secrets.TESTING_GCP_SERVICE_ACCOUNT }}${{ secrets.STAGING_GCP_SERVICE_ACCOUNT }}"
+          if [ -n "$provider" ] && [ -n "$sa" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No TESTING_* or STAGING_* WIF secrets. Skipping testing deploy."
+          fi
+
   deploy:
+    needs: check-testing-wif
+    if: needs.check-testing-wif.outputs.configured == 'true'
     runs-on: ubuntu-latest
     environment: testing
     permissions:
@@ -28,33 +49,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Require testing secrets and bake vars
+      - name: Guard testing project
         shell: bash
         run: |
-          missing=0
-          require() {
-            local name="$1" value="$2"
-            if [ -z "$value" ]; then
-              echo "::error::Missing required GitHub Actions secret/variable: $name"
-              missing=1
-            fi
-          }
-          require TESTING_GCP_PROJECT_ID "${{ secrets.TESTING_GCP_PROJECT_ID }}"
-          require TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER "${{ secrets.TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER }}"
-          require TESTING_GCP_SERVICE_ACCOUNT "${{ secrets.TESTING_GCP_SERVICE_ACCOUNT }}"
-          require TESTING_FRONTEND_RUNTIME_SA "${{ vars.TESTING_FRONTEND_RUNTIME_SA }}"
-          require TESTING_LIVESTOCK_API_URL "${{ vars.TESTING_LIVESTOCK_API_URL }}"
-          project="${{ secrets.TESTING_GCP_PROJECT_ID }}"
-          if [ -n "$project" ] && [ "$project" != "oatmeal-farm-staging" ]; then
+          project="${PROJECT_ID}"
+          if [ "$project" = "animated-flare-421518" ]; then
             echo "::error::TESTING_GCP_PROJECT_ID must be oatmeal-farm-staging. Never animated-flare-421518 (Oatmeal AI)."
-            missing=1
-          fi
-          if [ "$missing" -ne 0 ]; then
-            echo "Testing deploy blocked until all TESTING_* secrets/vars are set."
-            echo "Create Cloud Run livestock-frontend-testing in oatmeal-farm-staging first."
-            echo "See docs/LOA_FRONTEND_DEPLOY.md. Do not use PROD_*."
             exit 1
           fi
+          echo "Testing deploy project=${project} service=${SERVICE_NAME}"
+          echo "Auth uses TESTING_GCP_* if set, otherwise STAGING_GCP_* WIF."
 
       - name: Derive commit SHA tag
         shell: bash
@@ -63,8 +67,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.TESTING_GCP_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ secrets.TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER || secrets.STAGING_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.TESTING_GCP_SERVICE_ACCOUNT || secrets.STAGING_GCP_SERVICE_ACCOUNT }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -74,10 +78,10 @@ jobs:
 
       - name: Build Docker image (bake testing VITE_*)
         env:
-          VITE_LIVESTOCK_API_URL: ${{ vars.TESTING_LIVESTOCK_API_URL }}
-          VITE_NEWS_API_URL: ${{ vars.TESTING_NEWS_API_URL || 'https://oatmeal-ai.com' }}
-          VITE_SAIGE_API_URL: ${{ vars.TESTING_SAIGE_URL }}
-          VITE_CONTACT_EMAIL: ${{ vars.TESTING_CONTACT_EMAIL }}
+          VITE_LIVESTOCK_API_URL: ${{ vars.TESTING_LIVESTOCK_API_URL || vars.STAGING_LIVESTOCK_API_URL || 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app' }}
+          VITE_NEWS_API_URL: ${{ vars.TESTING_NEWS_API_URL || vars.STAGING_NEWS_API_URL || 'https://oatmeal-ai.com' }}
+          VITE_SAIGE_API_URL: ${{ vars.TESTING_SAIGE_URL || vars.STAGING_SAIGE_URL || 'https://oatmeal-saige-staging-lrviw4iujq-uc.a.run.app' }}
+          VITE_CONTACT_EMAIL: ${{ vars.TESTING_CONTACT_EMAIL || vars.STAGING_CONTACT_EMAIL }}
         run: |
           docker build \
             --build-arg "VITE_LIVESTOCK_API_URL=${VITE_LIVESTOCK_API_URL}" \
@@ -93,6 +97,10 @@ jobs:
 
       - name: Deploy to Cloud Run (testing)
         run: |
+          extra=()
+          if [ -n "${RUNTIME_SERVICE_ACCOUNT}" ]; then
+            extra+=(--service-account "${RUNTIME_SERVICE_ACCOUNT}")
+          fi
           gcloud run deploy "${SERVICE_NAME}" \
             --image "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
             --region "${REGION}" \
@@ -104,7 +112,7 @@ jobs:
             --cpu 1 \
             --min-instances 0 \
             --max-instances 5 \
-            --service-account "${RUNTIME_SERVICE_ACCOUNT}" \
+            "${extra[@]}" \
             --quiet
 
       - name: Show deployed URL
