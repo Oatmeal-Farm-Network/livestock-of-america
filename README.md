@@ -27,12 +27,19 @@ Phase‑1 Livestock of America website experience:
 
 ## Deploy
 
+Promotion train (feature PRs go to staging only):
+
+```text
+feature/*  →  GCP/frontend-staging  →  GCP/frontend-testing  →  main
+```
+
 | Branch | Environment |
 |--------|-------------|
 | `GCP/frontend-staging` | Staging Cloud Run `livestock-frontend-staging` |
+| `GCP/frontend-testing` | Testing Cloud Run `livestock-frontend-testing` |
 | `main` | Production Cloud Run `livestock-frontend-prod` |
 
-See [docs/LOA_FRONTEND_DEPLOY.md](docs/LOA_FRONTEND_DEPLOY.md).
+See [docs/BRANCHING.md](docs/BRANCHING.md) and [docs/LOA_FRONTEND_DEPLOY.md](docs/LOA_FRONTEND_DEPLOY.md).
 
 ## Local
 

@@ -1,0 +1,28 @@
+name: CI
+
+# Required on every hop of the train: feature → staging → testing → main.
+on:
+  pull_request:
+    branches:
+      - GCP/frontend-staging
+      - GCP/frontend-testing
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck and production Vite build
+        run: npm run build

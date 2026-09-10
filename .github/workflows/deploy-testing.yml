@@ -1,0 +1,110 @@
+name: Deploy LOA Frontend Testing
+
+# GCP/frontend-testing → livestock-frontend-testing
+# API target: oatmeal-livestock-testing only (not OFN main backend).
+# Fails clearly until TESTING_* secrets/vars exist. Do not copy PROD_*.
+on:
+  push:
+    branches: [GCP/frontend-testing]
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.TESTING_GCP_PROJECT_ID }}
+  REGION: ${{ vars.TESTING_REGION || 'us-central1' }}
+  GAR_REPOSITORY: ${{ vars.TESTING_ARTIFACT_REGISTRY_REPOSITORY || 'oatmeal-farm-registry' }}
+  SERVICE_NAME: livestock-frontend-testing
+  IMAGE_NAME: livestock-frontend
+  RUNTIME_SERVICE_ACCOUNT: ${{ vars.TESTING_FRONTEND_RUNTIME_SA }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: testing
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Require testing secrets and bake vars
+        shell: bash
+        run: |
+          missing=0
+          require() {
+            local name="$1" value="$2"
+            if [ -z "$value" ]; then
+              echo "::error::Missing required GitHub Actions secret/variable: $name"
+              missing=1
+            fi
+          }
+          require TESTING_GCP_PROJECT_ID "${{ secrets.TESTING_GCP_PROJECT_ID }}"
+          require TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER "${{ secrets.TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER }}"
+          require TESTING_GCP_SERVICE_ACCOUNT "${{ secrets.TESTING_GCP_SERVICE_ACCOUNT }}"
+          require TESTING_FRONTEND_RUNTIME_SA "${{ vars.TESTING_FRONTEND_RUNTIME_SA }}"
+          require TESTING_LIVESTOCK_API_URL "${{ vars.TESTING_LIVESTOCK_API_URL }}"
+          if [ "$missing" -ne 0 ]; then
+            echo "Testing deploy blocked until all TESTING_* secrets/vars are set."
+            echo "Create Cloud Run livestock-frontend-testing and oatmeal-livestock-testing first."
+            echo "See docs/LOA_FRONTEND_DEPLOY.md. Same GCP project as staging is OK; do not use PROD_*."
+            exit 1
+          fi
+
+      - name: Derive commit SHA tag
+        shell: bash
+        run: echo "COMMIT_SHA=${GITHUB_SHA::12}" >> "$GITHUB_ENV"
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.TESTING_GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+
+      - name: Build Docker image (bake testing VITE_*)
+        env:
+          VITE_LIVESTOCK_API_URL: ${{ vars.TESTING_LIVESTOCK_API_URL }}
+          VITE_NEWS_API_URL: ${{ vars.TESTING_NEWS_API_URL || 'https://oatmeal-ai.com' }}
+          VITE_SAIGE_API_URL: ${{ vars.TESTING_SAIGE_URL }}
+          VITE_CONTACT_EMAIL: ${{ vars.TESTING_CONTACT_EMAIL }}
+        run: |
+          docker build \
+            --build-arg "VITE_LIVESTOCK_API_URL=${VITE_LIVESTOCK_API_URL}" \
+            --build-arg "VITE_NEWS_API_URL=${VITE_NEWS_API_URL}" \
+            --build-arg "VITE_SAIGE_API_URL=${VITE_SAIGE_API_URL}" \
+            --build-arg "VITE_CONTACT_EMAIL=${VITE_CONTACT_EMAIL}" \
+            -t "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
+            .
+
+      - name: Push Docker image
+        run: |
+          docker push "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}"
+
+      - name: Deploy to Cloud Run (testing)
+        run: |
+          gcloud run deploy "${SERVICE_NAME}" \
+            --image "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
+            --region "${REGION}" \
+            --project "${PROJECT_ID}" \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 512Mi \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 5 \
+            --service-account "${RUNTIME_SERVICE_ACCOUNT}" \
+            --quiet
+
+      - name: Show deployed URL
+        run: |
+          gcloud run services describe "${SERVICE_NAME}" \
+            --region "${REGION}" \
+            --project "${PROJECT_ID}" \
+            --format='value(status.url)'
