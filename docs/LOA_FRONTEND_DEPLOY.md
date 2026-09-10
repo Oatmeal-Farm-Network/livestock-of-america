@@ -14,8 +14,8 @@ Git train: see [BRANCHING.md](./BRANCHING.md). Feature PRs target `GCP/frontend-
 | Git branch | Cloud Run service | GCP project | Workflow | GitHub Environment |
 |------------|-------------------|-------------|----------|--------------------|
 | `GCP/frontend-staging` | `livestock-frontend-staging` | `oatmeal-farm-staging` | `.github/workflows/deploy-staging.yml` | `staging` |
-| `GCP/frontend-testing` | `livestock-frontend-testing` | testing project (`TESTING_GCP_PROJECT_ID`; same as staging is OK) | `.github/workflows/deploy-testing.yml` | `testing` |
-| `main` | `livestock-frontend-prod` | prod project (`PROD_GCP_PROJECT_ID`) | `.github/workflows/deploy-prod.yml` | `production` |
+| `GCP/frontend-testing` | `livestock-frontend-testing` | `oatmeal-farm-staging` (`TESTING_GCP_PROJECT_ID` must be this project) | `.github/workflows/deploy-testing.yml` | `testing` |
+| `main` | **`livestock-frontend-prod`** | `animated-flare-421518` (Oatmeal AI) | `.github/workflows/deploy-prod.yml` | `production` |
 
 ```text
 feature/*  →  GCP/frontend-staging  →  GCP/frontend-testing  →  main
@@ -81,7 +81,7 @@ Create Cloud Run `livestock-frontend-testing` and livestock API `oatmeal-livesto
 
 | Secret | Purpose |
 |--------|---------|
-| `TESTING_GCP_PROJECT_ID` | Testing GCP project (or `oatmeal-farm-staging`) |
+| `TESTING_GCP_PROJECT_ID` | **Must be** `oatmeal-farm-staging` |
 | `TESTING_GCP_SERVICE_ACCOUNT` | Deployer SA for GitHub Actions |
 | `TESTING_GCP_WORKLOAD_IDENTITY_PROVIDER` | WIF provider resource name |
 
@@ -108,7 +108,7 @@ Set this on `oatmealfarmnetworkbackend` before the first LOA testing deploy.
 
 | Name | Type |
 |------|------|
-| `PROD_GCP_PROJECT_ID` | secret |
+| `PROD_GCP_PROJECT_ID` | secret (**must be** `animated-flare-421518`) |
 | `PROD_GCP_SERVICE_ACCOUNT` | secret |
 | `PROD_GCP_WORKLOAD_IDENTITY_PROVIDER` | secret |
 | `PROD_FRONTEND_RUNTIME_SA` | var (required) |
