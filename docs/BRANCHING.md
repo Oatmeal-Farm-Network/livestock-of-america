@@ -7,11 +7,11 @@ feature/*  →  PR  →  GCP/frontend-staging  →  PR  →  GCP/frontend-testin
                          staging Cloud Run              testing Cloud Run              production
 ```
 
-| Branch | Cloud Run | Workflow |
-|--------|-----------|----------|
-| `GCP/frontend-staging` | `livestock-frontend-staging` | `deploy-staging.yml` |
-| `GCP/frontend-testing` | `livestock-frontend-testing` | `deploy-testing.yml` |
-| `main` | `livestock-frontend-prod` | `deploy-prod.yml` |
+| Branch | Cloud Run | GCP project | Workflow |
+|--------|-----------|-------------|----------|
+| `GCP/frontend-staging` | `livestock-frontend-staging` | `oatmeal-farm-staging` | `deploy-staging.yml` |
+| `GCP/frontend-testing` | `livestock-frontend-testing` | `oatmeal-farm-staging` | `deploy-testing.yml` |
+| `main` | **`livestock-frontend-prod`** | `animated-flare-421518` (Oatmeal AI) | `deploy-prod.yml` |
 
 Allowed PRs only:
 
