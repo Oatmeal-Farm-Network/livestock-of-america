@@ -4,8 +4,8 @@ name: CI
 on:
   pull_request:
     branches:
-      - GCP/frontend-staging
-      - GCP/frontend-testing
+      - 'GCP/frontend-staging'
+      - 'GCP/frontend-testing'
       - main
 
 jobs:
