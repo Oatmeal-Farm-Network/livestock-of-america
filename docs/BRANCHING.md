@@ -23,6 +23,6 @@ Cut work branches from **current staging**, not from `main`.
 
 CI (`.github/workflows/ci.yml`) runs on PRs into all three bases.
 
-Production stays fail-closed until `PROD_*` secrets/vars and Environment reviewers exist. Testing stays fail-closed until `TESTING_*` and `livestock-frontend-testing` exist.
+Merge to `main` deploys `livestock-frontend-prod` in Oatmeal AI (needs prod WIF on this repo). Testing stays fail-closed until `TESTING_*` and `livestock-frontend-testing` exist.
 
 See [LOA_FRONTEND_DEPLOY.md](./LOA_FRONTEND_DEPLOY.md).
