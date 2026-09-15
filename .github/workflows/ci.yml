@@ -6,6 +6,7 @@ on:
     branches:
       - 'GCP/frontend-staging'
       - 'GCP/frontend-testing'
+      - 'GCP/frontend-development'
       - main
 
 jobs:
