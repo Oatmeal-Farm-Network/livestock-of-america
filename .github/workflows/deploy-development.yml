@@ -1,0 +1,123 @@
+name: Deploy LOA Frontend Development
+
+# GCP/frontend-development → livestock-frontend-development in oatmeal-farm-staging.
+# DEVELOPMENT_* secrets/vars are optional; fall back to staging WIF, registry, and API URLs
+# until a dedicated testing stack exists. Never use animated-flare-421518.
+# API target: livestock Cloud Run only (not OFN main backend).
+on:
+  push:
+    branches: ['GCP/frontend-development']
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.DEVELOPMENT_GCP_PROJECT_ID || secrets.STAGING_GCP_PROJECT_ID || 'oatmeal-farm-staging' }}
+  REGION: ${{ vars.DEVELOPMENT_REGION || vars.STAGING_REGION || 'us-central1' }}
+  GAR_REPOSITORY: ${{ vars.DEVELOPMENT_ARTIFACT_REGISTRY_REPOSITORY || vars.STAGING_ARTIFACT_REGISTRY_REPOSITORY || 'oatmeal-farm-registry' }}
+  SERVICE_NAME: livestock-frontend-development
+  IMAGE_NAME: livestock-frontend
+  RUNTIME_SERVICE_ACCOUNT: ${{ vars.DEVELOPMENT_FRONTEND_RUNTIME_SA || vars.STAGING_FRONTEND_RUNTIME_SA || 'livestock-of-america@oatmeal-farm-staging.iam.gserviceaccount.com' }}
+
+jobs:
+  check-development-wif:
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
+    steps:
+      - name: Check development or staging WIF
+        id: check
+        shell: bash
+        run: |
+          provider="${{ secrets.DEVELOPMENT_GCP_WORKLOAD_IDENTITY_PROVIDER }}${{ secrets.STAGING_GCP_WORKLOAD_IDENTITY_PROVIDER }}"
+          sa="${{ secrets.DEVELOPMENT_GCP_SERVICE_ACCOUNT }}${{ secrets.STAGING_GCP_SERVICE_ACCOUNT }}"
+          if [ -n "$provider" ] && [ -n "$sa" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No DEVELOPMENT_* or STAGING_* WIF secrets. Skipping development deploy."
+          fi
+
+  deploy:
+    needs: check-development-wif
+    if: needs.check-development-wif.outputs.configured == 'true'
+    runs-on: ubuntu-latest
+    environment: development
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Guard development project
+        shell: bash
+        run: |
+          project="${PROJECT_ID}"
+          if [ "$project" = "animated-flare-421518" ]; then
+            echo "::error::DEVELOPMENT_GCP_PROJECT_ID must be oatmeal-farm-staging. Never animated-flare-421518 (Oatmeal AI)."
+            exit 1
+          fi
+          echo "Development deploy project=${project} service=${SERVICE_NAME}"
+          echo "Auth uses DEVELOPMENT_GCP_* if set, otherwise STAGING_GCP_* WIF."
+
+      - name: Derive commit SHA tag
+        shell: bash
+        run: echo "COMMIT_SHA=${GITHUB_SHA::12}" >> "$GITHUB_ENV"
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.DEVELOPMENT_GCP_WORKLOAD_IDENTITY_PROVIDER || secrets.STAGING_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.DEVELOPMENT_GCP_SERVICE_ACCOUNT || secrets.STAGING_GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+
+      - name: Build Docker image (bake testing VITE_*)
+        env:
+          VITE_LIVESTOCK_API_URL: ${{ vars.DEVELOPMENT_LIVESTOCK_API_URL || vars.STAGING_LIVESTOCK_API_URL || 'https://oatmeal-livestock-staging-1087130530284.us-central1.run.app' }}
+          VITE_NEWS_API_URL: ${{ vars.DEVELOPMENT_NEWS_API_URL || vars.STAGING_NEWS_API_URL || 'https://oatmeal-ai.com' }}
+          VITE_SAIGE_API_URL: ${{ vars.DEVELOPMENT_SAIGE_URL || vars.STAGING_SAIGE_URL || 'https://oatmeal-saige-staging-lrviw4iujq-uc.a.run.app' }}
+          VITE_CONTACT_EMAIL: ${{ vars.DEVELOPMENT_CONTACT_EMAIL || vars.STAGING_CONTACT_EMAIL }}
+        run: |
+          docker build \
+            --build-arg "VITE_LIVESTOCK_API_URL=${VITE_LIVESTOCK_API_URL}" \
+            --build-arg "VITE_NEWS_API_URL=${VITE_NEWS_API_URL}" \
+            --build-arg "VITE_SAIGE_API_URL=${VITE_SAIGE_API_URL}" \
+            --build-arg "VITE_CONTACT_EMAIL=${VITE_CONTACT_EMAIL}" \
+            -t "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
+            .
+
+      - name: Push Docker image
+        run: |
+          docker push "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}"
+
+      - name: Deploy to Cloud Run (testing)
+        run: |
+          extra=()
+          if [ -n "${RUNTIME_SERVICE_ACCOUNT}" ]; then
+            extra+=(--service-account "${RUNTIME_SERVICE_ACCOUNT}")
+          fi
+          gcloud run deploy "${SERVICE_NAME}" \
+            --image "${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPOSITORY}/${IMAGE_NAME}:${COMMIT_SHA}" \
+            --region "${REGION}" \
+            --project "${PROJECT_ID}" \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 512Mi \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 5 \
+            "${extra[@]}" \
+            --quiet
+
+      - name: Show deployed URL
+        run: |
+          gcloud run services describe "${SERVICE_NAME}" \
+            --region "${REGION}" \
+            --project "${PROJECT_ID}" \
+            --format='value(status.url)'
