@@ -1,4 +1,6 @@
 name: Deploy LOA Frontend Testing
+# RETIRED_TESTING: use deploy-development instead. Kept for rollback.
+if: false  # retired — testing env cut over to development
 
 # GCP/frontend-testing → livestock-frontend-testing in oatmeal-farm-staging.
 # TESTING_* secrets/vars are optional; fall back to staging WIF, registry, and API URLs
